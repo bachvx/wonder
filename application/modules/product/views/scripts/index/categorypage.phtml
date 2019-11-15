@@ -1,0 +1,84 @@
+<?php
+     $language = new Zend_Session_Namespace('language');
+     if($language->lang=='vi'){
+        $name=$this->category['name'];
+     }else{
+        $name=$this->category['name_en'];
+     }
+ ?>
+<div class="top">
+	<p><?php  echo $name; ?> <span><?php echo $this->totalItem; ?></span> <?php echo $this->language['sanpham']; ?> </p>
+</div>
+<div class="content">
+    <div class="row">
+	
+			<?php
+            //var_dump($this->arr);die;
+			foreach ($this->Items as $key => $val){
+			 
+				$name = $val['name'];
+			
+				$code = '';
+				if($val['code'] != ''){
+					$code = '<p class="sku">'.$this->language['productMaSanPham'].': ' . $val['code'] . '</p>';
+				}
+				$imgName = explode ( '/editor-upload/images/', $val ['picture'] ); 
+				$picture = '<img  class="img" src="' . APPLICATION_URL . '/default/public/view-image/width/358/height/313/images/' . $imgName [1] . '" alt="' . $val ['name'] . '"/>';
+			
+				$synopsis = nl2br($val['synopsis']);
+				$units_money = $val['units_money'];
+				//$quanhuyen_name =$val['quanhuyen_name'];
+				$price = '';
+				if($val['price'] != 0){
+					$price = '<p class="price">'.Zend_Locale_Format::toNumber($val['price'],array('precision' => 0)) . ' ' . $units_money.'</p>';
+				}else{
+					$price = '<p class="price">'.$this->language['lienHe'].'</p>';
+				}
+				
+				
+				
+				$urlOptions = array (
+						'module' => 'product',
+						'controller' => 'index',
+						'action' => 'detail',
+						'title' => $val ['alias'],
+						'id' => $val ['id'] );
+				$linkDetial = $this->url( $urlOptions, 'diadiem-detail' );
+				
+				?>
+				<div class="col-sm-4">
+					<div class="item-sp">
+						<div class="image">
+							<a href="<?php echo $linkDetial; ?> "><?php echo $picture ?></a>
+						</div>
+						<div class="info">
+							<h3><a href="<?php echo $linkDetial; ?>"><?php echo $name; ?></a></h3>
+							<?php echo $code; ?>
+							<?php echo $price; ?>
+						</div>
+					</div>
+				</div>
+			<?php
+				} 
+			?>
+	   </div>
+       </div>
+		<?php
+        //die("ad");
+			if(!empty($this->arrParam['cid'])){
+					
+				$urlOptionsCategory = array('module'=>'product',
+                                            'controller'=>'index',
+                                            'action'=>'categorypage',
+                    						'cid'=>$this->arrParam['cid'],
+                    						'title'=>$this->arrParam['alias'],
+                                            'manu-id'=>$this->arr['manu-id'],
+				);
+				//$currentUrl = $this->url($urlOptionsCategory,'product-page');
+			}else{
+				$currentUrl = 'diadiem.html';
+			}
+			echo $this->paginationControl($this->paginator,'Sliding','pagination-index.phtml',array('currentUrl'=>$currentUrl,'arrParam' => $this->arrParam)); 
+		?>
+
+	

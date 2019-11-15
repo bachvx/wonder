@@ -1,0 +1,69 @@
+<div class="tuyendung">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-8">
+				<div class="top">
+					<p><?php  echo $this->Items['name']; ?></p>
+				</div>
+				<div class="content">
+					<div class="item-mota">
+						<h3><?php echo $this->language['motacongviec']; ?></h3>
+						<p><?php echo htmlspecialchars_decode($this->Items['mota']); ?></p>
+					</div>
+					<div class="item-mota">
+						<h3><?php echo $this->language['quyenloi']; ?></h3>
+						<p><?php echo htmlspecialchars_decode($this->Items['quyenloi']); ?></p>
+                    </div>
+					<div class="item-mota">
+						<h3><?php echo $this->language['lienhe']; ?></h3>
+						<p><?php echo htmlspecialchars_decode($this->Items['lienhe']); ?></p>
+					</div>			
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="tongquat">
+					<div class="item">
+						<div class="left">
+							<p><?php echo $this->language['trinhdo']; ?></p>
+						</div>
+						<div class="right">
+							<p><?php echo $this->Items['trinhdo']; ?></p>
+						</div>
+					</div>
+					<div class="item">
+						<div class="left">
+							<p><?php echo $this->language['gioitinh']; ?></p>
+						</div>
+						<div class="right">
+							<p><?php echo $this->Items['gioitinh']; ?></p>
+						</div>
+					</div>
+					<div class="item">
+						<div class="left">
+							<p><?php echo $this->language['noilamviec']; ?></p>
+						</div>
+						<div class="right">
+							<p><?php echo $this->Items['noilamviec']; ?></p>
+						</div>
+					</div>
+					<div class="item">
+						<div class="left">
+							<p><?php echo $this->language['mucluong']; ?></p>
+						</div>
+						<div class="right">
+							<p><?php echo $this->Items['mucluong']; ?></p>
+						</div>
+					</div>
+					<div class="item">
+						<div class="left">
+							<p><?php echo $this->language['hannop']; ?></p>
+						</div>
+						<div class="right">
+							<p><?php echo $this->Items['hannop']; ?></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>				
+	</div>
+</div>

@@ -1,0 +1,16 @@
+<?php echo $this->render('html/header.php');?>
+<link id="style-css" media="all" type="text/css" href="/public/templates/public/default/css/vallenato.css" rel="stylesheet">
+
+<script type="text/javascript" src="/public/templates/public/default/js/vallenato.js"></script>
+<script type="text/javascript" src="/public/templates/public/default/js/mix.js"></script>
+
+<body>
+<?php echo $this->blkMenuTinh();?>
+<div id="wrapper">
+    <div id="main-home">
+        <?php echo $this->layout()->content;?> 		
+    </div>
+</div> <!-- wrapper -->
+<!-- Footer -->
+<?php echo $this->blkFooterNew(); ?>   			
+<?php echo $this->render('html/footer.php');?>

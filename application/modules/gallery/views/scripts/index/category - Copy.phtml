@@ -1,0 +1,105 @@
+<div class="b__banner b__banner--sukien">  
+  <img src="<?php echo $this->ItemsBanner[0]['picture']; ?>" />
+ 
+</div>
+<div class="b__content--sukien b__content--gallery"> 
+  <div class="b__title--sukien b__title--gallery"> 
+    <div class="containers">
+      <h3><?php echo $this->language['wonderHinhanhVideo']; ?></h3>
+    </div>
+  </div>
+  <div class="b__sukien--caption">  
+      <p><?php echo $this->language['wonderHinhanh']; ?></p>  
+  </div>
+</div><!-- end .b__content-sukien--> 
+<div class="b__gallery">
+  <div class="containers">
+    <div class="b__gallery--info">
+<?php
+    foreach ($this->ItemsImage AS $key => $val){
+    	switch ($key) {
+    	   case 0:
+           case 1:
+           case 2:
+           case 5:
+           case 6:
+           case 7:
+                    echo '<div class="b__gallery--ls">
+                            <img data-toggle="modal" data-target="#exampleModal" src="'.$val['picture'].'" />
+                          </div>';
+                          break;
+           case 3:
+           case 4:
+                    echo '<div class="b__gallery--ls b__gallery--50">
+                            <img data-toggle="modal" data-target="#exampleModal" src="'.$val['picture'].'" />
+                          </div>';
+                          break;
+            case 8:
+                    echo '<div class="b__gallery--ls b__gallery--70">
+                            <img data-toggle="modal" data-target="#exampleModal" src="'.$val['picture'].'" />
+                          </div>';
+                          break;
+           case 9:
+                    echo '<div class="b__gallery--ls b__gallery--90">
+                            <img data-toggle="modal" data-target="#exampleModal" src="'.$val['picture'].'" />
+                          </div>';
+                          break;
+           default: break;
+    	   
+    	}
+        
+
+    } 
+?>
+        </div><!--close b__gallery--info -->
+    </div><!--close containers -->
+    <div class="b__load text-center"> 
+    <a href="#"><i class="fas fa-angle-down"></i></a>
+  </div>
+</div><!--close b__gallery -->
+
+<div class="b__video"> 
+  <div class="b__sukien--caption">  
+      <p><?php echo $this->language['wonderVideo']; ?> </p>  
+  </div> 
+  <div class="containers">
+    <div class="b__video--info">
+        <p><?php echo $this->language['wonderGioithieuVideo']; ?></p>
+        <?php
+            foreach ($this->ItemsVideo AS $key => $val){
+            	if($val['module']=='default'){
+            	   $noidung.='<a href="#"><img src="'.$val['picture'].'" /></a>';
+            	}else{
+            	   $slide.='<div class="b-items">
+                              <a href="#"><img src="'.$val['picture'].'" /></a>
+                            </div>';
+            	}
+                
+        
+            } 
+        ?>  
+                <div class="b__video--gallery b__video--ls ">
+                    <?php echo  $noidung; ?>
+                </div>
+                <div id="videoSlide" class="owl-carousel">
+                    <?php echo  $slide; ?>
+                </div>
+            </div><!--close b__video--info-->
+        </div><!--close containers-->
+    </div><!--close b__video-->
+
+<!-- Modal images -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg__img" role="document">
+    <div class="modal-content"> 
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <div class="modal-body">
+        <div class="b__modal--images">
+          <img src="upload/img_gallery01.jpg" width="100%" />
+        </div>
+      </div> 
+    </div>
+  </div>
+</div>

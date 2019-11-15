@@ -1,0 +1,12 @@
+<?php echo $this->render('html/header.php');?>
+
+<body>
+<?php echo $this->blkMenuTinh();?>
+<div id="wrapper">
+    <div id="main-home">
+        <?php echo $this->layout()->content;?> 		
+    </div>
+</div> <!-- wrapper -->
+<!-- Footer -->
+<?php echo $this->blkFooterNew(); ?>   			
+<?php echo $this->render('html/footer.php');?>

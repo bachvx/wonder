@@ -1,0 +1,17 @@
+<?php
+	$linkRegister =  $this->baseUrl('/default/admin-register/index');
+	$linkKhoahoc =  $this->baseUrl('/default/admin-khoahoc/index');
+	$linkTrungtam =  $this->baseUrl('/default/admin-trungtam/index');
+	$linkThoigian =  $this->baseUrl('/default/admin-thoigian/index');
+	$linkNguontin =  $this->baseUrl('/default/admin-nguontin/index');
+?>
+<div class="block_subMenu goc10">
+	<ul>
+		<li><a href="<?php echo $linkRegister;?>">Danh sách khách hàng</a></li>
+		<li><a href="<?php echo $linkKhoahoc;?>">Khóa học</a></li>
+		<li><a href="#" class="active">Trung tâm</a></li>
+		<li><a href="<?php echo $linkThoigian;?>">Thời gian</a></li>
+		<li><a href="<?php echo $linkNguontin;?>">Nguồn tin</a></li>
+	</ul>
+	<div class="clr"></div>
+</div>

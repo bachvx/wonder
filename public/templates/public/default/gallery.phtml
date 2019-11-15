@@ -1,0 +1,15 @@
+<?php 
+    $siteConfig = Zend_Registry::get('siteConfig');
+    echo $this->render('html/header.php');
+?>
+<body>
+	<!-- HEADER -->
+    <?php echo $this-> blkHeader(1,'default'); ?>
+        
+        <?php echo $this->layout()->content;?>  
+    <?php echo $this->blkFooterNew('default'); ?>
+</body>	
+
+</html>
+
+

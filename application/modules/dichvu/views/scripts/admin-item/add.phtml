@@ -1,0 +1,144 @@
+<?php
+	//----------------------- INPUT ELEMENTS -------------------//
+	$ssFilter 		= $this->arrParam['ssFilter'];
+	$name_en 			= $this->formText ('name_en', $this->Item['name_en'], array ('class' => 'txtlong') );
+	$name 			= $this->formText ( 'name', $this->Item['name'], array ('class' => 'txtlong active', 'onchange'=>"get_alias()") );
+	$picture		= '<div><img src="' . $this->imgUrl . '/no-avatar.png" id="image_picture" class="hinh-anh"></div>';
+	if(!empty($this->Item['picture'])){
+		$picture		= '<div><img src="' . $this->Item['picture'] . '" id="image_picture" class="hinh-anh"></div>';
+	}
+	$picture 		= $this->cmsUserFiles('picture', $this->Item['picture'], 'Chọn ảnh', 'images', $options = array('class' => 'txtfile') ) . $picture;
+    
+    $picture_banner		= '<div><img src="' . $this->imgUrl . '/no-avatar.png" id="image_picture_banner" class="hinh-anh"></div>';
+	if(!empty($this->Item['picture_banner'])){
+		$picture_banner		= '<div><img src="' . $this->Item['picture_banner'] . '" id="image_picture_banner" class="hinh-anh"></div>';
+	}
+	$picture_banner 		= $this->cmsUserFiles('picture_banner', $this->Item['picture_banner'], 'Chọn ảnh', 'images', $options = array('class' => 'txtfile') ) . $picture_banner;
+    
+     $picture_mobile		= '<div><img src="' . $this->imgUrl . '/no-avatar.png" id="image_picture_mobile" class="hinh-anh"></div>';
+	if(!empty($this->Item['picture_mobile'])){
+		$picture_mobile		= '<div><img src="' . $this->Item['picture_mobile'] . '" id="image_picture" class="hinh-anh"></div>';
+	}
+	$picture_mobile 		= $this->cmsUserFiles('picture_mobile', $this->Item['picture_mobile'], 'Chọn ảnh', 'images', $options = array('class' => 'txtfile') ) . $picture_mobile;
+    
+    $picture_banner_mobile		= '<div><img src="' . $this->imgUrl . '/no-avatar.png" id="image_picture_banner_mobile" class="hinh-anh"></div>';
+	if(!empty($this->Item['picture_banner_mobile'])){
+		$picture_banner_mobile		= '<div><img src="' . $this->Item['picture_banner_mobile'] . '" id="image_picture_banne_mobiler" class="hinh-anh"></div>';
+	}
+	$picture_banner_mobile 		= $this->cmsUserFiles('picture_banner_mobile', $this->Item['picture_banner_mobile'], 'Chọn ảnh', 'images', $options = array('class' => 'txtfile') ) . $picture_banner_mobile;
+    
+    
+	$option 		= array('Không','Có');
+	if(isset($this->Item['status'])){
+		$trangthai = $this->Item['status'];
+	}else{
+		$trangthai = 1;
+	}
+	$status 		= $this->formRadio('status',$trangthai,null,$option, ' ');
+	
+	if(isset($this->Item['order'])){
+		$order = $this->Item['order'];
+	}else{
+		$order = 255;
+	}
+	$order 			= $this->formText ('order', $order, array ('class' => 'txtshort auto_numberic' ) );
+	$selectCategory	= $this->cmsSelect('cat_id',$this->Item['cat_id'],$this->slbCategory,array('size'=>0,'style'=>'min-width:200px;','onchange'=>"loadShop(this.value)"));
+
+	$synopsis		= $this->formTextarea('synopsis', $this->Item['synopsis'],array('rows'=>4,'class' => 'textarea','maxlength'=>'20000'));
+    $synopsis_en		= $this->formTextarea('synopsis_en', $this->Item['synopsis_en'],array('rows'=>4,'class' => 'textarea','maxlength'=>'20000'));
+	$content 		= $this->cmsEditor('content',htmlspecialchars_decode($this->Item['content']),array('toolbar'=>'MyToolbar', 'language'=>'vi'));
+    $content_en 		= $this->cmsEditor('content_en',htmlspecialchars_decode($this->Item['content_en']),array('toolbar'=>'MyToolbar', 'language'=>'vi'));
+	$slogan		= $this->formTextarea('slogan', $this->Item['slogan'],array('rows'=>4,'class' => 'textarea','maxlength'=>'200'));
+    $slogan_en		= $this->formTextarea('slogan_en', $this->Item['slogan_en'],array('rows'=>4,'class' => 'textarea','maxlength'=>'200'));
+	$arrInput = array(
+				array('label' => 'Tiêu đề Vietnamese','input' => $name, 'desc' => '<span class="red">*</span>'),
+				array('label' => 'Ảnh đại diện PC','input' => $picture),
+                array('label' => 'Ảnh đại diện Mobile','input' => $picture_mobile),
+				array('label' => 'Banner PC','input' => $picture_banner),
+                array('label' => 'Banner Mobile','input' => $picture_banner_mobile),
+                array('label' => 'Thứ tự','input' => $order),
+                array('label' => 'Slogan','input' => $slogan),
+                array('label' => 'Mô tả ngắn','input' => $synopsis),
+				array('label' => 'Hiển thị','input' => $status),
+                array('label' => 'Nội dung Vietnamese','input' => $content, 'cols' => 22,'style' => 'padding-top:0;'),
+                
+			);
+   $arrInput_en = array(
+				array('label' => 'Tiêu đề English','input' => $name_en, 'desc' => '<span class="red">*</span>'),
+                array('label' => 'Slogan','input' => $slogan_en),
+                array('label' => 'Mô tả ngắn','input' => $synopsis_en),
+                array('label' => 'Nội dung English','input' => $content_en, 'cols' => 22,'style' => 'padding-top:0;'),
+                
+			);
+
+	
+	//--------------------- Blocks ---------------------
+	$option 			= array('Không','Có');
+	if(isset($this->Item['block_noibat'])){
+		$trangthai = $this->Item['block_noibat'];
+	}else{
+		$trangthai = 0;
+	}
+
+
+	//-------------------- SESSAGES ERROR ------------------
+	if(count($this->messageError)>0){
+		$errors = $this->formErrors($this->messageError,array('id'=>'errors'));
+	}
+?>
+<form name="appForm" method="post" action="" enctype="multipart/form-data">
+	<?php echo $this->render('admin-item/toolbar/index.php');?>
+ 	<div class="clr"></div>
+	<?php //echo $this->render('admin-item/sublink/index.php');?>
+	<?php echo $errors;?>
+
+	<!-- BEGIN: CONTENT -->
+	<div class="app_content goc10">
+		<div class="goc10">
+			<script>
+				$(document).ready(function() {
+					$(".tabs-nav li:first a").addClass('selected');
+					$(".tabs:first").css('display','block');
+				    $(".tabs-nav li a").click(function() {
+				        $(".tabs-nav li a").removeClass('selected');
+				        $(this).addClass('selected');
+				        $(".tabs").css('display','none');
+				        $($(this).attr("rel")).css('display','block');
+				        
+				    	return false;
+				    });
+				});
+			</script>
+			<ul class="tabs-nav clearfix">
+				<li><a rel="#tabs-1" href="javascript:void(0)">Vietnamese</a></li>
+				<li><a rel="#tabs-2" href="javascript:void(0)">English</a></li>
+				<!--<li><a rel="#tabs-3" href="javascript:void(0)">Thông tin quán</a></li>
+				 <li><a rel="#tabs-4" href="javascript:void(0)">Video</a></li> -->
+			</ul>
+			<fieldset class="adminform tabs" id="tabs-1">
+				<table class="adminformlist">
+					<?php echo $this->partialLoop('row.php', $arrInput);?>
+				</table>
+			</fieldset>
+			
+			<fieldset class="adminform tabs" id="tabs-2">
+				<table class="adminformlist">
+					<?php echo $this->partialLoop('row.php', $arrInput_en);?>
+				</table>
+			</fieldset>
+			<fieldset class="adminform tabs" id="tabs-3">
+				<table class="adminformlist">
+					<?php echo $this->partialLoop('row.php', $arrThongtinquan);?>
+				</table>
+			</fieldset>
+			<fieldset class="adminform tabs" id="tabs-4">
+				<ul class="adminformlist">
+					<li>Video</li>
+				</ul>
+			</fieldset>
+		</div>
+		
+		<div class="clr"></div>
+	</div>
+	<!-- END: 	CONTENT -->
+</form>

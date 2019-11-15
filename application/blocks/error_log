@@ -1,0 +1,4 @@
+[02-May-2015 14:35:47 UTC] PHP Fatal error:  Class 'Zend_View_Helper_Abstract' not found in /home/trungtq/public_html/diachianchoi.vn/application/blocks/BlkMxh.php on line 2
+[06-May-2015 12:27:16 UTC] PHP Fatal error:  Class 'Zend_View_Helper_Abstract' not found in /home/trungtq/public_html/diachianchoi.vn/application/blocks/BlkMxh.php on line 2
+[07-May-2015 15:10:36 UTC] PHP Fatal error:  Class 'Zend_View_Helper_Abstract' not found in /home/trungtq/public_html/diachianchoi.vn/application/blocks/BlkMxh.php on line 2
+[07-May-2015 23:26:16 UTC] PHP Fatal error:  Class 'Zend_View_Helper_Abstract' not found in /home/trungtq/public_html/diachianchoi.vn/application/blocks/BlkMxh.php on line 2

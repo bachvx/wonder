@@ -1,0 +1,35 @@
+<div class="tuyendung">
+	<div class="container">
+		<div class="top">
+			<p><?php echo $this->language['hientai']; ?> <?php echo $this->Counts; ?> <?php echo $this->language['yeucau']; ?></p>
+		</div>
+		<div class="content">
+			
+			<?php 
+            
+                foreach($this->Items as $key=> $val){
+                    $urlOptions = array ('module' => 'default',
+                                         'controller' => 'tuyendung',
+                                         'action' => 'index', 
+                                         'title' => $val ['alias'],
+                                         'id' => $val ['id'] );	
+    	           $linkDetial = $this->url( $urlOptions, 'tuyendung-detail' );
+                    
+                ?>
+                    <div class="item">
+        				<div class="left">
+        					<h3><a href="<?php echo $linkDetial; ?>"><?php echo $val['name']; ?></a></h3>
+        					<p class="yeucau"><i class="fa fa-star" aria-hidden="true"></i> <?php echo $val['trinhdo']; ?></p>
+        					<p class="vitri"><i class="fa fa-map-marker" aria-hidden="true"></i> <?php echo $val['noilamviec']; ?></p>
+        					<p class="hannop"><i class="fa fa-circle" aria-hidden="true"></i> <?php echo $val['hannop']; ?></p>
+        				</div>
+        				<div class="right">
+        					<a href="<?php echo $linkDetial; ?>"><?php echo $this->language['chitiet']; ?></a>
+        				</div>
+        			</div>
+                <?php
+                }
+            ?>
+		</div>
+	</div>
+</div>

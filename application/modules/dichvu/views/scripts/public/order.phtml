@@ -1,0 +1,150 @@
+<div class="module_dia_diem" style="position: relative;">
+	<div class="module_title clearfix">
+		<span class="icon"></span> 
+		<h1 class="title goc5"><?php echo $this->language['productGioHang'];?></h1>
+	</div>
+	<div class="module_content line180">
+			<div class="cartDetail">
+				<table>
+					<tr class="title">
+						<td style="width: 60px;"><?php echo $this->language['diadiemHinhAnh'];?></td>
+						<td><?php echo $this->language['diadiemTenDiaDiem'];?></td>
+						<td style="width: 60px;"><?php echo $this->language['diadiemSoLuong'];?></td>
+						<td style="width: 80px;"><?php echo $this->language['diadiemGia'] . '('.$this->money['code'].')';?></td>
+						<td style="width: 100px;"><?php echo $this->language['diadiemTongTien'] . '('.$this->money['code'].')';?></td>
+					</tr>
+					<?php
+					$cart = $this->cart;
+					if(count($this->Items)){
+						$totalPrice = 0;
+						foreach ($this->Items as $key => $val){
+							$id 		= $val['id'];
+							$name 		= $val['name'];
+							$price 		= $val['price'];
+							$selloff 	= $val['selloff'];
+							$units_money = $val['units_money'];
+							$quantity	= $cart[$id];
+							$picture = '<img class="img" src="' . $val['thumb'] . '" alt="'.$val['name'].'" style="width:55px;"/>';
+
+							$total = 0;
+							if($selloff <= 0){
+								$total = $quantity * $val['price'];
+								$totalPrice += $total;
+								$total = Zend_Locale_Format::toNumber($total,array('precision' => 0));
+								$price = '<span>'.Zend_Locale_Format::toNumber($price,array('precision' => 0)).'</span>';
+								$selloff = '';
+							}else{
+								$total = $quantity * ($val['price']) - ($val['price'] * ($val['selloff']/100));
+								$totalPrice += $total;
+								$total = Zend_Locale_Format::toNumber($total,array('precision' => 0));
+								$price = '<span style="text-decoration: line-through;">'.Zend_Locale_Format::toNumber($price,array('precision' => 0)).'</span>';
+								$selloff = Zend_Locale_Format::toNumber(($val['price']) - ($val['price'] * ($val['selloff']/100)),array('precision' => 0)) . '';
+							}
+							
+							$urlOptions = array (
+									'module' => 'diadiem',
+									'controller' => 'index',
+									'action' => 'detail',
+									'tcat' => $val ['category_alias'],
+									'title' => $val ['alias'],
+									'cid' => $val ['cat_id'],
+									'id' => $val ['id'] );
+							$linkDetial = $this->url( $urlOptions, 'diadiem-detail' );
+							
+							$itemProduct = 'itemProduct[' . $val['id'] . ']';
+							$itemProduct = $quantity;
+							
+					?>
+					<tr>
+						<td align="center"><?php echo $picture;?></td>
+						<td><a href="<?php echo $linkDetial;?>" class="itemLink" target="_blank"><?php echo $name;?></a></td>
+						<td align="center"><?php echo $itemProduct;?></td>
+						<td align="center"><?php echo $price . '<br>' . $selloff;?></td>
+						<td align="center"><?php echo $total;?></td>
+					</tr>
+					<?php
+						}
+					} 
+					?>
+					<tr>
+						<td colspan="4" align="right"><?php echo $this->language['diadiemTongThanhTien'];?>:</td>
+						<td class="price" align="center"><?php echo Zend_Locale_Format::toNumber($totalPrice,array('precision' => 0)) .' '. $this->money['code'];?></td>
+					</tr>
+				</table>
+			</div>
+			<?php
+				//-------------------- SESSAGES ERROR ------------------
+				if(count($this->messageError)>0){
+					foreach ($this->messageError AS $key => $val){
+						echo '<div class="listError" id="'.$key.'" rel="' . $val . '"></div>';
+					}
+				}
+			?>
+			<?php
+				$full_name = $this->formText('full_name',$this->Item['full_name'],array('class' => 'txtlong goc7')) . '<div class="view_error" id="view_full_name"></div>';
+				$email = $this->formText('email',$this->Item['email'],array('class' => 'txtlong goc7')) . '<div class="view_error" id="view_email"></div>';
+				$phone = $this->formText('phone',$this->Item['phone'],array('class' => 'txtlong goc7')) . '<div class="view_error" id="view_phone"></div>';
+				$address = $this->formTextarea('address',$this->Item['address'],array('rows' => 2, 'cols' => 47,'class' => 'goc7')) . '<div class="view_error" id="view_address"></div>';
+				$shipping = $this->formTextarea('shipping',$this->Item['shipping'],array('rows' => 2, 'cols' => 47,'class' => 'goc7')) . '<div class="view_error" id="view_shipping"></div>';
+				$comment = $this->formTextarea('comment',$this->Item['comment'],array('rows' => 2, 'cols' => 47,'class' => 'goc7')) . '<div class="view_error" id="view_comment"></div>';
+				$captcha 		= $this->captcha;
+				$txtCaptcha 	= $this->formText('captcha','', array ('class' => 'txtshort goc7')) . '<div class="view_error" id="view_captcha"></div>';
+				$txtID 			= $this->formHidden('captchaID',$this->captcha_id);
+				$lang_code		= $this->formHidden('lang',$this->arrParam['ssFilter']['lang_code']);
+			?>
+			<form name="your-cart" id="your-cart" action="" method="post">
+          		<div class="cartDetail-order pd10">
+          			<div style="text-transform: uppercase; color: #ff6600; font-weight: bold; padding: 20px 0 5px;">
+          				<?php echo $this->language['diadiemNhapThongTin'];?>
+          			</div>
+          			<table class="tblOrder">
+          				<tr>
+          					<td class="label"><?php echo $this->language['hoTen'];?> <span class="star">*</span></td>
+          					<td><?php echo $full_name;?></td>
+          				</tr>
+          				<tr>
+          					<td class="label"><?php echo $this->language['email'];?> <span class="star">*</span></td>
+          					<td><?php echo $email;?></td>
+          				</tr>
+          				<tr>
+          					<td class="label"><?php echo $this->language['dienThoai'];?> <span class="star">*</span></td>
+          					<td><?php echo $phone;?></td>
+          				</tr>
+          				<tr>
+          					<td class="label"><?php echo $this->language['diaChi'];?> <span class="star">*</span></td>
+          					<td><?php echo $address;?></td>
+          				</tr>
+          				<tr>
+          					<td class="label"><?php echo $this->language['diadiemDiaChiDatCho'];?> <span class="star">*</span></td>
+          					<td><?php echo $shipping;?></td>
+          				</tr>
+          				<tr>
+          					<td class="label"><?php echo $this->language['noiDung'];?> <span class="star">*</span></td>
+          					<td><?php echo $comment;?></td>
+          				</tr>
+          				<tr>
+							<td class="label"><?php echo $this->language['captcha'];?> <span class="star">*</span></td>
+							<td><?php echo $txtCaptcha . $txtID . $lang_code;?></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>
+								<?php echo $captcha;?>
+							</td>
+						</tr>
+          				<tr>
+          					<td></td>
+          					<td><input type="submit" name="update" id="update" value="<?php echo $this->language['gui'];?>" class="button goc7"/> </td>
+          				</tr>
+          			</table>
+             	</div>
+         	</form>
+    <script type="text/javascript">
+		$("div.listError").each(function (i) {
+		    //alert($(this).attr('rel'));
+		    $('#view_' + $(this).attr('id')).html($(this).attr('rel'));
+		});
+	</script>
+	</div>
+	<div class="module_bottom"></div>
+</div>

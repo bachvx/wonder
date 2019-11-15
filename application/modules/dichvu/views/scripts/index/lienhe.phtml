@@ -1,0 +1,35 @@
+<?php
+    $language = new Zend_Session_Namespace('language');
+    if($language->lang=='vi'){
+        $tieude=$this->$mota['mota'];
+        $mota=htmlspecialchars_decode($this->lienhe['content']);
+    }else{
+        $tieude=$this->$mota['mota']; 
+        $mota=htmlspecialchars_decode($this->lienhe['content_en']);  
+    } 
+?>
+<div class="b__banner">  
+  <img src="<?php echo $this->lienhe['picture']; ?>" width="100%" />
+</div>  
+<div class="b__contact text-center">
+  <div class="containers">
+    <h3 class="b__title--contact"><?php echo $this->language['wonderDangky']; ?></h3>
+    <form action="" method="post" name="frmContact">
+      <div class="form-group"> 
+        <input type="text" name="name" id="name" class="form-control" placeholder="Họ và tên"> 
+      </div>
+      <div class="form-group"> 
+        <input type="tel" class="form-control" name="phone" id="phone" placeholder="Nhập số điện thoại">
+      </div>
+      <div class="form-group"> 
+        <input type="email" class="form-control" name="email" id="email" placeholder="Nhập email">
+      </div>
+      <div class="form-btn">
+        <button class="btn btn-send" type="submit" name="btnSubmit" id="btnSubmit"> <?php echo $this->language['wonderGui']; ?></button>
+      </div>
+    </form>
+   
+    <?php echo $mota; ?>
+   
+  </div>
+</div> 

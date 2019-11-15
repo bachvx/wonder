@@ -1,0 +1,427 @@
+<?php
+	 
+	$moduleConfig = $this->arrParam['moduleConfig'];
+	$urlOptionsDetial = array (
+			'module' => 'diadiem',
+			'controller' => 'index',
+			'action' => 'detail',
+			'tcat' => $this->Item['category_alias'],
+			'title' => $this->Item['alias'],
+			'cid' => $this->Item['cat_id'],
+			'id' => $this->Item['id'] );
+	$linkDetial = $this->url( $urlOptionsDetial, 'diadiem-detail' );
+	//$comment = '<span class="comment_fb">'.$val['comment_fb'].'</span>';
+	//$like = '<span class="like_fb">'.$val['like_fb'].'</span>';
+	$get_like_fb='<span style="display:none" class="like_fb get_like_fb" link="http://diachianchoi.vn'.$linkDetial.'" data="like" id="'.$this->Item['id'].'" val="'.$this->Item['like_fb'].'" typer="diadiem" field="like_fb">'.$this->Item['like_fb'].'</span>';
+	
+	
+	$name 					= $this->Item['name'];
+	$category_name 			= $this->Item['category_name'];
+	$code = '';
+	if($this->Item['code'] != ''){
+		$code = '<p class="code">'.$this->language['productMaSanPham'].': ' . $this->Item['code'] . '</p>';
+	}
+	$picture 		= $this->Item['picture'];
+	$units_money 	= $this->Item['units_money'];
+// 	$price = '';
+// 	$selloff = '';
+// 	if($moduleConfig['showPrice'] == 1){
+// 		if($this->Item['price'] != 0){
+// 			if($this->Item['selloff'] == 0){
+// 				$price = '<p class="price">'.$this->language['diadiemGia'].': '.Zend_Locale_Format::toNumber($this->Item['price'],array('precision' => 0)) . ' ' . $units_money.'</p>';
+// 			}else{
+// 				$selloff = ($this->Item['price']) - ($this->Item['price'] * ($this->Item['selloff']/100));
+// 				$selloff = '<span class="selloff">' . Zend_Locale_Format::toNumber($selloff,array('precision' => 0)) . ' ' . $units_money.'</span>';
+// 				$price = '<p class="price">'.$this->language['diadiemGia'].': <span class="price1">'.Zend_Locale_Format::toNumber($this->Item['price'],array('precision' => 0)) . ' ' . $units_money.'</span>'.$selloff.'</p>';
+// 			}
+// 		}
+// 	}
+	$address='';
+	$address = '<p class="d_address">Địa chỉ: <span>'.$this->Item['address'].', '.$this->Item['quanhuyen_name'].'</span></p>';
+	$address2='';
+	$address2= $this->Item['address'].', '.$this->Item['quanhuyen_name'].', Hà Nội, Việt Nam';
+	
+	$mobile='';
+	$mobile = '<p class="d_mobile">Điện thoại: <span>'.$this->Item['mobile'].'<span></p>';
+	$giomocua='';
+	$open = $this->Item['open'];
+	$close = $this->Item['close'];
+	$giomocua = '<p class="d_giomocua">Giờ mở cửa: <span>Từ '.$open.'h00 đến '.$close.'h00</span></p>';
+// 	$comment = '<span class="comment_fb">'.$this->Item['comment_fb'].'</span>';
+// 	$like = '<span class="like_fb">'.$this->Item['like_fb'].'</span>';
+	
+	$price = '';
+	if($this->Item['price'] != 0){
+		$price = '<p class="d_price">'.$this->language['diadiemGia'].': <span class="value">'.Zend_Locale_Format::toNumber($this->Item['price_to'],array('precision' => 0)) . ' - '.Zend_Locale_Format::toNumber($this->Item['price'],array('precision' => 0)) . ' ' . $units_money.'</span></p>';
+	}else{
+		$price = '<p class="d_price">'.$this->language['diadiemGia'].': <span class="value">'.$this->language['lienHe'].'</span></p>';
+	}
+	
+	$selloff = '';
+	if($this->Item['selloff'] > 0){
+		$selloff = '<p class="d_selloff">Giảm giá: <span>' . $this->Item['selloff'] . '%</span></p>';
+	}
+	
+	$vat = '';
+	if($moduleConfig['showVat'] == 1){
+		$vat = '<p class="showvat">('.$this->language['productVat' . $this->Item['vat']].')</p>';
+	}
+	
+	$baohanh_number = '';
+	if($moduleConfig['showBaoHanh'] == 1){
+		if($this->Item['baohanh_number'] > 0){
+			$baohanh_number = '<p class="baohanh"><span class="label">'.$this->language['productBaoHanh'].':</span> <b>'.$this->Item['baohanh_number'] . '</b> ' .$this->language[$this->Item['baohanh_date']].'</p>';
+		}
+	}
+	
+	$vanchuyen = '';
+	if($moduleConfig['showVanChuyen'] == 1){
+		if($this->Item['vanchuyen'] != ''){
+			$vanchuyen = '<p class="vanchuyen"><span class="label">'.$this->language['productVanChuyen'].':</span> '.$this->Item['vanchuyen'] .'</p>';
+		}
+	}
+	
+	$khuyenmai = '';
+	if($moduleConfig['showKhuyenMai'] == 1){
+		if($this->Item['khuyenmai'] != ''){
+			$khuyenmai = '<div class="khuyenmai"><p><span class="label">'.$this->language['diadiemKhuyenMai'].':</span></p><p>'.nl2br($this->Item['khuyenmai']) .'</p></div>';
+		}
+	}
+	
+	$tinhtrang = '';
+	if($moduleConfig['showTinhTrang'] == 1){
+		$tinhtrang = '<p class="tinhtrang"><span class="label">'.$this->language['diadiemTinhTrang'].': </span>'.$this->language['diadiemTinhTrang' . $this->Item['tinh_trang']].'</p>';
+	}
+	
+	if($moduleConfig['showSynopsis'] == 1){
+		if($this->Item['synopsis'] != ''){
+			$synopsis = '<div class="synopsis">'.nl2br($this->Item['synopsis']).'</div>';
+		}
+	}
+	
+	if($moduleConfig['showHuongDan'] == 1){
+		$huongdan = '<div class="huongdan"><a href="'.$this->baseUrl('huong-dan-mua-hang.html').'" title="'.$this->language['diadiemHuongDanDatCho'].'">'.$this->language['diadiemHuongDanDatCho'].'</a></div>';
+	}
+	
+	$addCart = '';
+	if($moduleConfig['showAddCart'] == 1){
+		$linkCart = $this->baseUrl('diadiem/public/add-item/id/' . $this->Item['id']);
+		$addCart = '<div class="addcart"><table height="30px"><tr><td><b>'.$this->language['diadiemSoLuong'].':</b> <input type="text" name="txtnum" style="width:40px;" value="1"></td><td class="pdl10"><a href="'.$linkCart.'" title="'.$this->language['diadiemDatCho'].'" rel="nofollow">'.$this->language['diadiemDatCho'].'</a></td><tr></table></div>';
+	}
+	$content = htmlspecialchars_decode($this->Item['content']);
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->cssUrl; ?>/gallery.css" />
+<script type="text/javascript" src="<?php echo $this->jsUrl; ?>/highslide-with-gallery.js"></script>
+<script type="text/javascript">
+	hs.graphicsDir = '<?php echo $this->imgUrl; ?>/graphics/';
+	hs.align = 'center';
+	hs.transitions = ['expand', 'crossfade'];
+	hs.outlineType = 'rounded-white';
+	hs.fadeInOut = true;
+	hs.numberPosition = 'caption';
+	hs.dimmingOpacity = 0.75;
+
+	// Add the controlbar
+	if (hs.addSlideshow) hs.addSlideshow({
+		//slideshowGroup: 'group1',
+		interval: 5000,
+		repeat: false,
+		useControls: true,
+		fixedControls: true,
+		overlayOptions: {
+			opacity: .75,
+			position: 'bottom center',
+			hideOnMouseOut: true
+		}
+	});
+</script>
+<div class="module_dia_diem">
+	<div class="module_title clearfix">
+		<span class="icon"></span> 
+		 <a class="title goc5" href="#" title="<?php echo $category_name;?>"><?php echo $category_name;?></a> 
+	</div>
+	<div class="module_content">
+		<div class="detail_image">
+			<div class="image">
+				<a id="thumb1" class="highslide viewanh" onclick="return hs.expand(this)" href="<?php echo $this->Item['picture']; ?>" title="<?php echo $name;?>">
+					<img alt="<?php echo $name;?>" src="<?php echo $picture;?>">
+				</a>
+			</div>
+			<?php
+				if($this->Item['picture_multi'] != ''){
+					$picture_multi = unserialize($this->Item['picture_multi']);
+			?>
+            <div class="clr"></div>
+            <div class="pdt10 clearfix">
+                <ul id="thumblist" class="clearfix" >
+                    <?php
+					foreach($picture_multi AS $key => $val){
+					?>
+                    <li>
+                        <a id="thumb1" class="highslide viewanh" onclick="return hs.expand(this)" href="<?php echo $val[0]; ?>" title="<?php echo $name;?>">
+                            <img src="<?php echo $val[0]; ?>" alt="<?php echo $name.$key; ?>">
+                        </a>
+                    </li>
+                    <?php
+					}
+					?>
+                </ul>
+            </div>
+            <?php
+				}
+			?>
+		</div>
+		<div class="detail_info">
+			<h1 class="title2"><?php echo $name;?></h1>
+			<?php echo $get_like_fb;?>
+			<?php echo $address;?>
+			<?php echo $mobile;?>
+			<?php echo $price;?>
+			<?php echo $selloff;?>
+			<?php echo $giomocua;?>
+			<?php /*?>
+			<?php echo '<p class="fb">'.$like.$comment.'</p>';?>
+			<?php */?>
+			<?php //echo $vat;?>
+			<?php //echo $code;?>
+			<?php //echo $baohanh_number;?>
+			<?php //echo $vanchuyen;?>
+			<?php //echo $tinhtrang;?>
+			<?php //echo $addCart;?>
+			<?php //echo $khuyenmai;?>
+			<h2><?php echo $synopsis;?></h2>
+			<?php //echo $huongdan;?>
+			<?php
+			if($moduleConfig['showMxh'] == 1){
+				echo $this->blkMxh();
+			} 
+            ?>
+		</div>
+		<div class="clr"></div>
+		<div class="diadiem_content">
+			
+			 	<script>
+				$(function() {
+				$( "#tabs" ).tabs();
+				});
+				</script>
+				<div id="tabs" class="tabs_diadiem">
+				<ul>
+				<li class="tabs-gioithieu"><a href="#tabs-1">Giới thiệu quán</a></li>
+				<li class="tabs-bando"><a href="#tabs-2">Bản đồ</a></li>
+				</ul>
+				<div id="tabs-1">
+					  <?php echo $content;?>
+				</div>
+				
+				<div id="tabs-2">
+				
+					 <?php 
+					 //echo '<p style="color:#7E1D0C;font-weight:bold;">Địa chỉ : '.$address2.'<br/></p>';
+					 ?>
+					 <div id="fb-root"></div>
+						<script>(function(d, s, id) {
+						  var js, fjs = d.getElementsByTagName(s)[0];
+						  if (d.getElementById(id)) return;
+						  js = d.createElement(s); js.id = id;
+						  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
+						  fjs.parentNode.insertBefore(js, fjs);
+						}(document, 'script', 'facebook-jssdk'));</script>
+						
+						<div class="fb-like-box" data-href="https://www.facebook.com/diadiemHN" data-colorscheme="light" data-show-faces="false" data-header="false" data-stream="false" data-show-border="false"></div>
+					 <p><?php echo $address2; ?> Vui lòng click vào viewgooglemap để xem bản đồ chính xác nhất</p>
+					 <?php 
+					// echo '<iframe width="650" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=vi&amp;q='.$address2.' hà nôi Viet nam&amp;hnear='.$address2.' hà nôi Viet nam&amp;t=m&amp;z=14&amp;output=embed"></iframe>';
+					 echo '<iframe width="650" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=vi&amp;geocode=&amp;q='.$address2.'&amp;aq=&amp;ie=UTF8&amp;hq=&amp;hnear='.$address2.'&amp;t=m&amp;z=14&amp;output=embed"></iframe>';
+					 ?>
+					 
+				</div>
+				
+				</div> 
+			<?php 
+				if($this->moduleConfig['showTags'] == 1){
+					if($this->Item ['tags'] != ''){
+						$tags = explode(',', $this->Item ['tags']);
+						echo '<div class="tags">Tags: ';
+						foreach ($tags AS $key => $val){
+							$keyword = @trim($val);
+							if($key == 0){
+								echo '<span><a href="'.$this->baseUrl($this->arrParam['module'] . '/public/tags/key/' . $keyword).'" title="' . $keyword . '">' . $keyword . '</a></span>';
+							}else{
+								echo '<span>, <a href="'.$this->baseUrl($this->arrParam['module'] . '/public/tags/key/' . $keyword).'" title="' . $keyword . '">' . $keyword . '</a></span>';
+							}
+						} 
+						echo '</div>';
+					}
+				}
+			?>
+			
+		</div>
+	</div>
+	<div class="module_bottom"></div>
+</div>
+<div class="module_dia_diem module_binhluan">
+	<div class="module_title clearfix">
+		<span class="icon"></span> 
+		<h3 class="title">Bình Luận</h3>
+	</div>
+				<div class="module_content category_dia_diem">
+					 <?php
+							if($this->moduleConfig['showComment'] == 1){
+								if($this->moduleConfig['typeComment'] == 'facebook'){
+									echo $this->blkComment('facebook',array('url' => $linkDetial));
+								}else{
+									echo $this->blkComment('default',array('c_module' => $this->arrParam['module'], 'c_id' => $this->arrParam['id']));
+								}
+							}
+						?>
+				</div>
+	</div>
+<?php
+	if(count($this->itemKhac)>0){ 
+		$urlOptionsCategory = array('module'=>'diadiem','controller'=>'index','action'=>'category',
+				'cid'=>$this->arrParam['cid'],
+				'alias'=>$this->arrParam['tcat'],
+		);
+		$linkCategory = $this->url($urlOptionsCategory,'diadiem-category');
+?>
+<div class="module_dia_diem module_dia_diem_khac">
+	<div class="module_title clearfix">
+		<span class="icon"></span> 
+		<h3 class="title">Các địa điểm khác</h3>
+	</div>
+	<div class="module_content category_dia_diem">
+		<ul class="dia_diem_an_choi clearfix">
+		<?php
+			foreach ($this->itemKhac as $key => $val){
+				$name = $val['name'];
+				$cat_name = '<p class="d_cat_name">'.$val['category_name'].'</p>';
+				
+				$code = '';
+				if($val['code'] != ''){
+					$code = '<p class="code">'.$this->language['productMaSanPham'].': ' . $val['code'] . '</p>';
+				}
+				$picture = '<img class="img" src="' . $val['picture'] . '" alt="'.$val['name'].'"/>';
+					
+				$synopsis = nl2br($val['synopsis']);
+				$open = $val['open'];
+				$close = $val['close'];
+				$giomocua = '<p class="d_giomocua">Giờ mở cửa: <span>'.$open.'-'.$close.'giờ hàng ngày.</span></p>';
+				$comment = '<span class="comment_fb">'.$val['comment_fb'].'</span>';
+				$like = '<span class="like_fb">'.$val['like_fb'].'</span>';
+				$address = '<p class="d_address">Địa chỉ: <span>'.$val['address'].', '.$val['quanhuyen_name'].'</span></p>';
+				$mobile = '<p class="d_mobile">Điện thoại: <span>'.$val['mobile'].'<span></p>';
+				$price_to = $val['price_to'];
+				$units_money = $val['units_money'];
+				//$quanhuyen_name =$val['quanhuyen_name'];
+				$price = '';
+				if($val['price'] != 0){
+					$price = '<p class="price">'.$this->language['diadiemGia'].': <span class="value">'.Zend_Locale_Format::toNumber($val['price_to'],array('precision' => 0)) . ' - '.Zend_Locale_Format::toNumber($val['price'],array('precision' => 0)) . ' ' . $units_money.'</span></p>';
+				}else{
+					$price = '<p class="price">'.$this->language['diadiemGia'].': <span class="value">'.$this->language['lienHe'].'</span></p>';
+				}
+				
+				$selloff = '';
+				if($val['selloff'] > 0){
+					$selloff = '<p class="d_selloff">Giảm giá: <span>' . $val['selloff'] . '%</span></p>';
+				}
+				
+				$addCart = '';
+				if($moduleConfig['showAddCart'] == 1){
+					$linkCart = $this->baseUrl('diadiem/public/add-item/id/' . $val['id']);
+					$addCart = '<a href="'.$linkCart.'" title="'.$this->language['diadiemDatCho'].' '.$name.'" class="addCart" rel="nofollow">'.$this->language['diadiemDatCho'].'</a>';
+				}
+				
+				$urlOptions = array (
+						'module' => 'diadiem',
+						'controller' => 'index',
+						'action' => 'detail',
+						'tcat' => $val ['category_alias'],
+						'title' => $val ['alias'],
+						'cid' => $val ['cat_id'],
+						'id' => $val ['id'] );
+				$linkDetial = $this->url( $urlOptions, 'diadiem-detail' );
+				
+				//$tooltip = '<div class=tooltid_title>'.$name.'</div><div class=tooltip_content><img class=img src=' . $val['picture'] . ' alt='.$val['name'].'/></div>';
+				$row='';
+				$class='';
+				if($key%2==0) $row='old';
+				if($key==0)$class='start';
+				?>
+				<li class="item <?php echo $row.' '.$class;?>">
+					<div class="dd_content">
+						<div class="d_images fleft">
+							<a href="<?php echo $linkDetial;?>" title="<?php echo $name;?>"  >
+								<?php echo $picture;?>
+							</a>
+							<?php //echo $cat_name;?>
+						</div>
+						<div class="d_intro fleft">
+							<a href="<?php echo $linkDetial;?>" title="<?php echo $name;?>"><h4 class="d_title"><?php echo $name;?></h4></a>
+							<?php echo $address; ?>
+							<?php echo $mobile; ?> 
+							<div class="d_price">
+								<?php echo $price;?>
+							</div>
+							<?php echo $selloff;?>
+							<?php echo $giomocua; ?>
+							<?php echo '<p class="fb">'.$like.$comment.'</p>'; ?> 
+							<?php /* ?>
+							<p class="d_detail">
+								<?php //echo $addCart;?>
+								<a href="<?php echo $linkDetial;?>" title="<?php echo $name;?>" class="detail"><?php echo $this->language['chiTiet'];?></a>
+							</p>
+							
+							<?php */ ?>
+							</div>
+					</div>
+				</li>
+			<?php
+				} 
+			?>			
+		</ul>
+	</div>
+	<div class="module_bottom"></div>
+</div>
+
+
+
+
+<?php
+	} 
+?>
+
+<script>
+	$(document).ready(function(){
+		i=0;
+		//alert('cc');
+			var url=document.URL;
+		 
+			$('.get_like_fb', this).each(function(item){
+				var valueId 	= $(this).attr('id');
+				var valueValue 	= $(this).attr('val');
+				var valueLink 	= $(this).attr('link');
+				var valueData 	= $(this).attr('data');
+				var valueTyper 	= $(this).attr('typer');
+				var valueField 	= $(this).attr('field');  
+				var urlAjax 	= base_url + '/default/ajax/getlike';
+				$.ajax({
+					type: "POST",
+					url: urlAjax,
+					data: {
+						id:				valueId,
+						val:			valueValue,
+						link:			valueLink,
+						data:			valueData,
+						typer: 			valueTyper,
+						field:	 		valueField
+					},
+					success: function(html){ 
+					}
+				});
+				 
+			});
+		  
+	});
+
+	</script>

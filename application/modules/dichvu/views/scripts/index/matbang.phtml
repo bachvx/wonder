@@ -1,0 +1,53 @@
+<?php
+    $siteConfig = Zend_Registry::get('siteConfig');
+    $language = new Zend_Session_Namespace('language');
+    if($language->lang=='vi'){
+        $tieude=$this->Tongquan['mota'];
+        $mota=$this->Tongquan['content'];
+    }else{
+        $tieude=$this->Tongquan['mota']; 
+        $mota=$this->Tongquan['content_en'];  
+    } 
+    if($siteConfig['config_site']['offImage']==1){ 
+        $banner= $siteConfig['config_site']['imgads'];
+        $banner_mobile= $siteConfig['config_site']['imgads'];
+    }else{
+        $banner= $this->Tongquan['picture'];
+        $banner_mobile= $this->Tongquan['picture_mobile']; 
+    }
+?>
+<div class="b__banner">  
+  <p class="b__banner--title"><?php echo $this->language['wonderSlogan']; ?></p> 
+ 
+  <div class="b-items">    
+    <img class="img_pc" src="<?php echo $banner; ?>" width="100%">
+    <img class="img_mb" src="<?php echo $banner_mobile; ?>" width="100%">
+  </div> 
+</div> 
+	
+<div class="b__tongquan b__matbang">
+  <div class="containers">
+    <div class="b__matbang--ls">
+      <h3 class="b__tongquan--title"><?php echo $tieude; ?></h3>
+      <p><?php echo htmlspecialchars_decode($mota); ?></p> 
+    </div><!-- end .b__tongquan--ls--> 
+    <div class="b__images">
+      <img src="<?php echo $this->Tongquan['picture_vitri']; ?>" width="100%" />
+     
+      <ul>
+         <?php 
+         foreach ($this->Items as $key => $val ) {
+            $language->lang=='vi' ? $name=$val['name'] : $name=$val['name_en'];
+        	$urlOptions = array ('module' => 'dichvu', 'controller' => 'index', 'action' => 'pagethuonghieu', 'alias' => $val ['alias'], 'id' => $val ['id'] );
+            $linkDetial = $this->url ( $urlOptions, 'phankhu-page' );
+          ?>
+        <li>
+          <a href="<?php echo $linkDetial; ?>"><?php echo $this->language['wonderphankhu']; ?><br/> <?php echo $name; ?></a>
+        </li>
+        <?php
+            }
+        ?>
+      </ul>
+    </div> 
+  </div> 
+</div>

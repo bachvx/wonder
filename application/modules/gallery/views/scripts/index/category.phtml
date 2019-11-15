@@ -1,0 +1,101 @@
+<?php
+    $siteConfig = Zend_Registry::get('siteConfig');
+    if($siteConfig['config_site']['offImage']==1){
+        $baner='<div class="b__banner b__banner--sukien">  
+                  <img style="width: 100%;" src="'.$siteConfig['config_site']['imgads'].'" />
+                </div>';
+        echo $baner;
+    }else{
+        $picture_multi = unserialize($this->ItemsBanner['picture_multi']);
+        $picture_multi_mobile = unserialize($this->ItemsBanner['picture_multi_mobile']);
+        
+    	foreach ($picture_multi AS $key => $val){
+    	   $slide_banner.= '<div class="b-items"><img class="img_pc" src="'.$val[0].'" alt="'.$val_category['name'].'"  width="100%"></div>';
+        }
+        foreach($picture_multi_mobile AS $key => $val){
+            $slide_banner_mobile.='<div class="b-items"><img class="img_mb" src="'.$val[0].'" alt="'.$val_category['name'].'"  width="100%"></div>';
+        }
+        ?>
+            <div class="b__banner b__banner--gallery"> 
+                <div id="slideBanner" class="b__banner--slide owl-carousel">
+                    <?php echo $slide_banner; ?>
+                </div>
+                <div id="slideBannerMobile" class="b__banner--slide owl-carousel">
+                    <?php echo $slide_banner_mobile; ?>
+                </div>
+            </div> 
+        <?php  
+    }
+   
+	
+?>
+<div class="b__content--sukien b__content--gallery"> 
+  <div class="b__title--sukien b__title--gallery"> 
+    <div class="containers">
+      <h3><?php echo $this->language['wonderHinhanhVideo']; ?></h3>
+    </div>
+  </div>
+  <div class="b__sukien--caption">  
+      <p><?php echo $this->language['wonderHinhanh']; ?></p>  
+  </div>
+</div><!-- end .b__content-sukien--> 
+<div class="b__gallery b__gallery--gr">
+  <div class="containers">
+    <div class="b__gallery--info">
+<?php
+    foreach ($this->ItemsImage AS $key => $val){
+        $urlOptionsCategory = array('module'=>'gallery','controller'=>'index','action'=>'detail',
+        						'id'=>$val['id'],
+        						'alias'=>$val['alias'],
+        				);
+        				$currentUrl = $this->url($urlOptionsCategory,'gallery-detail');
+?>
+        <div class="b__gallery--ls">
+        <a href="<?php echo $currentUrl; ?>">
+          <img src="<?php echo $val['picture']; ?>" />
+          <div class="b__gallery--description">
+            <p><?php echo $val['name']; ?></p>
+          </div>
+        </a>
+      </div>	
+        
+<?php
+    } 
+?>
+        </div><!--close b__gallery--info -->
+    </div><!--close containers -->
+    <div class="b__load text-center"> 
+    <a href="#"><i class="fas fa-angle-down"></i></a>
+  </div>
+</div><!--close b__gallery -->
+
+<div class="b__video"> 
+  <div class="b__sukien--caption">  
+      <p><?php echo $this->language['wonderVideo']; ?> </p>  
+  </div> 
+  <div class="containers">
+    <div class="b__video--info">
+        <p><?php echo $this->language['wonderGioithieuVideo']; ?></p>
+        <?php
+            foreach ($this->ItemsVideo AS $key => $val){
+            	if($val['module']=='default'){
+            	   $noidung.='<a href="#"><img src="'.$val['picture'].'" /></a>';
+            	}else{
+            	   $slide.='<div class="b-items">
+                              <a href="#"><img src="'.$val['picture'].'" /></a>
+                            </div>';
+            	}
+                
+        
+            } 
+        ?>  
+                <div class="b__video--gallery b__video--ls ">
+                    <?php echo  $noidung; ?>
+                </div>
+                <div id="videoSlide" class="owl-carousel">
+                    <?php echo  $slide; ?>
+                </div>
+            </div><!--close b__video--info-->
+        </div><!--close containers-->
+    </div><!--close b__video-->
+

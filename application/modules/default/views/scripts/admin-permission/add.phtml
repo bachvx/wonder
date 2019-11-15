@@ -1,0 +1,108 @@
+<?php
+	//----------------------- INPUT ELEMENTS -------------------//
+	$name 			= $this->formText ( 'name', $this->Item['name'], array ('class' => 'txtmedium') );
+	
+	$quyen_data		= array();
+	if(count($this->Items) > 0){
+		foreach ($this->Items AS $key => $val){
+			$quyen_data[] = $val['module'] . '_' . $val['controller'] . '_' . $val['action'];
+		}
+	}
+	
+	$module			= $this->formText ( 'p_module', $this->Item['p_module'], array ('class' => 'txtmedium') );
+	$controller		= $this->formText ( 'p_controller', $this->Item['p_controller'], array ('class' => 'txtmedium') );
+	$action			= $this->formText ( 'p_action', $this->Item['p_action'], array ('class' => 'txtmedium') );
+	
+	
+	$arrInput = array(
+				//array('label' => 'Chọn ngôn ngữ','input' => $selectLanguages),
+				array('label' => 'Tiêu đề','input' => $name),
+				array('label' => 'Module','input' => $module),
+				array('label' => 'Controller','input' => $controller),
+				array('label' => 'Action','input' => $action),
+			);
+	
+	//-------------------- SESSAGES ERROR ------------------
+	if(count($this->messageError)>0){
+		$errors = $this->formErrors($this->messageError,array('id'=>'errors'));
+	}
+?>
+<form name="appForm" method="post" action="" enctype="multipart/form-data">
+	<?php echo $this->render($this->arrParam['controller'] . '/toolbar/index.php');?>
+ 	<div class="clr"></div>
+	<?php echo $this->render($this->arrParam['controller'] . '/sublink/index.php');?>
+	<?php echo $errors;?>
+
+	<!-- BEGIN: CONTENT -->
+	<div class="app_content goc10">
+		<fieldset class="adminform">
+			<legend>Chi tiết</legend>
+			<table class="adminformlist" style="width: auto;">
+			<?php
+				$filter 		= new Zendvn_GetSystem();
+				$module 		= $filter->getAll();
+				$quyen			= array();
+				$i				 = 0;
+				foreach ($module AS $key_module => $val_module){
+					foreach ($val_module AS $key_controller => $val_controller){
+						$controller = explode('-', $key_controller);
+						if($controller[0] == 'admin'){
+							foreach ($val_controller AS $key_action => $val_action){
+								$item		= $key_module . '_' . $key_controller . '_' . $val_action;
+								$quyen[] 	= $item;
+								if(!in_array($item, $quyen_data)){
+									$i++;
+				?>
+					<tr id="tr<?php echo $i;?>">
+						<td class="label" style="width: 120px; text-align: right;"><?php echo $i;?>) Tiêu đề <span class="red">*</span></td>
+						<td>
+							<input type="text" class="txtmedium" id="name_<?php echo $i;?>" name="name[]">
+							<span id="module_<?php echo $i;?>"><?php echo $key_module;?></span>
+							<span>_</span>
+							<span id="controller_<?php echo $i;?>"><?php echo $key_controller;?></span>
+							<span>_</span>
+							<span id="action_<?php echo $i;?>"><?php echo $val_action;?></span>
+						</td>
+						<td id="load<?php echo $i;?>">
+							<a href="javascript:void(0)" style="display: block;" onclick="saveItem('<?php echo $i;?>')"><img src="<?php echo $this->imgUrl . '/system/icon-32-save.png'?>"></a>
+						</td>
+					</tr>
+				<?php
+								}
+							}
+						}
+					}
+				}
+			?>
+			</table>
+			<script type="text/javascript">
+				function saveItem(id){
+					if($('#name_' + id).val() == ''){
+						alert('Bạn chưa nhập tiêu đề');
+						$('#name_' + id) .focus();
+					}else{
+						$.ajax({
+							url: '<?php echo $this->baseUrl('default/ajax/save-permission');?>',
+							type: 'POST',
+							dataType: 'html',
+							data: { 
+								name		: $('#name_' + id).val(), 
+								p_module	: $('#module_' + id).text(), 
+								p_controller: $('#controller_' + id).text(), 
+								p_action	: $('#action_' + id).text() 
+							},
+							beforeSend: function(){
+								$('#load' + id).html('');
+								$('#load' + id).addClass('dangtai');
+						 	},
+						 	success: function(html){
+						 		$('#tr' + id).fadeOut(1000);
+							}
+						});
+					}
+				}
+			</script>
+		</fieldset>
+	</div>
+	<!-- END: 	CONTENT -->
+</form>

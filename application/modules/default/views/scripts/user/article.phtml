@@ -1,0 +1,111 @@
+<?php 
+$save=$_GET['save'];
+if (!empty($save)) $save='<div class="listError" style="display:block">Cập bài viết của bạn đã được cập nhật</div>';
+$delete=$_GET['delete'];
+if(!empty($delete)) $delete ='<div class="listError" style="display:block">Bài viết của bạn đã được xóa</div>';
+?>
+
+<div class="block_thongTinTaiKhoan">
+	<div class="block_title"><?php echo $this->Title;?></div>
+	<div class="block_content">
+		 <?php 
+		 	echo $save;
+			echo $delete;
+			?>
+			<div class="item">
+				<div class="item_content">
+					
+					<table style="width: 100%">
+						 <tr>
+							<th width="20">STT</th>
+							 <?php /*?>
+							<th width="52">Image</th>
+							<?php */ ?>
+							<th> Tiêu đề  </th>
+							<th width="100"> Danh mục </th>
+							<th width="100"> Status  </th>
+							<th width="77"> Lượt xem  </th>
+							<th width="70">Control</th>
+						</tr>
+						
+						<?php
+							foreach ($this->Items as $key => $val){
+								$id 			= $val['id'];
+								$name 			= $val['name'];
+								$units_name 	= $val['units_name'];
+								$category_name 	= $val['category_name'];
+								$hits			= $val['hits'];
+								$lang_code		= $val['lang_code'];
+								$cat_id			= $val['cat_id'];
+								$picture = '<img src="' . $val['thumb'] . '" style="width:50px;">';
+								$selloff = '';
+								if($val['selloff'] > 0){
+									$selloff = ' - Giảm: <span style="color: #0fa400; font-weight: bold;">' . $val['selloff'] . '%</span>';
+								}
+									
+								$units_money = $val['units_money'];
+								$price = '';
+								if($val['price'] != 0){
+									$price = '<p class="smallsub">Giá: <span class="red">' . Zend_Locale_Format::toNumber($val['price'],array('precision' => 0)) . ' ' . $units_money . '</span>'.$selloff.'</p>';
+								}
+									
+								$status 		= $val['status'];
+								if($status == 1){
+									$status = 'Đã được duyệt';
+								}elseif ($status == -2){
+									$status ='Đã bị admin xóa';
+								}else{
+									$status =  'Đang chờ duyệt';
+								}
+									
+								$linkEdit		= $this->baseUrl('edit-article.html?id=' . $id );
+								//$linkEdit		= $this->baseUrl($this->currentController . '/edit/id/' . $id . $page);
+								$btnEdit		= '<a href="'.$linkEdit.'">Sửa</a>';
+									
+								$linkDelete		= $this->baseUrl('delete-article.html?id=' . $id );
+								//$linkDelete		= $this->baseUrl($this->currentController . '/delete/id/' . $id );
+								$btnDelete		= '<a href="'.$linkDelete.'">Xóa</a>';
+									
+								$strIconButton 	= $btnEdit . ' | ' . $btnDelete;
+								
+								//$alias 			= '<p class="smallsub">(Alias: ' . $val['alias'] . ')</p>';
+								$name 			= '<b><a href="' . $linkEdit . '" style="color:#707070">' . $name . '</a></b>';//$price
+									
+								 	
+								$classRow = 'row1';
+								if($key % 2 == 0)
+									$classRow = 'row0';
+							?>
+						<tr class="<?php echo $classRow;?>">
+							<td align="center" class="id"><?php echo $key + 1;?></td>   
+							<?php /* ?>
+							<td align="center" class="picture"><?php echo $picture;?></td>
+							<? */ ?>
+							<td align="left" class="name"><?php echo $name;?></td>
+							<td align="center" class="category_name"><?php echo $category_name;?></td>
+							<td align="center" class="status"><?php echo $status;?></td>
+							<td align="center" class="hits"><?php echo $hits;?></td>
+							<td align="center" class="controller"><?php echo $strIconButton;?></td> 
+						</tr>
+						<?php
+							} 
+						?>
+					
+					
+					</table>
+					<div class="container">
+						<div class="pagination">
+							<?php
+								//$currentUrl = $this->baseUrl($this->currentController . '/article');
+								$currentUrl = $this->baseUrl('member-article.html');
+								echo $this->paginationControl($this->paginator,'Sliding','pagination-article.phtml',array('currentUrl'=>$currentUrl)); 
+							?>
+							<div class="limit"></div>
+						</div>
+					</div>
+					
+				</div>
+			</div> 
+			<div class="clr"></div>
+	</div>
+</div>

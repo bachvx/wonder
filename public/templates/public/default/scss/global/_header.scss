@@ -1,0 +1,178 @@
+   
+.b-header{  
+  position: absolute;
+  top: 0;
+  width: 100%; 
+  background: rgba(134, 117, 77, .6); 
+  z-index: 1111;   
+  .b-header__menu { 
+    .navbar {
+      padding: 0;
+      img {
+        height: 40px;
+      }
+    } 
+    .b-header__menu-navbar {
+      >ul {
+        >li { 
+          position: relative;
+          margin-bottom: 0; 
+          &:hover {
+            ul {
+              display: block;
+            }
+          }
+          ul {
+            padding: 10px;
+            margin: 0;
+            background-image: linear-gradient(to bottom, #d6c37f, #a59561); 
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 220px;
+            display: none; 
+            li {
+              list-style: none;
+              padding: 7px 0;
+              a {
+                color: $color-white;
+              }
+              &:hover {
+                a {
+                  text-decoration: none;
+                }
+              }
+            }
+          }
+          &:hover {
+            .dropdown_menus {
+              display: block;
+            }
+          }
+          &.active > a,
+          &:hover > a {
+            color: #d6c37f;
+          } 
+          >a {
+            color: $color-white;
+            text-transform: uppercase;  
+            padding: 24px 0 24px 15px;
+            .icon_click {
+              display: none;
+            }
+          } 
+        }
+      }
+    } 
+  }
+}  
+.nav-item__mb {
+  display: none;
+} 
+
+@media (max-width: $screen-xxs-max){
+  .nav-item__mb {
+    display: block;
+  } 
+  .nav-item__pc {
+    display: none;
+  }
+  .containers {
+    padding: 0 15px;
+  } 
+  .b-header {
+    // position: static; 
+    padding: 20px 0;
+    background: transparent;
+    .containers {
+      padding: 0;
+    } 
+    .navbar {
+      justify-content: center;
+      .navbar-toggler {
+        position: absolute;
+        left: 15px;
+      }
+    }
+    .b-header__menu {  
+      .b-header__menu-navbar {
+        >ul {
+          >li {
+            border-bottom: 1px solid #333;
+            &:last-child {
+              border-bottom: none;
+            }
+            >a {
+              padding: 15px 0;
+              color: #333;
+              display: block;
+              text-transform: none;
+              font-size: 18px;
+              display: flex;
+              // display: flex;
+              // align-items: center;
+              span {
+                float: right;
+              }
+              .icon_click {
+                display: block;
+                margin-left: auto;
+                // display: inline-block;
+                // float: right;
+                // cursor: pointer;
+                &.fa-chevron-up {
+                  display: none;
+                }
+              }
+            }
+            ul {
+              position: static;
+              background: transparent;
+              padding: 0;
+              li {
+                a {
+                  color: #333;
+                }
+              }
+            }
+          }
+        }
+      }  
+      .navbar { 
+        // display: block;
+        .b-header__menu-navbar {
+          background: #fff;
+          padding: 10px 15px;
+          box-shadow: 3px 3px 3px #ddd;
+          position: absolute;
+          top: 50px;
+          width: 100%;
+        }
+        .navbar-toggler {
+          border: none;
+          padding: 0;
+          margin-right: 15px;
+        }  
+        .navbar-toggler-icon {
+          // background-image: url('../upload/');
+        }
+        // .navbar-brand {
+        //   position: absolute;
+        //   left: 50%;
+        //   transform: translateX(-50%);
+        // }
+        .navbar-brand {
+          padding: 0;
+          margin-left: 15px;
+          img {
+            height: 36px;
+          }
+        }
+        
+      }
+    } 
+  }
+}
+@media (min-width: $screen-xs-min){}
+@media (min-width: $screen-md-min){}
+@media (min-width: $screen-lg-min){} 

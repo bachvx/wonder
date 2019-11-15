@@ -1,0 +1,17 @@
+<?php echo $this->render('html/header.php');?>
+
+
+<body>
+<?php echo $this->blkMenuTinh();?>
+<div id="wrapper">
+<div id="main">
+    <div class="container">
+        <?php echo $this->blkTimkiem();?>
+  				<?php echo $this->layout()->content;?>
+
+	</div>
+		</div>
+</div> <!-- wrapper -->
+<!-- Footer -->
+<?php echo $this->blkFooterNew(); ?>   			
+<?php echo $this->render('html/footer.php');?>

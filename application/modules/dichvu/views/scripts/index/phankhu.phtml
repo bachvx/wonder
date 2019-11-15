@@ -1,0 +1,250 @@
+<?php
+    //Tổng quan phân khu lấy từ bảng manu_diadiem
+    $language = new Zend_Session_Namespace('language');
+    $siteConfig = Zend_Registry::get('siteConfig');
+    $id_phankhu=$this->Thamso['id'];
+    foreach ($this->ItemsPhankhu as $key => $val ) {
+        
+        $urlOptions = array ('module' => 'dichvu', 'controller' => 'index', 'action' => 'phankhu', 'alias' => $val ['alias'], 'id' => $val ['id'] );	
+        $linkDetial = $this->url( $urlOptions, 'phankhu-page' );
+        if($id_phankhu==$val['id']){
+            if($siteConfig['config_site']['offImage']==1){
+                $banner='<img src="'.$siteConfig['config_site']['imgads'].'" width="100%" />';
+            }else{
+                $banner='<img class="img_pc" src="'.$val['picture_banner'].'" width="100%" />
+                        <img class="img_mb" src="'.$val['picture_banner_mobile'].'" width="100%" />';
+                
+            }
+            $name  = $val['name'];
+            $html = array("<strong>","</strong>");
+            $html1   = array("", "");
+            $name = str_replace($html, $html1, $name);
+            $gioithieu='<h3>'.$this->language['wonderphankhuGioithieu'].' <br/> <span class="text-uppercase">'.$name.' </span></h3>';
+            $gioithieutongquat=$val['synopsis'];
+            $image_vitri='<div class="b__images">
+                            <img src="'.$val['picture_vitri'].'" width="100%" />
+                          </div><!--end .b__images-->';
+            $gioithieu_vitri=$val['gioithieu_vitri'];
+            $danhmucphankhu.='<li class="active"><a href="'.$linkDetial.'">'.$this->language['wonderphankhu'].' <br/> '.$val['name'].'</a></li>';
+            
+            //var_dump($val);die;
+            
+        
+     }else{
+        $danhmucphankhu.='<li><a href="'.$linkDetial.'">'.$this->language['wonderphankhu'].' <br/> '.$val['name'].'</a></li>';
+     }
+    
+    }
+?>   
+<div class="b__banner b__banner--height">  
+  <?php echo $banner; ?>
+  <div class="b__menu--click">  
+    <div class="containers">
+      <ul>
+         <?php echo $danhmucphankhu; ?>
+      </ul>  
+    </div>
+  </div>
+</div>                
+<div class="b__pk--wapper pdb50">
+  <div class="b__pk--top pdb50">
+    <div class="containers">
+      <?php echo $gioithieu; ?>
+      <?php echo $gioithieutongquat; ?>
+    </div>
+  </div><!-- end .b__pk--top--> 
+  <div class="b__pk--vitri">
+    <div class="containers">
+      <h3>Vị trí phân khu</h3>
+        <?php echo $image_vitri; ?>
+      <p><?php echo $gioithieu_vitri; ?></p>
+    </div>
+  </div> 
+</div>   
+ <?php
+   
+    //Sản phâm hiển thị trên phân khu theo các loại id riêng;
+    foreach ($this->ItemsSanpham as $key => $val ) {
+        
+        $urlOptions = array ('module' => 'product', 'controller' => 'index', 'action' => 'detail', 'title' => $val ['alias'], 'id' => $val ['id'] );	
+        $linkDetial = $this->url( $urlOptions, 'diadiem-detail' );
+        //var_dump($this->ItemsSanpham);die;
+        
+        if($val['album'] != ''){
+         if($language->lang=='vi'){
+            $synopsis_library_image=htmlspecialchars_decode($val['content_pr']);
+        }else{
+            $synopsis_library_image=htmlspecialchars_decode($val['content_pr_en']);
+        }      
+		$picture_multi = unserialize($val['album']);
+        if($val['id']==1 || $val['id']==2 || $val['id']==5){
+            $sp2='';
+            if($val['id']<>5){
+                $title='<h3>'.$this->language['wonderSanpham'].$val['name'].'<br/> '.$this->language['wonderUuvietLinhhoat'].'</h3>';
+            }else{
+               
+                $title='<h3>'.$val['name'].'</h3>';
+            }
+            foreach($picture_multi AS $key1 => $val1){
+               
+                if($key1==0){
+                    $sp1='<div class="b__conference--box">
+                              <img src="'.$val1[0].'" />
+                              <div class="b__conference--caption">
+                                <p>'.$synopsis_library_image.' </p>
+                              </div>
+                            </div><!-- end .b__conference--box-->';
+                }else{
+                    $sp2.='<img class="b__conference--img" src="'.$val1[0].'" />';
+                }
+                
+            }
+                $sp_image=$sp1.'<div class="b__conference--boxs">'.$sp2.'</div>';
+                echo'<div class="b__center--conference">
+                        <div class="containers">
+                        '.$title.$sp_image.'
+                        </div>
+                        </div><!-- end .b__pk--prd-->';
+            
+        }elseif($val['id']==3){ 
+            $title='<h3>'.$this->language['wonderSanpham'].$val['name'].'<br/> '.$this->language['wonderXinhdepCatinh'].'</h3>';
+            foreach($picture_multi AS $key1 => $val1){
+                if($key1==0){
+                    $sp1='<div class="flex-column flex-column__left">
+                      <img src="'.$val1[0].'" width="100%">
+                    </div>';
+                }elseif($key1==1){
+                    $sp2='<div class="flex-column flex-column__right">
+                      <div class="flex-column__top">
+                        <img src="'.$val1[0].'" width="100%">
+                      </div>
+                      <div class="flex-column__bottom">
+                        <div class="b__prd--text">
+                          <p>'.$synopsis_library_image.' </p>
+                        </div>
+                      </div>
+                    </div>';
+                }
+            }
+            $sp_image='<div class="b__box--images stretch pdb50">'.$sp1.$sp2.'</div> ';
+            echo '<div class="b__pk--prd pd50">
+                    <div class="containers">
+                    '.$title.'
+                        <div class="b__box--images stretch pdb50">
+                        '.$sp_image.'
+                        </div>
+                    </div>
+                    </div>';
+        }else{
+            
+            $title='<h3><a href="'.$linkDetial.'">'.$val['name'].'</a></h3>';
+             foreach($picture_multi AS $key1 => $val1){
+                if($key1==0){
+                  $sp1='<div class="b__pk--left card"> 
+                            <img src="'.$val1[0].'" class="card-img-top" alt="..." />
+                            <div class="card-body aaaaa">
+                              <div class="d-flex">
+                                <div class="card-body__left">
+                                  <h5 class="card-title">'.$val['name'].'</h5>
+                                  <p class="card-text">'.$synopsis_library_image.' </p>
+                                </div>
+                                <div class="card-body__right ml-auto">
+                                  <a href="'.$linkDetial.'" class="btn btn-primary btn-view">'.$this->language['xemthem'].' </a>
+                                </div>
+                              </div>
+                            </div> 
+                          </div>';  
+                }else{
+                    $sp1.='<div class="b__pk--right card"> 
+                                <img src="'.$val1[0].'" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <div class="d-flex">
+                                    <div class="card-body__left">
+                                      <h5 class="card-title">'.$val['name'].'</h5>
+                                      <p class="card-text">'.$synopsis_library_image.' </p>
+                                    </div>
+                                    <div class="card-body__right ml-auto">
+                                      <a href="'.$linkDetial.'" class="btn btn-primary btn-view">'.$this->language['xemthem'].'</a>
+                                    </div>
+                                  </div> 
+                                </div> 
+                              </div>';
+                }
+                
+            }
+            //$sp_image='<div id="resortSlider" class="b__pk--row owl-carousel">'.$sp1.'</div>';
+            echo '<div class="b__pk--resort">
+                    <div class="containers">
+                    '.$title.'
+                    <div id="resortSlider" class="b__pk--row owl-carousel">
+                           '.$sp1.' 
+                    </div>
+                    </div>
+                    </div>';
+        }
+        
+    }
+    }
+     //Tiện ích phân khu theo các tiêu chí riêng;
+     //var_dump($id_phankhu);die;
+     
+     $urlOptions = array ('module' => 'product', 'controller' => 'index', 'action' => 'tienich', 'alias' => $this->Thamso['alias'], 'id' => $id_phankhu );	
+     $linkDetial = $this->url($urlOptions, 'tienich-detail' );
+     if($id_phankhu==1){
+        $tieude=$this->language['wonderTienichMonaco'];
+     }else{
+        $tieude=$this->language['wonderTienich'];
+     }
+     $title      = '<h3><a href="'.$linkDetial.'">'.$tieude.'</a></h3>' ;
+    foreach ($this->ItemsTienich as $key => $val ) {
+        $tienich.='<div class="b__pk--relax_ls">
+                    <a href="#" data-toggle="modal" data-target="#exampleModal'.$key.'">
+                    
+                      <img src="'.$val['picture'].'" />
+					  <div class="b__relax--caption">
+                      
+                        <h3>'.$val['name'].'</h3>
+                        <div class="btn-khampha">'.$this->language['khampha'].'</div>
+                      
+                    </div> 
+                      <!--div class="b__relax--caption">
+                        <h3>Hưởng trọn<br/> <strong class="text-uppercase">dịch vụ 5 sao</strong></h3>
+                      </div-->
+                    </a>
+                  </div>';
+				  $name= $val['name'];
+			$html = array("<strong>","</strong>","<br/>");
+            $html1   = array("","","");
+            $name = str_replace($html, $html1, $name);
+        $popup.='<!-- Modal -->
+                    <div class="modal fade modal-pk" id="exampleModal'.$key.'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title top__title--modal" id="exampleModalLabel">'.$name.'</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-infomation">
+                            <div class="d-flex">
+								<img src="'.$val["picture"].'" />
+                              <div class="b__caption--modal">
+                                <p>'.$val["synopsis"].'</p>
+                              </div>
+                            </div>
+                          </div> 
+                        </div>
+                      </div>
+                    </div>';
+        
+    }
+    echo '<div class="b__pk--relax">
+              <div class="containers">
+                '.$title.'
+                <div id="slideRelax" class="owl-carousel b__pk--relax_info">
+                '.$tienich.'
+                </div>
+              </div>
+        </div>'. $popup;
+?> 

@@ -1,0 +1,75 @@
+ <?php
+    //Tổng quan phân khu lấy từ bảng manu_diadiem
+    $id_phankhu=$this->Thamso['id'];
+    foreach ($this->ItemsPhankhu as $key => $val ) {
+        $urlOptions = array ('module' => 'dichvu', 'controller' => 'index', 'action' => 'phankhu', 'alias' => $val ['alias'], 'id' => $val ['id'] );	
+        $linkDetial = $this->url( $urlOptions, 'phankhu-page' );
+        if($id_phankhu==$val['id']){
+            $name= $val['name'];
+			$html = array("<strong>","</strong>");
+            $html1   = array("", "");
+            $name = str_replace($html, $html1, $name);
+            $banner='<img class="img_pc" src="'.$val['picture_banner'].'" width="100%">
+                        <img class="img_mb" src="'.$val['picture_banner_mobile'].'" width="100%">';
+            $gioithieu='<h3>'.$this->language['wonderphankhuGioithieu'].' <span class="text-uppercase">'.$val['name'].' </span></h3>';
+            $gioithieutongquat=$val['synopsis'];
+            $image_vitri='<div class="b__images">
+                            <img src="'.$val['picture_vitri'].'" width="100%" />
+                          </div><!--end .b__images-->';
+            $gioithieu_vitri=$val['gioithieu_vitri'];
+            $danhmucphankhu.='<li class="active"><a href="'.$linkDetial.'">'.$this->language['wonderphankhu'].' <br/> '.$val['name'].'</a></li>';
+        
+     }else{
+        $danhmucphankhu.='<li><a href="'.$linkDetial.'">'.$this->language['wonderphankhu'].' <br/> '.$val['name'].'</a></li>';
+     }
+    
+    }
+    if($this->arrParam['id']==1){
+        $title='<h3 class="b__title">'.$this->language['wonderTienichMonaco'].'</h3>';
+    ?>
+        <div class="b__banner b__banner--sukien">  
+          <img class="img_pc" src="<?php echo $this->Banner["picture_banner"]; ?>" width="100%">
+          <img class="img_mb" src="<?php echo $this->Banner["picture_banner_mobile"]; ?>" width="100%">
+          <div class="b__sukien--caption">  
+            <p><?php echo $this->language['wonderTienich']; ?> <?php echo $name; ?> </p>  
+          </div>
+        </div> 
+    <?php    
+    }else{
+        $title='<h3>'.$this->language['wonderTienich'].' <span class="text-uppercase">'.$name.' </span></h3>';
+?>   
+<div class="b__banner">  
+  <?php echo $banner; ?>
+  <div class="b__menu--click">  
+    <div class="containers">
+      <ul>
+         <?php echo $danhmucphankhu; ?>
+      </ul>  
+    </div>
+  </div>
+</div>  
+<!-- chi tiết tiện ích-->
+<?php } 
+
+?>
+<div class="b__pk--wapper pdb50">
+  <div class="b__pk--top">
+    <div class="containers">
+      <?php echo $title; ?> 
+      <?php
+        foreach ($this->ItemsTienich as $key => $val ) {
+			$name= $val['name'];
+			$html = array("<strong>","</strong>","<br/>");
+            $html1   = array("","","");
+            $name = str_replace($html, $html1, $name);
+      ?>
+          <div class="b__pk--ls pdb50">
+            <h5 class="b__title--second"><?php echo $name; ?></h5> 
+            <?php echo htmlspecialchars_decode($val['content']); ?>
+          </div><!-- end .b__pk--ls-->      
+      <?php         
+        }
+      ?>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,231 @@
+<?php
+	//Xay dung tim kiem
+	$ssFilter 		= $this->arrParam['ssFilter'];
+	//echo '<pre>';
+	//print_r($this->arrParam);
+	//echo '</pre>';
+	 
+	$page = '';
+	if(isset($this->arrParam['page'])){
+		$page = '/page/' . $this->arrParam['page'];
+	}
+	$action_link 	= $this->baseUrl($this->currentController . '/filter/type/order');
+	$lblName 		= $this->cmsLinkSort('Tên Sản phẩm','p.name',$ssFilter,$this->imgUrl . '/admin',$action_link);
+	
+	$lblID 			= $this->cmsLinkSort('ID','p.id',$ssFilter,$this->imgUrl . '/admin',$action_link);
+	$lblCode 		= $this->cmsLinkSort('Code','p.code',$ssFilter,$this->imgUrl . '/admin',$action_link);
+	$lblStatus 		= $this->cmsLinkSort('Status','p.status',$ssFilter,$this->imgUrl . '/admin',$action_link);
+	$lblOrder 		= $this->cmsLinkSort('Order','p.order',$ssFilter,$this->imgUrl . '/admin',$action_link);
+	$lblCategory	= $this->cmsLinkSort('Danh mục','category_name',$ssFilter,$this->imgUrl . '/admin',$action_link);
+	$lblhits		= $this->cmsLinkSort('Thương hiệu','p.hits',$ssFilter,$this->imgUrl . '/admin',$action_link);
+	$lblLanguage	= $this->cmsLinkSort('Album','p.lang_code',$ssFilter,$this->imgUrl . '/admin',$action_link);
+	
+	$keywords = $this->formText('keywords',$ssFilter['keywords'],array('class'=>'txtshort'));
+	
+	//---------------------GROUP SELECTBOX --------------------//
+	$linkSlbCategory = $this->baseUrl($this->currentController . '/filter/type/cat_id');
+	$selectCategory = $this->cmsSelect('cat_id',$ssFilter['cat_id'],$this->slbCategory,array('style'=>'min-width:200px;','onchange'=>"OnSubmitForm('" .$linkSlbCategory ."')"));
+	
+	$linkSlbNhanvien 	= $this->baseUrl($this->currentController . '/filter/type/created_by/' . $ssFilter['created_by']);
+	$selectUser = $this->cmsSelect('created_by',$ssFilter['created_by'],$this->slbUser,array('style'=>'min-width:200px;','onchange'=>"OnSubmitForm('" .$linkSlbNhanvien ."')"));
+	
+	
+	
+	//---------------------SELECT BLOCKS --------------------//
+	$linkBlocks = $this->baseUrl($this->currentController . '/filter/type/blocks');
+	$slbBlocks = array(
+						'0' => '- Sản phẩm thuộc Block -',
+						'block_noibat'=> 'Sản phẩm nổi bật',
+						'block_moi'=> 'Sản phẩm mới',
+						'block_hot'=> 'Sản phẩm hot',
+						'block_dongkhach'=> 'Sản phẩm đông khách',
+					);
+	$selectBlocks = $this->formSelect('blocks',$ssFilter['blocks'],array('onchange'=>"OnSubmitForm('" .$linkBlocks ."')"),$slbBlocks);
+	
+	$selectLanguages = $this->slbLanguages;
+	$linkSlbLanguages = $this->baseUrl($this->currentController . '/filter/type/lang');
+	$selectLanguages = $this->formSelect('lang_code',$ssFilter['lang_code'],array('onchange'=>"OnSubmitForm('" .$linkSlbLanguages ."')"),$selectLanguages);
+	
+	$linkSearch = $this->baseUrl($this->currentController . '/filter/type/search/key/1');
+	$btnSerach = $this->formButton('search-now','Tìm',array('onclick'=>"OnSubmitForm('" .$linkSearch . "')"));
+	
+	$linkResetSearch = $this->baseUrl($this->currentController . '/filter/type/search/key/0');
+	$btnResetSerach = $this->formButton('clear-keywords','Xóa',array('onclick'=>"OnSubmitForm('" .$linkResetSearch ."')"));
+	
+	
+	$tungay = $this->formText('tungay',$ssFilter['tungay'],array('class'=>'txtshort txtsearch hasDatePicker ','style' => 'margin-left:3px; width:70px;','placeholder' => 'Từ ngày'));
+	$denngay = $this->formText('denngay',$ssFilter['denngay'],array('class'=>'txtshort txtsearch hasDatePicker','style' => 'width:70px;','placeholder' => 'đến ngày'));
+	
+	//$strSearch = $keywords . ' ' . $btnSerach . ' ' . $btnResetSerach;
+	$strSearch = $keywords . ' ' . $tungay . ' ' . $denngay . ' ' . $btnSerach . ' ' . $btnResetSerach;
+	
+	$strSearchRight =$selectUser.' '. $selectBlocks . ' ' . $selectCategory;
+
+	$info 					= new Zendvn_System_Info();
+			$ad 			= $info->getMemberInfo('id');
+?>
+<form name="appForm" method="post" action="">
+	<?php echo $this->render('admin-item/toolbar/index.php');?>
+ 	<div class="clr"></div>
+	<?php echo $this->render('admin-item/sublink/index.php');?>	
+
+	<!-- BEGIN: CONTENT -->
+	<div class="app_content goc10">
+		<div class="block_filter">
+			<div class="fl">
+				<?php echo $strSearch;?>
+			</div>
+			<div class="fr">
+				<?php echo $strSearchRight;?>
+			</div>
+			<div class="clr"></div>
+		</div>
+		<table class="adminlist">
+			<tr>
+				<th width="20">#</th>
+				<th width="20">
+					<input type="checkbox" name="checkbox" id="checkbox" onclick="checkedAll()">
+				</th>
+				<?php /*?>
+				<th width="52"><?php echo $lblCode;?></th>
+				<?php */?>
+				<th width="32">Image</th>
+				<th><?php echo $lblName;?></th>
+				<?php if($ad ==31){ ?>
+				<th width="45"><?php echo $lblStatus;?> </th>
+				<?php } ?>
+				
+                <th width="170">Thuộc phân khu</th>
+				
+				<th width="180"><?php echo $lblCategory;?></th>
+                <th width="180"><?php echo $lblLanguage;?></th>
+				<th width="180">Tạo bởi</th>
+				<th width="45"><?php echo $lblOrder;?></th>
+				<th width="70">Control</th>
+				
+				<th width="40"><?php echo $lblID;?></th>
+			</tr>
+			<?php
+				foreach ($this->Items as $key => $val){
+					$id 			= $val['id'];
+					$code 			= $val['code'];
+					$name 			= $val['name'];
+					$user_alias 			= $val['user_alias'];
+					$units_name 	= $val['units_name'];
+					$category_name 	= $val['category_name'];
+					$hits			= $val['page'];
+					$lang_code		= $val['lang_code'];
+					$cat_id			= $val['cat_id'];
+					$picture = '<img src="' . $val['thumb'] . '" style="width:50px;">';
+					$selloff = '';
+					if($val['selloff'] > 0){
+						$selloff = ' - Giảm: <span style="color: #0fa400; font-weight: bold;">' . $val['selloff'] . '%</span>';
+					}
+						
+					$units_money = $val['units_money'];
+					$price_to = '';
+					if($val['price_to'] != 0){
+						$price_to= Zend_Locale_Format::toNumber($val['price_to']).'-';
+					}
+					
+					$price = '';
+					if($val['price'] != 0){
+						$price = '<p class="smallsub">Giá: <span class="red">'.$price_to . Zend_Locale_Format::toNumber($val['price'],array('precision' => 0)) . ' ' . $units_money . '</span>'.$selloff.' / '.$units_name.'</p>';
+					}
+					
+					 
+					$status 		= $val['status'];
+					if($status == 1){
+						$linkStatus = $this->baseUrl($this->currentController . '/status/type/0/id/' . $id . $page);
+						$status = $this->cmsIconButton('Kích vào để tắt', $this->imgUrl . '/admin/tick.png', $linkStatus);
+					}else{
+						$linkStatus = $this->baseUrl($this->currentController . '/status/type/1/id/' . $id . $page);
+						$status = $this->cmsIconButton('Kích vào để bật', $this->imgUrl . '/admin/publish_x.png', $linkStatus);
+					}
+					 $member_hoten 			= $val['member_hoten'];
+					$member_id 				= $val['member_id'];
+					$user_name 				= $val['mem_user_name'];
+					if(!empty($member_hoten)){$member_hoten='</br>Register:'.$member_hoten.'-ID:'.$member_id;}
+					if(!empty($user_name)){$user_name='</br>'.$user_name;}
+					$status 		= $val['status'];
+					if($status == 1){
+						$linkStatus = $this->baseUrl($this->currentController . '/status/type/0/id/' . $id . $page);
+						$status = $this->cmsIconButton('Kích vào để tắt', $this->imgUrl . '/admin/tick.png', $linkStatus);
+					}else{
+						$linkStatus = $this->baseUrl($this->currentController . '/status/type/1/id/' . $id . $page);
+						$status = $this->cmsIconButton('Kích vào để bật', $this->imgUrl . '/admin/publish_x.png', $linkStatus);
+					}
+						
+					$order 			= $this->formText('order[' . $val['id'] . ']', $val['order'], array('style'=>'width: 30px; text-align: center;'));
+						
+					$linkEdit		= $this->baseUrl($this->currentController . '/edit/id/' . $id . $page);
+					$btnEdit		= $this->cmsIconButton('Sửa', $this->imgUrl . '/admin/icon_edit.png', $linkEdit);
+						
+					$linkDelete		= $this->baseUrl($this->currentController . '/delete/id/' . $id . $page);
+					$btnDelete		= $this->cmsIconButton('Xóa', $this->imgUrl . '/admin/publish_r.png', $linkDelete);
+						
+					$strIconButton 	= $btnEdit . ' ' . $btnDelete;
+					
+					$alias 			= '<p class="smallsub">(Alias: ' . $val['alias'] . ')</p>';
+					$name 			= '<b><a href="' . $linkEdit . '">' . $name . '</a></b>' . $alias . $price;
+						
+					$cid 			= $this->formCheckbox('cid[]',$val['id']);
+						
+					$classRow = 'row1';
+					if($key % 2 == 0)
+						$classRow = 'row0';
+				?>
+			<tr class="<?php echo $classRow;?>">
+				<td align="center"><?php echo $key + 1;?></td>
+				<td align="center"><?php echo $cid;?></td>
+				<?php /*?>
+				<td align="center"><?php echo $code;?></td>
+				<?php */?>
+				<td align="center"><?php echo $picture;?></td>
+				<td align="left"><?php echo $name;?></td>
+				<?php if($ad ==31){ ?>
+				<td align="center"><?php echo $status;?></td>
+				<?php } ?>
+				
+                <td align="center"><?php echo $hits;?></td>
+				
+				<td align="center"><?php echo $category_name;?></td>
+                <td align="center"><a href="<?php echo $this->baseUrl('product/admin-image/index/product_id/'. $id);?>">Quản lý hình ảnh & Nội dung</a></td>
+				<td align="center"><?php echo $val['user_first_name'].' '.$val['user_last_name'];
+					echo $member_hoten.$user_name;?></td>
+				<td align="center"><?php echo $order;?></td>
+				<td align="center"><?php echo $strIconButton;?></td>
+				
+				<td align="center"><?php echo $id;?></td>
+			</tr>
+			<?php
+				} 
+			?>
+			<tr class="tbl_footer">
+				<td colspan="12">
+					<div class="container">
+						<div class="pagination">
+							<?php
+								$currentUrl = $this->baseUrl($this->currentController . '/index');
+								echo $this->paginationControl($this->paginator,'Sliding','pagination.phtml',array('currentUrl'=>$currentUrl)); 
+							?>
+							<div class="limit"></div>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<div class="clr"></div>
+	</div>
+</form>
+<script>
+
+//date
+$(".hasDatePicker").datepicker({ 
+	dateFormat: 'dd/mm/yy',
+	changeMonth: true,
+	changeYear: true,
+	yearRange: "-100:+2"
+});
+ 				
+</script>

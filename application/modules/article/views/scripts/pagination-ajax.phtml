@@ -1,0 +1,78 @@
+<?php
+	$city_id = '';
+	if(!empty($this->arrParam['city_id'])){
+		$city_id = '&city_id=' . $this->arrParam['city_id'];
+	}
+	if(!empty($this->arrParam['nganhnghe_id'])){
+		$nganhnghe_id = '&nganhnghe_id=' . $this->arrParam['nganhnghe_id'];
+	}
+	$linkStart 		= $this->currentUrl . '?page=' . $this->first . $city_id.$nganhnghe_id;
+	$linkPrevious 	= $this->currentUrl . '?page=' . $this->previous . $city_id.$nganhnghe_id;
+	$linkNext 		= $this->currentUrl . '?page=' . $this->next . $city_id.$nganhnghe_id;
+	$linkEnd 		= $this->currentUrl . '?page=' . $this->last . $city_id.$nganhnghe_id;
+	
+	$current		= $this->current;
+	$pageCount		= $this->pageCount;
+	
+	$strPage = '';
+	foreach ($this->pagesInRange as $key){
+		if( $this->current == $key ){
+            $strPage.='<li class="page-item disabled active"><a class="page-link" href="#">' . $key . ' <span class="sr-only">(current)</span></a></li>';
+		}else{
+			$linkPage = $this->currentUrl . '?page=' . $key . $city_id.$nganhnghe_id;
+            $strPage .= '<li class="page-item"><a  href="javascript:void(0);" onclick="ajaxLoad(\'#baochi\',\'' . $linkPage . '\')" class="page-link" href="#">'.$key.'</a></li>';
+		}
+	}
+	$page = 'Page ' . $this->current . ' Of ' . $this->last;
+?>
+<?php
+	if($pageCount > 1){ 
+?>
+<div class="b__pagination"> 
+<nav>
+<ul class="pagination">
+		<?php
+			if($current == $this->first)
+			{ 
+		?>
+		
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">&lt;</a>
+          </li>
+		<?php
+			}else{
+		?>
+        <li class="page-item "><a href="javascript:void(0);" onclick="ajaxLoad('#baochi','<?php echo $linkStart;?>')" class="page-link" href="#">&lt;</a></li>
+	
+		<?php
+			} 
+		?>
+
+		<?php echo $strPage;?>
+		
+		<?php
+			if($current == $pageCount)
+			{ 
+		?>
+		  <li class="page-item disabled">
+            <a class="page-link" href="#">&gt;</a>
+          </li>
+		<?php 
+			}else{
+		?>
+		
+        <li class="page-item"><a href="javascript:void(0);" onclick="ajaxLoad('#baochi','<?php echo $linkEnd;?>')" class="page-link" >&gt;</a></li>
+		<?php
+			} 
+		?>
+		</ul>
+  </nav>
+  </div>
+<?php
+	} 
+?>
+<script>
+    function ajaxLoad(item,url){
+    	$(item).load(url);
+    }
+</script>

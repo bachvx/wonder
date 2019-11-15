@@ -1,0 +1,142 @@
+<?php
+    $catchuoi = new Zendvn_Filter_CutString(200);
+    $siteConfig = Zend_Registry::get('siteConfig');
+	$name 					= $this->Item['name'];
+	$code = '';
+	if($this->Item['code'] != ''){
+         $code='<p class="label-sp">'.$this->language['productMaSanPham'].'</p><p class="info">' . $this->Item['code'] . '</p>';
+	}
+	$units_money 	= $this->Item['units_money'];
+    $tensanpham='<p class="label-sp">'.$this->language['tensp'].'</p><p class="info">'.$name .'</p>';
+	$color='';
+    $color='<p class="label-sp">'.$this->language['diadiemMau'].'</p><p class="info">'.$this->Item['color'].'</p>';
+    $madein='';
+    $madein='<p class="label-sp">'.$this->language['productSanxuat'].'</p><p class="info">'.$this->Item['made_in'].'</p>';
+    $baohanh='';
+    $baohanh='<p class="label-sp">'.$this->language['productBaohanh'].'</p><p class="info">'.$this->Item['baohanh'].'</p>';
+
+    $synopsis = nl2br($this->Item['synopsis']);
+	$content = htmlspecialchars_decode($this->Item['content']);
+	
+    if($this->Item['id']==3){
+        $div='<div class="b__products">';
+    }else{
+        $div='<div class="b__products b__product--hotel"> ';
+    }
+?>
+
+	
+				
+
+<?php
+	if($this->Item['picture_multi'] != ''){
+		$picture_multi = unserialize($this->Item['picture_multi']);
+        foreach($picture_multi AS $key => $val){
+            if($key==0){
+                $banner='<div class="b__products--images"><img src="'.$val[0].'" width="100%" /></div>';
+            }else{
+                $slide2.='<div class="b__prd--items"><img src="'.$val[0].'" /></div>';
+            }
+            
+        }
+    }
+    if($siteConfig['config_site']['offImage']==1){
+        $banner_top='<img src="'.$siteConfig['config_site']['imgads'].'" width="100%" />';
+    }else{
+        $banner_top='<img class="img_pc" src="'.$this->Item['picture_banner'].'" width="100%" />
+                <img class="img_mb" src="'.$this->Item['picture_banner_mobile'].'" width="100%" />';
+        
+    }
+?>
+
+<div class="b__banner">  
+  <?php echo $banner_top; ?>
+</div>
+<?php 
+    if(!empty($this->Item['dientich']) &&  !empty($this->Item['soluongcan']) &&  !empty($this->Item['quimo'])){
+			echo $div;
+        ?> 
+                <div class="b__content--sukien b__content--gallery"> 
+                  <div class="containers">
+                    <div class="b__title--sukien b__title--gallery">  
+                      <h3><?php echo $this->language['wonderSanPhamHome']; ?></span></h3> 
+                    </div> 
+                  </div>
+                </div><!-- end .b__content-sukien--> 
+                <div class="b__sukien--caption">  
+                  <p><?php echo $this->Item['name']; ?></p>  
+                </div>
+                 <div class="b__products--wapper"> 
+                    <?php echo $banner; ?>
+                 
+                 <div class="b__slide--products">
+                      <div class="containers">
+                        <div id="productSlide" class="owl-carousel">
+                            <?php echo $slide2; ?>
+                        </div><!-- end .owl-carousel-->
+                      </div><!-- end .containers-->
+                 </div><!-- end .b__slide--products-->
+                   <div class="b__box--ts"">
+                      <div class="b__box--ls">
+                        <p><?php echo $this->language['wonderQuimo']; ?></p>
+                        <label><?php echo $this->Item['quimo']; ?></label>
+                      </div>
+                      <div class="b__box--ls">
+                        <p><?php echo $this->language['wonderSoluongcan']; ?></p>
+                        <label><?php echo $this->Item['soluongcan']; ?></label>
+                      </div>
+                      <div class="b__box--ls">
+                        <p><?php echo $this->language['wonderDientich']; ?></p>
+                        <label><?php echo $this->Item['dientich']; ?></label>
+                      </div>
+                    </div> <!-- end .b__box--ts-->
+                    <div class="b__product--text">
+                      <div class="containers">
+                        <p><?php echo $content; ?></p>
+                      </div>
+                    </div> <!-- end .b__product--text-->
+                 </div><!-- end .b__products--wapper-->
+                 <div class="b__products--related">
+                 <!-- s?n ph?m liên quan -->
+                    <div class="b__products--related">
+                        <?php
+                        
+                            foreach($this->itemKhac as $key => $val){
+                                    $urlOptions = array (
+                        						'module' => 'product',
+                        						'controller' => 'index',
+                        						'action' => 'detail',
+                        						'title' => $val ['alias'],
+                        						'id' => $val ['id'] );
+                    				$linkDetial = $this->url( $urlOptions, 'diadiem-detail' );
+                                    $synopsis = $catchuoi->filter($val['synopsis']);
+                                ?>
+                                <div class="b__products--related_ls">
+                                <img src="<?php echo $val['picture_banner_mobile']; ?>"  width="100%" />
+                                <div class="b__products--related_description">
+                                    <h3><?php echo $val['name']; ?> </h3>
+                                    <p><?php echo $synopsis; ?></p>
+                                    <a href="<?php echo $linkDetial; ?>"><?php echo $this->language['xemChiTiet']; ?> </a>
+                                  </div>
+                                  </div>
+                            <?php    
+                            }
+                            
+                        ?>
+                  </div><!-- end .b__products--related-->
+            </div>    <!-- end .b__products-->
+<?php
+    }else{
+     ?>   
+            <div class="b__nghiduong">
+              <div class="containers">
+                <div class="b__nghiduong--info">
+                  <h3 class="b__title"><?php echo $name; ?></h3>
+                  <?php echo $content; ?>
+                </div>
+              </div>
+            </div>
+     
+       <?php 
+    }
+?>

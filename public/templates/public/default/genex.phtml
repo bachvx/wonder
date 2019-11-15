@@ -1,0 +1,44 @@
+<?php echo $this->render('html/header.php');?>
+<?php
+     $language = new Zend_Session_Namespace('language'); 
+     if($language->lang=='vi'){
+        $content=htmlspecialchars_decode($this->category['content']);
+     }else{
+        $content=htmlspecialchars_decode($this->category['content_en']);
+     }
+?>
+<body>
+	<!-- HEADER -->
+    <?php echo $this-> blkHeader(1,'default'); ?>
+	<div class="clearfix"></div>
+	<!-- mô tả -->
+    <div class="mota">
+			<div class="container">
+				<p><?php echo $content; ?></p>
+			</div>			
+		</div>
+    <!-- end mô tả -->	
+    <div class="genex">
+		<div class="container">
+			<div class="content-genex">
+                <?php echo $this->blkGenex(); ?>
+            </div>
+        </div>
+    </div>		
+	<div class="download wow bounceInDown animated">
+		<div class="container">
+			<a href="">Download Bảng giá tại đây</a>
+		</div>		
+	</div>
+    
+	</main>
+
+	<div class="clearfix"></div>
+
+	<!-- FOOTER -->
+    <?php echo $this->blkFooterNew(); ?>
+</body>	
+
+</html>
+
+

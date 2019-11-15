@@ -1,0 +1,118 @@
+<?php
+$moduleConfig = $this->arrParam['moduleConfig'];
+?>
+<div class="module_dia_diem">
+	<div class="module_title clearfix">
+		<span class="icon"></span>
+		<h1 class="title">Tags: <?php echo $this->arrParam['key'];?></h1>
+	</div>
+	<div class="module_content category_dia_diem">
+	<?php
+	if ($this->totalItem > 0) { 
+	?>
+		<ul class="dia_diem_an_choi clearfix">
+			<?php
+			foreach ($this->Items as $key => $val){
+				$name = $val['name'];
+				$cat_name = '<p class="d_cat_name">'.$val['category_name'].'</p>';
+				
+				$code = '';
+				if($val['code'] != ''){
+					$code = '<p class="code">'.$this->language['productMaSanPham'].': ' . $val['code'] . '</p>';
+				}
+				//$picture = '<img class="img" src="' . $val['picture'] . '" alt="'.$val['name'].'"/>';
+				$imgName = explode ( '/editor-upload/images/', $val ['picture'] ); 
+				$picture = '<img  class="img" src="' . APPLICATION_URL . '/default/public/view-image/width/250/height/250/images/' . $imgName [1] . '" alt="' . $val ['name'] . '"/>';
+				
+				$synopsis = nl2br($val['synopsis']);
+				$open = $val['open'];
+				$close = $val['close'];
+				$giomocua = '<p class="d_giomocua">Giờ mở cửa: <span>'.$open.'-'.$close.'giờ hàng ngày.</span></p>';
+				$comment = '<span class="comment_fb">'.$val['comment_fb'].'</span>';
+				$like = '<span class="like_fb">'.$val['like_fb'].'</span>';
+				$address = '<p class="d_address">Địa chỉ: <span>'.$val['address'].', '.$val['quanhuyen_name'].'</span></p>';
+				
+				$mobile = '<p class="d_mobile">Điện thoại: <span>'.$val['mobile'].'<span></p>';
+				$price_to = $val['price_to'];
+				$units_money = $val['units_money'];
+				//$quanhuyen_name =$val['quanhuyen_name'];
+				$price = '';
+				if($val['price'] != 0){
+					$price = '<p class="price">'.$this->language['diadiemGia'].': <span class="value">'.Zend_Locale_Format::toNumber($val['price_to'],array('precision' => 0)) . ' - '.Zend_Locale_Format::toNumber($val['price'],array('precision' => 0)) . ' ' . $units_money.'</span></p>';
+				}else{
+					$price = '<p class="price">'.$this->language['diadiemGia'].': <span class="value">'.$this->language['lienHe'].'</span></p>';
+				}
+				
+				$selloff = '';
+				if($val['selloff'] > 0){
+					$selloff = '<p class="d_selloff">Giảm giá: <span>' . $val['selloff'] . '%</span></p>';
+				}
+				
+				$addCart = '';
+				if($moduleConfig['showAddCart'] == 1){
+					$linkCart = $this->baseUrl('diadiem/public/add-item/id/' . $val['id']);
+					$addCart = '<a href="'.$linkCart.'" title="'.$this->language['diadiemDatCho'].' '.$name.'" class="addCart" rel="nofollow">'.$this->language['diadiemDatCho'].'</a>';
+				}
+				
+				$urlOptions = array (
+						'module' => 'diadiem',
+						'controller' => 'index',
+						'action' => 'detail',
+						'tcat' => $val ['category_alias'],
+						'title' => $val ['alias'],
+						'cid' => $val ['cat_id'],
+						'id' => $val ['id'] );
+				$linkDetial = $this->url( $urlOptions, 'diadiem-detail' );
+				
+				//$tooltip = '<div class=tooltid_title>'.$name.'</div><div class=tooltip_content><img class=img src=' . $val['picture'] . ' alt='.$val['name'].'/></div>';
+				$row='';
+				$class='';
+				if($key%2==0) $row='old';
+				if($key==0)$class='start';
+				?>
+				<li class="item <?php echo $row.' '.$class;?>">
+					<div class="dd_content">
+						<div class="d_images fleft">
+							<a href="<?php echo $linkDetial;?>" title="<?php echo $name;?>"  >
+								<?php echo $picture;?>
+							</a>
+							<?php //echo $cat_name;?>
+						</div>
+						<div class="d_intro fleft">
+							<h4 class="d_title"><a href="<?php echo $linkDetial;?>" title="<?php echo $name;?>"><?php echo $name;?></a></h4>
+							<?php echo $address; ?>
+							<?php echo $mobile; ?> 
+							<div class="d_price">
+								<?php echo $price;?>
+							</div>
+							<?php echo $selloff;?>
+							<?php echo $giomocua; ?>
+							<?php echo '<p class="fb">'.$like.$comment.'</p>'; ?> 
+							<?php /* ?>
+							<p class="d_detail">
+								<?php //echo $addCart;?>
+								<a href="<?php echo $linkDetial;?>" title="<?php echo $name;?>" class="detail"><?php echo $this->language['chiTiet'];?></a>
+							</p>
+							
+							<?php */ ?>
+							</div>
+					</div>
+				</li>
+			<?php
+				} 
+			?>
+		</ul>
+		<?php
+			if(!empty($this->arrParam['key'])){
+				$currentUrl = $this->baseUrl($this->arrParam['module'] . '/public/tags/key/' . $this->arrParam['key']);
+			}else{
+				$currentUrl = 'diadiem.html';
+			}
+			echo $this->paginationControl($this->paginator,'Sliding','pagination-index.phtml',array('currentUrl'=>$currentUrl,'arrParam' => $this->arrParam));
+		?>
+	<?php
+	}
+	?>
+	</div>
+	<div class="module_bottom"></div>
+</div>

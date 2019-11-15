@@ -1,0 +1,18 @@
+<?php 
+    $siteConfig = Zend_Registry::get('siteConfig');
+    echo $this->render('html/header.php');
+   
+?>
+<body>
+	<!-- HEADER -->
+    <?php echo $this-> blkHeader(1,'default'); ?>
+   	<?php  echo $this->BlkSlide(); ?>
+    <?php echo $this->blkPhankhu('default'); ?>
+    <?php echo $this->blkDulich('default'); ?>
+    <?php echo $this->blkSanpham('default'); ?>
+    <?php echo $this->blkFooterNew('default'); ?>
+</body>	
+
+</html>
+
+

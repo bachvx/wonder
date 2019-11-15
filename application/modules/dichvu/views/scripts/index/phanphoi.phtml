@@ -1,0 +1,54 @@
+<?php
+$miennam="";
+$mienbac="";
+$language = new Zend_Session_Namespace('language');
+    foreach ($this->Items as $key => $val){
+        if($language->lang=='vi'){
+            $name=$val['name'];
+            $content=htmlspecialchars_decode($val['synopsis']);
+        }else{
+            $name=$val['name_en'];
+            $content=htmlspecialchars_decode($val['synopsis_en']);
+        }
+    	if($val['cat_id']==1){
+    	   $mienbac.='<div class="col-sm-6"><div class="item">
+							<p class="name">'.$name.'</p>
+							<p>'.$content.'</p>
+						</div></div>';
+    	}elseif($val['cat_id']==2){
+    	   $mientrung.='<div class="col-sm-6"><div class="item">
+							<p class="name">'.$name.'</p>
+							<p>'.$content.'</p>
+						</div></div>';
+    	}else{
+    	   $miennam.='<div class="col-sm-6"><div class="item">
+							<p class="name">'.$name.'</p>
+							<p>'.$content.'</p>
+						</div></div>';
+    	}
+    }	
+
+	?>
+
+	<div class="mien">
+        <div class="title">
+			<h1 class="wow tada animated"><a href=""><?php echo $this->language['mienbac']; ?></a></h1>
+			<div class="line"></div>
+		</div>
+        <div class="content">
+				<div class="row">
+                    <?php echo $mienbac; ?>
+                </div>
+        </div>
+    </div>
+    <div class="mien">
+        <div class="title">
+			<h1 class="wow tada animated"><a href=""><?php echo $this->language['miennam']; ?></a></h1>
+			<div class="line"></div>
+		</div>
+        <div class="content">
+				<div class="row">
+                    <?php echo $miennam; ?>
+                </div>
+        </div>
+    </div>	

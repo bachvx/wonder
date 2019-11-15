@@ -1,0 +1,192 @@
+<?php ?>
+<script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+<script>
+        tinymce.init({selector:'.editer',
+        	height : '300'
+            });
+</script>
+
+<?php ?>
+
+
+<div class="block_thongTinTaiKhoan">
+	<div class="block_title"><?php echo $this->Title;?> </div>
+	<div class="block_content article_manager">
+			<div class="item">
+				<div class="item_content">
+					
+					
+				
+				
+				<?php
+	//----------------------- INPUT ELEMENTS -------------------//
+	$name 			= $this->formText ( 'name', $this->Item['name'], array ('class' => 'txtlong active') );
+	
+// 	$picture		= '<div><img src="' . $this->imgUrl . '/no-avatar.png" id="image_picture" class="hinh-anh"></div>';
+// 	if(!empty($this->Item['picture'])){
+// 		$picture		= '<div><img src="' . $this->Item['picture'] . '" id="image_picture" class="hinh-anh"></div>';
+// 	}
+// 	$picture 		= $this->cmsUserFiles('picture', $this->Item['picture'], 'Chọn ảnh', 'images', $options = array('class' => 'txtfile') ) . $picture;
+	
+	$current_picture= 		$this->formHidden('current_picture',$this->Item['picture']);
+	$article_picture		= $this->formFile ('picture', array ('style' => 'width:250px;')) . $current_picture . '<div class="view_error" id="view_picture"></div>';
+	$current_images	= $this->formHidden('current_images','');
+	$images			= $this->formFile ('images', array ('style' => 'width:250px;')) . $current_images . '<div class="view_error" id="images"></div>';
+	
+	
+	$article_picture_view		= $this->imgUrl . '/user/user-img.jpg';
+	if($this->Item['picture'] != ''){
+		$article_picture_view		= FILE_URL . '/users/images-article/' . $this->Item['member_avatar'];
+	}
+		
+	
+	
+	$selectCategory	= $this->cmsSelect('cat_id',$this->Item['cat_id'],$this->slbCategory,array('size'=>0,'style'=>'min-width:200px;'));
+	$optionsUnits 	= $this->slbDiadiemUnits;
+	$slbMoney		= $this->formSelect('units_money',$this->Item['units_money'],array(),$this->slbMoney);
+	$selloff		= ' Giảm giá ' . $this->formText ('selloff', $this->Item['selloff'], array ('class' => 'txtshort auto_numberic' , 'style'=>'width:20px;', 'maxlength' => 2) ) . ' %';
+	$slbDiadiemUnits= $this->formSelect('unit_id',$this->Item['unit_id'],array(),$this->slbDiadiemUnits);
+	//$diadiem_number	= $this->formText ('diadiem_number', $this->Item['diadiem_number'], array ('class' => 'txtshort auto_numberic') ) . ' ' . $slbDiadiemUnits;
+	
+	$price 			= $this->formText ('price',  Zend_Locale_Format::toNumber($this->Item['price'],array('precision' => 0)), array ('class' => 'txtshort auto_numberic') ) . ' ' . $slbMoney . ' / 01 '.$slbDiadiemUnits . $selloff ;
+	 
+	$slbSourcesMoney	= $this->formSelect('sources_money',$this->Item['sources_money'],array(),$this->slbMoney);
+	$slbDiadiemThoigian	= $this->formSelect('time_id',$this->Item['time_id'],array('style'=>'width:250px;'),$this->slbDiadiemThoigian);
+	$slbDiadiemManu		= $this->formSelect('manu_id',$this->Item['manu_id'],array('style'=>'width:250px;'),$this->slbDiadiemManu);
+	
+	$synopsis		= $this->formTextarea('synopsis', $this->Item['synopsis'],array('rows'=>4,'class' => 'textarea synopsis'));
+	$content = htmlspecialchars_decode($this->Item['content']);
+	$content		= $this->formTextarea('content',$content,array('rows'=>4,'class' => 'content editer'));
+	//$content 		= $this->cmsEditor('content',htmlspecialchars_decode($this->Item['content']),array('class'=>'content_noidung','toolbar'=>'MyToolbar', 'language'=>'vi'));
+	
+	$arrInput = array(
+				array('label' => 'Tiêu đề','input' => $name, 'desc' => '<span class="red">*</span>'),
+				array('label' => 'Hình ảnh minh họa','input' => $article_picture),
+				array('label' => 'Chọn danh mục quán','input' => '<span id="category">' . $selectCategory . '</span>'),
+				array('label' => 'Giá ','input' => $price),
+				array('label' => 'Chọn kiểu nhà hàng','input' => $slbDiadiemManu),  
+				array('label' => 'Thời gian hoạt động chính','input' => $slbDiadiemThoigian),  
+				array('label' => 'Giới thiệu ngắn','input' => $synopsis, 'cols' => 2,'style' => 'padding-top:0;','desc' => 'Được hiển thị khi xem chi tiết hoặc xem ở dạng danh sách'),
+				array('label' => 'Nội dung','input' => $content, 'cols' => 2,'style' => 'padding-top:0;height:300px;'),
+			);
+	
+	
+	
+	//----------------------Thông tin quán----------------//
+	$gio = array(
+			'0' => '00h','1'=> '01h','2'=> '02h',
+			'3' => '03h','4'=> '04h','5'=> '05h',
+			'6' => '06h','7'=> '07h','8'=> '08h',
+			'9' => '09h','10'=> '10h','11'=> '11h',
+			'12' => '12h','13'=> '13h','14'=> '14h',
+			'15' => '15h','16'=> '16h','17'=> '17h',
+			'18' => '18h','19'=> '19h','20'=> '20h',
+			'21' => '21h','22'=> '22h','23'=> '23h',
+	);
+	$open_ative 	= $this->Item['open'];
+	$close_ative 	= $this->Item['close'];
+	
+	$selectOpen 	= $this->formSelect('open',$open_ative,array(),$gio);
+	$selectClose 	= $this->formSelect('close',$close_ative,array(),$gio);
+	$gio_mo_cua		='Từ : '.$selectOpen.' Đến :'.$selectClose;
+	$tenquan 		= $this->formText ( 'tenquan', $this->Item['tenquan'], array ('class' => 'txtlong active') );
+	$address 		= $this->formText ( 'address', $this->Item['address'], array ('class' => 'txtlong active') );
+	$slbDistricts 	= $this->formSelect('districts_id',$this->Item['districts_id'],array(),$this->slbDistricts);
+	$mobile 			= $this->formText ('mobile', $this->Item['mobile'], array ('class' => 'txtshort' ) );
+	$map_spn 			= $this->formText ('map_spn', $this->Item['map_spn'], array ('class' => 'txtshort' ) );
+	$map_ll 			= $this->formText ('map_ll', $this->Item['map_ll'], array ('class' => 'txtshort' ) );
+	$google_map 		='Tọa độ SPN '.$map_spn.' Tọa độ ll '.$map_ll;
+	
+// 	$arrThongtinquan = array(
+// 			array('label' => 'Tên quán','input' => $tenquan, 'desc' => '<span class="red">*</span>'),
+// 			array('label' => 'Địa chỉ quán','input' => $address),
+// 			array('label' => 'Điện thoại liên hệ','input' => $mobile),
+// 			array('label' => 'Chọn quận/Huyện','input' => $slbDistricts),
+// 			array('label' => 'Giờ mở cửa','input' => $gio_mo_cua),
+// 			array('label' => 'Google Map','input' => $google_map),
+// 	);
+	
+	//-------------------- SESSAGES ERROR ------------------
+	if(count($this->messageError)>0){
+		$errors = $this->formErrors($this->messageError,array('id'=>'errors'));
+	}
+?>
+<form name="appForm" method="post" action="" enctype="multipart/form-data">
+	<?php echo $errors;?>
+	<!-- BEGIN: CONTENT -->
+	<div class="app_content  ">
+		<div class="fl"> 
+			<fieldset class="article-form tabs" id="tabs-1">
+				<table class=" article-table">
+					<?php //echo $this->partialLoop('row.php', $arrInput);?>
+ 
+					<tr>
+						<td width="150">Tên bài viết (<span class="red">*</span>)</td>
+						<td width="700"><?php echo $name;?></td>
+					</tr>
+					<?php /*?>
+					<tr>
+						<td>Hình ảnh minh họa</td>
+						<td>
+						<?php echo $article_picture;?>
+						<img width="" class="articleImg" alt="articleImg" style="border: 1px solid #999;width: 100px;height: auto;" src="<?php echo $article_picture_view;?>">
+						</td>
+					</tr>
+				 	<?php */?>
+					<tr>
+						<td>Chọn chuyên mục</td>
+						<td><?php echo $selectCategory;?></td>
+					</tr>
+					<tr>
+						<td>Giá</td>
+						<td><?php echo $price;?></td>
+					</tr>
+					<tr>
+						<td>Giờ mở cửa</td>
+						<td><?php echo $gio_mo_cua;?></td>
+					</tr>
+ 					<?php /*?>
+					<tr>
+						<td>Chọn kiểu nhà hàng</td>
+						<td><?php echo $slbDiadiemManu;?></td>
+					</tr>
+					<?php */ ?>
+					<tr>
+						<td>Tên quán (<span class="red">*</span>)</td>
+						<td><?php echo $tenquan;?></td>
+					</tr>
+					<tr>
+						<td>Địa chỉ (<span class="red">*</span>)</td>
+						<td><?php echo $address; ?>  <?php echo $slbDistricts;?></td>
+					</tr>
+					
+					<tr>
+						<td>Giới thiệu ngắn</td>
+						<td><?php echo $synopsis;?></td>
+					</tr>
+					<tr>
+						<td>Bài giới thiêu quán</td>
+						<td> </td>
+					</tr>
+					<tr> 
+						<td colspan="2">  <?php echo $content;?> </td>
+					</tr>
+					<tr> 
+						<td colspan="2">
+						 <input type="submit" class="submit" value="Lưu bài viết" >
+						</td>
+					</tr>
+					
+				</table>
+			</fieldset>
+		</div>
+	 
+	</div>
+	<!-- END: 	CONTENT -->
+</form>
+</div>
+			</div> 
+			<div class="clr"></div>
+	</div>
+</div>
+ 

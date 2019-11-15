@@ -1,0 +1,43 @@
+ <div class="row b__box--row">  
+<?php
+    $catchuoi = new Zendvn_Filter_CutString(100);
+    foreach ($this->ItemsBaochi as $key => $val ) {
+        $imgName =  $val['picture'] ;
+        $synopsis= $val['synopsis'] ;	
+    	$name = $val['name'];
+        $created =date("d-m-Y", strtotime($val['created']));
+    	$urlOptions = array ('module' => 'article', 'controller' => 'index', 'action' => 'detail', 'title' => $val ['alias'], 'id' => $val ['id'] );
+    ?>
+         <div class="col-md-3">
+        <div class="card card__items card__items--bmb">
+          <img class="card-img-top" src="<?php echo $imgName; ?>" alt="<?php echo $name; ?>" />
+          <div class="card-body">
+            <h3><strong><?php echo $name; ?></strong></h3>
+            <p class="card-text"><?php echo $synopsis; ?></p>
+            <a href="<?php echo $linkDetial; ?>" class="hidden-pc show-mb"> <?php echo $this->language['xemThem']; ?> </a>
+          </div>
+          <div class="card-link">
+            <a href="chitiettintuc.html"> Xem thêm </a>
+          </div>
+        </div>
+      </div>
+    <?php
+    }
+    	
+    ?>
+        
+        </div><!--end row b__box--row-->
+        <?php 
+            if(!empty($this->arrParam['cid'])){
+    		$urlOptionsCategory = array('module'=>'quanngon','controller'=>'index','action'=>'category',
+    				'cid'=>$this->arrParam['cid'],
+    				'alias'=>$this->arrParam['alias'],
+    		);
+    		$currentUrl = $this->url($urlOptionsCategory,'quanngon-category');
+    	}else{
+    		$currentUrl = 'thong-tin-bao-chi';
+    	}
+    	echo $this->paginationControl($this->paginator,'Sliding','pagination-ajax.phtml',array('currentUrl'=>$currentUrl,'arrParam' => $this->arrParam));
+        ?>
+    </div><!--end containers-->
+</div><!--end b__content--sukien b__infomation--sukien-->

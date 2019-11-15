@@ -1,0 +1,93 @@
+  <?php
+   // var_dump($this->arrParam);
+    $chiso=$this->arrParam["paginator"]["currentPage"];
+    //var_dump($chiso+1);
+    $siteConfig = Zend_Registry::get('siteConfig');
+    foreach ($this->ItemsMoban as $key => $val ) {
+       // var_dump($val['picture']);die;
+    	$imgName =  $val['picture'] ;
+        if($siteConfig['config_site']['offImage']==1){ 
+            $banner= $siteConfig['config_site']['imgads'];
+        }else{
+            $banner= $imgName; }
+        $synopsis= $val['synopsis'] ;	
+    	$name = $val['name'];
+        $created =date("d-m-Y", strtotime($val['created']));
+    	$urlOptions = array ('module' => 'article', 'controller' => 'index', 'action' => 'detail', 'title' => $val ['alias'], 'id' => $val ['id'] );
+        $linkDetial = $this->url ( $urlOptions, 'article-detail' );
+        if($chiso%2 <> 0){
+            if($key==0){
+                echo '<div class="b__sukien--list stretch">
+                    <div class="b__items--sukien b__items--sukien_left">
+                      <a href="'.$linkDetial.'"><img src="'.$imgName.'" width="100%"></a>
+                      <div class="b__items--caption">
+                        <h3><a href="'.$linkDetial.'"><p>'.$name.'</p></a></h3>
+                      </div>
+                    </div>
+                    <div class="b__items--sukien b__items--sukien_right">'; 
+            }else{
+                if($key / 2 <1){
+                    echo '<div class="b__items--lss b__items--lss_top" style="margin-bottom: 10px;">
+                          <a href="'.$linkDetial.'"><img src="'.$imgName.'" width="100%"></a>
+                          <div class="b__items--captions">
+                            <a href="'.$linkDetial.'"> <h3>'.$name.'</h3>
+                              <p>'.$synopsis.'</p> </a>
+                          </div>
+                        </div>';
+                }else{
+                    echo '<div class="b__items--lss b__items--lss_bottom">
+                          <a href="'.$linkDetial.'"><img src="'.$imgName.'" width="100%"></a>
+                          <div class="b__items--caption">
+                            <a href="'.$linkDetial.'"> <h3>'.$name.'</h3>
+                              <p>'.$synopsis.'</p> </a>
+                          </div>
+                        </div>
+                        </div><!--close  sukien_right-->
+                        </div><!--close  b__sukien--list stretch-->';
+                }
+            }
+               
+        }else{
+            if($key/2<1){
+                if($key==0){
+                    echo '<div class="b__sukien--list stretch"> 
+                            <div class="b__items--sukien b__items--sukien_right">
+                                <div class="b__items--lss b__items--lss_top" style="margin-bottom: 10px;">
+                                  <a href="'.$linkDetial.'"><img src="'.$imgName.'" width="100%"></a>
+                                  <div class="b__items--captions">
+                                    <a href="'.$linkDetial.'"> <h3>'.$name.'</h3>
+                              <p>'.$synopsis.'</p> </a>
+                                  </div>
+                                </div>'; 
+                }else{
+                    echo '<div class="b__items--lss b__items--lss_bottom">
+                          <a href="'.$linkDetial.'"><img src="'.$imgName.'" width="100%"></a>
+                          <div class="b__items--caption">
+                            <a href="'.$linkDetial.'"> <h3>'.$name.'</h3>
+                              <p>'.$synopsis.'</p> </a>
+                          </div>
+                        </div>
+                        </div><!--close b__items--sukien b__items--sukien_right-->';
+                }
+                
+            }else{
+                echo '<div class="b__items--sukien b__items--sukien_left">
+                      <a href="'.$linkDetial.'"><img src="'.$imgName.'" width="100%"></a>
+                      <div class="b__items--caption">
+                        <a href="'.$linkDetial.'"> <h3>'.$name.'</h3>
+                              <p>'.$synopsis.'</p> </a>
+                      </div>
+                    </div>
+                    </div><!-- close b__sukien--list stretch-->';
+            }
+        }  
+     }
+        $currentUrl = 'mobanloadmore';
+    	echo $this->paginationControl($this->paginator,'Sliding','pagination-ajax-load-more.phtml',array('currentUrl'=>$currentUrl,'arrParam' => $this->arrParam));
+        ?>
+</div>  <!--close b__content--sukien b__thongtinbaochi-->
+ 
+
+        
+   
+       

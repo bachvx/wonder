@@ -1,0 +1,41 @@
+ 
+    <?php
+    foreach ($this->ItemsBaochi as $key => $val ) {
+        $imgName =  $val['picture'] ;
+        $synopsis= $val['synopsis'] ;	
+    	$name = $val['name'];
+        $created =date("d-m-Y", strtotime($val['created']));
+    	$urlOptions = array ('module' => 'article', 'controller' => 'index', 'action' => 'detail', 'title' => $val ['alias'], 'id' => $val ['id'] );
+        $linkDetial = $this->url ( $urlOptions, 'article-detail' );
+    ?>
+    <div class="b__thongtinbaochi--ls">
+     <img src="<?php echo $imgName; ?>" width="100%" />
+      <div class="b__thongtinbaochi--caption">
+       <h3><?php echo $name; ?></h3>
+        <p><?php echo $synopsis; ?></p>
+        <a href="<?php echo $linkDetial; ?>"><?php echo $this->language['xemThem']; ?></a>
+      </div>
+    </div>
+    <?php
+    }
+    	
+    ?>
+  </div><!--close containers-->
+   <?php 
+            if(!empty($this->arrParam['cid'])){
+    		$urlOptionsCategory = array('module'=>'quanngon','controller'=>'index','action'=>'category',
+    				'cid'=>$this->arrParam['cid'],
+    				'alias'=>$this->arrParam['alias'],
+    		);
+    		$currentUrl = $this->url($urlOptionsCategory,'quanngon-category');
+    	}else{
+    		$currentUrl = 'loadmore';
+    	}
+    	echo $this->paginationControl($this->paginator,'Sliding','pagination-ajax-load-more.phtml',array('currentUrl'=>$currentUrl,'arrParam' => $this->arrParam));
+        ?>
+</div>  <!--close b__content--sukien b__thongtinbaochi-->
+ 
+
+        
+   
+       

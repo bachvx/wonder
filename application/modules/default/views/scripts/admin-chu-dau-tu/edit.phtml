@@ -1,0 +1,90 @@
+<?php
+//die("ads");
+	//----------------------- INPUT ELEMENTS -------------------//
+	$ssFilter 		= $this->arrParam['ssFilter'];
+	$selectLanguages = $ssFilter['lang_code'] . $this->formHidden('lang_code',$ssFilter['lang_code']);
+	$mota 			= $this->formText ( 'mota', $this->Item['mota'], array ('class' => 'txtlong active') );
+    $mota_en 			= $this->formText ( 'mota_en', $this->Item['mota_en'], array ('class' => 'txtlong active') );
+	$picture		= '<div><img src="' . $this->imgUrl . '/no-avatar.png" id="image_picture" class="hinh-anh"></div>';
+	if(!empty($this->Item['picture'])){
+		$picture	= '<div><img src="' . $this->Item['picture'] . '" id="image_picture" class="hinh-anh"></div>';
+	}
+	$picture 		= $this->cmsUserFiles('picture', $this->Item['picture'], 'Chọn ảnh', 'images', $options = array('class' => 'txtfile') ) . $picture;
+    
+    $picture_mobile		= '<div><img src="' . $this->imgUrl . '/no-avatar.png" id="image_picture_mobile" class="hinh-anh"></div>';
+	if(!empty($this->Item['picture_mobile'])){
+		$picture_mobile	= '<div><img src="' . $this->Item['picture_mobile'] . '" id="image_picture_mobile" class="hinh-anh"></div>';
+	}
+	$picture_mobile 		= $this->cmsUserFiles('picture_mobile', $this->Item['picture_mobile'], 'Chọn ảnh', 'images', $options = array('class' => 'txtfile') ) . $picture_mobile;
+    
+    
+    $content 		= $this->cmsEditor('content',htmlspecialchars_decode($this->Item['content']),array('toolbar'=>'MyToolbar', 'language'=>'vi'));
+    $content1 		= $this->cmsEditor('content_en',htmlspecialchars_decode($this->Item['content_en']),array('toolbar'=>'MyToolbar', 'language'=>'vi'));
+    
+	$arrInput = array(
+				//array('label' => 'Chọn ngôn ngữ','input' => $selectLanguages),
+				array('label' => 'Tiêu đề','input' => $mota),
+				array('label' => 'Banner PC','input' => $picture),
+                array('label' => 'Banner Mobile','input' => $picture_mobile),  
+				array('label' => 'Nội dung','input' => $content,'cols' => 2,'style' => 'padding-top:0;'),
+                
+                
+			);
+	
+	$arrInputEn = array(
+				array('label' => 'Tiêu đề','input' => $mota_en),
+				array('label' => 'Nội dung','input' => $content1,'cols' => 2,'style' => 'padding-top:0;'),
+				
+			);
+
+	//-------------------- SESSAGES ERROR ------------------
+	if(count($this->messageError)>0){
+		$errors = $this->formErrors($this->messageError,array('id'=>'errors'));
+	}
+?>
+<form name="appForm" method="post" action="" enctype="multipart/form-data">
+	<?php echo $this->render('admin-genex/toolbar/index.php');?>
+ 	<div class="clr"></div>
+	<?php //echo $this->render('admin-genex/sublink/index.php');?>
+	<?php echo $errors;?>
+
+<!-- BEGIN: CONTENT -->
+	<div class="app_content goc10">
+		<div class="width-60 fl">
+            <script>
+				$(document).ready(function() {
+					$(".tabs-nav li:first a").addClass('selected');
+					$(".tabs:first").css('display','block');
+				    $(".tabs-nav li a").click(function() {
+				        $(".tabs-nav li a").removeClass('selected');
+				        $(this).addClass('selected');
+				        $(".tabs").css('display','none');
+				        $($(this).attr("rel")).css('display','block');
+				        
+				    	return false;
+				    });
+				});
+			</script>
+            <ul class="tabs-nav clearfix">
+				<li><a rel="#tabs-1" href="javascript:void(0)">Vietnamese</a></li>
+				<li><a rel="#tabs-2" href="javascript:void(0)">English</a></li>
+				
+			</ul>
+			<fieldset class="adminform tabs" id="tabs-1">
+				
+				<table class="adminformlist">
+					<?php echo $this->partialLoop('row.php', $arrInput);?>
+				</table>
+			</fieldset>
+            <fieldset class="adminform tabs" id="tabs-2">
+				
+				<table class="adminformlist">
+					<?php echo $this->partialLoop('row.php', $arrInputEn);?>
+				</table>
+			</fieldset>
+		</div>
+		
+		<div class="clr"></div>
+	</div>
+	<!-- END: 	CONTENT -->
+</form>

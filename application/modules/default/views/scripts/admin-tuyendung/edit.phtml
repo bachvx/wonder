@@ -1,0 +1,132 @@
+<?php
+//die("ads");
+	//----------------------- INPUT ELEMENTS -------------------//
+	$ssFilter 		= $this->arrParam['ssFilter'];
+	$selectLanguages = $ssFilter['lang_code'] . $this->formHidden('lang_code',$ssFilter['lang_code']);
+	$name 			= $this->formText ( 'name', $this->Item['name'], array ('class' => 'txtlong active', 'onchange'=>"get_alias()" ) );
+    $option 		= array('Không','Có');
+	$status 		= $this->formRadio('status',$this->Item['status'],null,$option, ' ');
+	
+	if(isset($this->Item['order'])){
+		$order = $this->Item['order'];
+	}else{
+		$order = 255;
+	}
+	$order 			= $this->formText ('order', $order, array ('class' => 'txtshort' ) );
+	$mota 		    = $this->cmsEditor('mota',htmlspecialchars_decode($this->Item['mota']),array('toolbar'=>'MyToolbar', 'language'=>'vi'));
+    $quyenloi 		= $this->cmsEditor('quyenloi',htmlspecialchars_decode($this->Item['quyenloi']),array('toolbar'=>'MyToolbar', 'language'=>'vi'));
+    $lienhe 		= $this->cmsEditor('lienhe',htmlspecialchars_decode($this->Item['lienhe']),array('toolbar'=>'MyToolbar', 'language'=>'vi'));
+    $trinhdo 				= $this->formText ( 'trinhdo', $this->Item['trinhdo'], array ('class' => 'textlong' ) );
+	$gioitinh		 		= $this->formText('gioitinh',$this->Item['gioitinh'],array ('class' => 'textlong' ) );
+	$noilamviec 		= $this->formText('noilamviec',$this->Item['noilamviec'],array ('class' => 'textlong' ) );
+	$mucluong 	= $this->formText('mucluong',$this->Item['mucluong'],array ('class' => 'textlong' ) );
+	$hannop 		= $this->formText('hannop',$this->Item['hannop'],array ('class' => 'textlong' ) );
+    //var_dump($this->ItemEn);
+    //noi dung en
+    $name_en 			= $this->formText ( 'name_en', $this->ItemEn['name'], array ('class' => 'txtlong active', 'onchange'=>"get_alias()" ) );
+	$mota_en 		    = $this->cmsEditor('mota_en',htmlspecialchars_decode($this->ItemEn['mota']),array('toolbar'=>'MyToolbar', 'language'=>'vi'));
+    $quyenloi_en 		= $this->cmsEditor('quyenloi_en',htmlspecialchars_decode($this->ItemEn['quyenloi']),array('toolbar'=>'MyToolbar', 'language'=>'vi'));
+    $lienhe_en 		= $this->cmsEditor('lienhe_en',htmlspecialchars_decode($this->ItemEn['lienhe']),array('toolbar'=>'MyToolbar', 'language'=>'vi'));
+    $trinhdo_en 				= $this->formText ( 'trinhdo_en', $this->ItemEn['trinhdo'], array ('class' => 'textlong' ) );
+	$gioitinh_en		 		= $this->formText('gioitinh_en',$this->ItemEn['gioitinh'],array ('class' => 'textlong' ) );
+	$noilamviec_en 		= $this->formText('noilamviec_en',$this->ItemEn['noilamviec'],array ('class' => 'textlong' ) );
+	$mucluong_en 	= $this->formText('mucluong_en',$this->ItemEn['mucluong'],array ('class' => 'textlong' ) );
+	$hannop_en 		= $this->formText('hannop_en',$this->ItemEn['hannop'],array ('class' => 'textlong' ) );
+    
+    
+    $alias 				= $this->formText ( 'alias', $this->Item['alias'], array ('class' => 'textlong' ) );
+	$arrInput = array(
+				//array('label' => 'Chọn ngôn ngữ','input' => $selectLanguages),
+				array('label' => 'Tiêu đề tuyển dụng','input' => $name),
+				array('label' => 'Trình độ','input' => $trinhdo),
+    			array('label' => 'Giới tính','input' => $gioitinh),
+    			array('label' => 'Nơi làm việc','input' => $noilamviec),
+    			array('label' => 'Mức lương','input' => $mucluong),
+                array('label' => 'Hạn nộp','input' => $hannop),
+                array('label' => 'Đường dẫn','input' => $alias),
+				array('label' => 'Trạng thái','input' => $status),
+				array('label' => 'Thứ tự','input' => $order),
+				array('label' => 'Mô tả công viêc','input' => $mota, 'cols' => 2,'style' => 'padding-top:0;'),
+                array('label' => 'Quyền lợi','input' => $quyenloi, 'cols' => 2,'style' => 'padding-top:0;'),
+                array('label' => 'Liên hệ','input' => $lienhe, 'cols' => 2,'style' => 'padding-top:0;'),
+			);
+	
+	$arrInput_en = array(
+				//array('label' => 'Chọn ngôn ngữ','input' => $selectLanguages),
+				array('label' => 'Tiêu đề tuyển dụng','input' => $name_en),
+				array('label' => 'Trình độ','input' => $trinhdo_en),
+    			array('label' => 'Giới tính','input' => $gioitinh_en),
+    			array('label' => 'Nơi làm việc','input' => $noilamviec_en),
+    			array('label' => 'Mức lương','input' => $mucluong_en),
+                array('label' => 'Hạn nộp','input' => $hannop_en),
+				array('label' => 'Mô tả công viêc','input' => $mota_en, 'cols' => 2,'style' => 'padding-top:0;'),
+                array('label' => 'Quyền lợi','input' => $quyenloi_en, 'cols' => 2,'style' => 'padding-top:0;'),
+                array('label' => 'Liên hệ','input' => $lienhe_en, 'cols' => 2,'style' => 'padding-top:0;'),
+			);
+
+	//-------------------- SESSAGES ERROR ------------------
+	if(count($this->messageError)>0){
+		$errors = $this->formErrors($this->messageError,array('id'=>'errors'));
+	}
+?>
+<form name="appForm" method="post" action="" enctype="multipart/form-data">
+	<?php echo $this->render('admin-genex/toolbar/index.php');?>
+ 	<div class="clr"></div>
+	<?php //echo $this->render('admin-genex/sublink/index.php');?>
+	<?php echo $errors;?>
+
+	<!-- BEGIN: CONTENT -->
+	<div class="app_content goc10">
+        <script>
+				$(document).ready(function() {
+					$(".tabs-nav li:first a").addClass('selected');
+					$(".tabs:first").css('display','block');
+				    $(".tabs-nav li a").click(function() {
+				        $(".tabs-nav li a").removeClass('selected');
+				        $(this).addClass('selected');
+				        $(".tabs").css('display','none');
+				        $($(this).attr("rel")).css('display','block');
+				        
+				    	return false;
+				    });
+				});
+			</script>
+			<ul class="tabs-nav clearfix">
+				<li><a rel="#tabs-1" href="javascript:void(0)">Vietnamese</a></li>
+				<li><a rel="#tabs-2" href="javascript:void(0)">English</a></li>
+				<!--<li><a rel="#tabs-3" href="javascript:void(0)">Thông tin quán</a></li>
+				 <li><a rel="#tabs-4" href="javascript:void(0)">Video</a></li> -->
+			</ul>
+			<fieldset class="adminform tabs" id="tabs-1">
+				<table class="adminformlist">
+					<?php echo $this->partialLoop('row.php', $arrInput);?>
+				</table>
+			</fieldset>
+			
+			<fieldset class="adminform tabs" id="tabs-2">
+				<table class="adminformlist">
+					<?php echo $this->partialLoop('row.php', $arrInput_en);?>
+				</table>
+			</fieldset>
+            
+		<!--<div class="width-60 fl">
+			<fieldset class="adminform">
+				<legend>Chi tiết</legend>
+				<table class="adminformlist">
+					<?php echo $this->partialLoop('row.php', $arrInput);?>
+				</table>
+			</fieldset>
+		</div>
+        <div class="width-40 fr">
+			<fieldset class="adminform">
+				<legend>Thuộc tính</legend>
+				<table class="panelformlist">
+					<?php echo $this->partialLoop('row.php', $arrMeta);?>
+				</table>
+			</fieldset>
+		</div>-->
+		
+		<div class="clr"></div>
+	</div>
+	<!-- END: 	CONTENT -->
+</form>

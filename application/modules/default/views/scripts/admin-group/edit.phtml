@@ -1,0 +1,102 @@
+<?php
+	$group_name 	= $this->formText ('group_name', $this->Item['group_name'], array ('class' => 'txtlong active' ) );
+	$avatar 		= $this->formFile ('avatar', array ('style' => 'width:250px;' ) );
+	$ranking 		= $this->formFile ('ranking', array ('style' => 'width:250px;' ) );
+	$option 		= array('Không','Có');
+	$group_acp = 0;
+	if(isset($this->Item['group_acp'])){
+		$group_acp = $this->Item['group_acp'];
+	}
+	$group_acp 		= $this->formRadio('group_acp',$group_acp,null,$option, ' ');
+	$group_default = 0;
+	if(isset($this->Item['group_default'])){
+		$group_default = $this->Item['group_default'];
+	}
+	$group_default 	= $this->formRadio('group_default',$group_default,null,$option, ' ');
+	$status = 0;
+	if(isset($this->Item['status'])){
+		$status = $this->Item['status'];
+	}
+	$status 		= $this->formRadio('status',$status,null,$option, ' ');
+	$order 			= $this->formText ('order', $this->Item['order'], array ('class' => 'txtshort' ) );
+	
+	$arrInput = array(
+			array('label' => 'Tên nhóm','input' => $group_name),
+			array('label' => 'Cho phép vào admin','input' => $group_acp),
+			array('label' => 'Nhóm mặc định','input' => $group_default),
+			array('label' => 'Hiển thị','input' => $status),
+			array('label' => 'Thứ tự','input' => $order),
+	);
+	
+	//-------------------- SESSAGES ERROR ------------------
+	if(count($this->messageError)>0){
+		$errors = $this->formErrors($this->messageError,array('id'=>'errors'));
+	}
+?>
+<form name="appForm" method="post" action="" enctype="multipart/form-data">
+	<?php echo $this->render($this->arrParam['controller'] . '/toolbar/index.php');?>
+ 	<div class="clr"></div>
+	<?php echo $this->render($this->arrParam['controller'] . '/sublink/index.php');?>
+	<?php echo $errors;?>
+
+	<!-- BEGIN: CONTENT -->
+	<div class="app_content goc10">
+		<script>
+			$(document).ready(function() {
+				$(".tabs-nav li:first a").addClass('selected');
+				$(".tabs:first").css('display','block');
+			    $(".tabs-nav li a").click(function() {
+			        $(".tabs-nav li a").removeClass('selected');
+			        $(this).addClass('selected');
+			        $(".tabs").css('display','none');
+			        $($(this).attr("rel")).css('display','block');
+			        
+			    	return false;
+			    });
+			});
+		</script>
+		<ul class="tabs-nav clearfix">
+			<li><a rel="#tabs-1" href="javascript:void(0)">Thông tin chung</a></li>
+			<li><a rel="#tabs-2" href="javascript:void(0)">Phân quyền</a></li>
+		</ul>
+		<fieldset class="adminform tabs" id="tabs-1">
+			<table class="adminformlist">
+				<?php echo $this->partialLoop('row.php', $arrInput);?>
+			</table>
+		</fieldset>
+		<fieldset class="adminform tabs" id="tabs-2">
+			<div class="panel_content privileges">
+				<label class="div_title start"><input type="checkbox" name="fullAccess" <?php if($this->Item['permission'] == 'Full Access') echo 'checked="checked"';?>> Toàn quyền hệ thống</label>
+				<div class="clr"></div>						
+				<?php
+				foreach ($this->PrivilegesModule as $key_module => $val_module){
+					foreach ($this->Privileges as $key => $val){
+						if($val['module'] == $val_module){
+							$listOption[$key_module][$val['id']] = $val['name'];
+						}
+					}
+					$arrOption = $this->formMultiCheckbox('privileges',$this->Item['privileges'],array(),$listOption[$key_module],'');
+					echo '<label class="div_title"><input type="checkbox" name="'.$val_module.'" id="module_'.$val_module.'" onclick="checkPermision(\'module_'.$val_module.'\')">'.$this->language['module_' . $val_module].'</label>';
+					echo '<div class="divformlist" id="module_'.$val_module.'">' . $arrOption . '<div class="clr"></div></div>';
+				} 
+				?>
+				<label class="div_title"><input type="checkbox" name="module_file" id="module_file" onclick="checkPermision('module_file')"> Quản lý file upload</label>
+				<div class="divformlist" id="module_file">
+					<label><?php echo $this->formCheckbox('disabled',$this->Item['disabled'],array(),array(1)).'Truy cập upload';?></label><label><?php echo $this->formCheckbox('denyZipDownload',$this->Item['denyZipDownload'],array(),array(1)).'Upload file zip';?></label><label><?php echo $this->formCheckbox('denyExtensionRename',$this->Item['denyExtensionRename'],array(),array(1)).'Đổi tên phần mở rộng';?></label><label><?php echo $this->formCheckbox('files_upload',$this->Item['files_upload'],array(),array(1)).'Upload file';?></label><label><?php echo $this->formCheckbox('files_delete',$this->Item['files_delete'],array(),array(1)).'Xóa file';?></label><label><?php echo $this->formCheckbox('files_copy',$this->Item['files_copy'],array(),array(1)).'Coppy file';?></label><label><?php echo $this->formCheckbox('files_move',$this->Item['files_move'],array(),array(1)).'Di chuyển file';?></label><label><?php echo $this->formCheckbox('files_rename',$this->Item['files_rename'],array(),array(1)).'Đổi tên file';?></label><label><?php echo $this->formCheckbox('dirs_create',$this->Item['dirs_create'],array(),array(1)).'Tạo thư mục mới';?></label><label><?php echo $this->formCheckbox('dirs_delete',$this->Item['dirs_delete'],array(),array(1)).'Xóa thư mục';?></label><label><?php echo $this->formCheckbox('dirs_rename',$this->Item['dirs_rename'],array(),array(1)).'Đổi tên thư mục';?></label><div class="clr"></div>
+				</div>
+			</div>
+		</fieldset>
+		<div class="clr"></div>
+	</div>
+</form>
+<script type="text/javascript">
+	function checkPermision(item){
+		if ($('input[type=checkbox]#' + item).is(':checked')) {
+		    $('input[type=checkbox]', 'div#' + item).prop('checked', true);
+		} else {
+			$('input[type=checkbox]', 'div#' + item).prop('checked', false);
+		}
+	}
+</script>
+
+

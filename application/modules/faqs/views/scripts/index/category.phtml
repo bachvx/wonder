@@ -1,0 +1,123 @@
+<?php
+	$category_name 		= $this->category['name'];
+	$category_picture 	= $this->category['picture'];
+	$category_content 	= htmlspecialchars_decode($this->category['content']);
+?>
+<div id="wrapper"><style>
+  @media(min-width:768px){
+    .breadcrumb{
+      font-size:24px;
+    }
+  }
+</style>
+<div class="container">
+    <section class="banner">
+      <img class="hidden-xs" width="100%" alt="Những câu hỏi thường gặp" src="http://www.saokim.com.vn/wp-content/themes/saokim/images/faq_banner.jpg">
+      <img src="faqs_files/faq_banner_mobile.jpg" class="visible-xs" alt="Những câu hỏi thường gặp" width="100%">
+    </section>
+    </div>
+    <div id="main">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-9" id="content">
+            <h1 class="breadcrumb">Những câu hỏi thường gặp</h1>
+            		<div class="row">
+        				<div class="controls col-sm-5  col-md-4 col-lg-3">
+        					<ul>
+                                <li class="filter active" data-filter="all">Tất cả câu hỏi</li>
+                                <?php
+                                    foreach ($this->ItemsCategory AS $key => $val){ ?>
+                                        <li class="filter" data-filter=".<?php echo $val['alias']; ?>"><?php echo $val['name']; ?></li>
+                                    <?php } ?>			
+        					</ul>
+        				</div>
+    
+        				<div class="col-sm-7 col-md-8 col-lg-9 ">
+                            <div id="faqs-1105714810" class="faq-container">
+                                <?php
+                                    $keyorder=-1;
+                                    $keycategory=1;
+                                    foreach ($this->Items AS $key => $val){
+                                        if($keycategory<$val['category_id']){
+                                            $keyorder=-1;
+                                            $keycategory=$val['category_id'];
+                                        }
+                                        $keyorder++;
+                                        ?>
+                                        
+                                        <div style="display: block;" class="mix <?php echo $val['category_alias']; ?>" data-myorder="<?php echo $keyorder; ?>">
+                                            <h2 class="accordion-header "><?php echo $val['content']; ?></h2>
+                                            <div style="display: none;" class="accordion-content"><?php echo $val['content_reply']; ?><br></div>
+                                        </div>
+                                        
+                                    <?php } ?>
+                            </div><!--end <div id="faqs-1105714810" class="faq-container"> !-->
+                        </div><!--end class="col-sm-7 col-md-8 col-lg-9 " !-->
+                    </div><!--end <div class="row"> !-->
+                </div><!--end <div class="col-sm-9" id="content"> !-->
+                <div class="col-sm-3" id="sidebar-right">
+                
+        <div id="text-24" class="widget widget_text quotes widget-1 widget-first ">	
+        		<div class="textwidget">Bạn chưa tìn thấy câu trả lời của mình? Hãy cho <span>QUẢNG CÁO NHÀ HÀNG</span> biết câu hỏi của bạn.</div>
+		</div><div id="text-23" class="widget widget_text widget-2 widget-last ">	
+        		<div class="textwidget"><div role="form" class="wpcf7" id="wpcf7-f710-p18-o1" dir="ltr" lang="vi">
+            <div class="screen-reader-response"></div>
+   
+        <div class="sidebarform">
+            <a href="mailto:quangcaonhahang@gmail.com" class="email">
+                <span class="icon"></span>Email<br>
+                <span class="number">quangcaonhahang@gmail.com</span>
+            </a>
+            <a class="hotline" href="tel:+841223392999">
+                <span class="icon"></span>Hotline <br> 
+                <span class="number">0122.339.2999</span>
+            </a>
+            <a href="javascript:void(0);" class="plus">
+                <span class="icon"></span> GỬI CÂU HỎI CỦA BẠN
+            </a>
+        </div>
+    
+</div>
+    <div class="guicauhoi">
+        <form name="frmFaqs" id="frmFaqs" method="post">
+            <p><span ><input name="name" size="40"  placeholder="Họ tên" type="text"></span></p>
+            <p><span><input name="email" size="40"   placeholder="Email" type="email"></span></p>
+            <p><span><input name="phone" size="40"   placeholder="Số điện thoại" type="text"></span></p>
+            <p><span ><input name="company" size="40"  placeholder="Công ty" type="text"></span></p>
+            <p><strong>Câu hỏi của bạn</strong><br><span><input name="title" size="40"  placeholder="Câu hỏi" type="text"></span></p>
+            <p><span><textarea name="content" cols="40" rows="2" placeholder="Nội dung câu hỏi của bạn"></textarea></span></p>
+            <input value="Gửi câu hỏi" name="btnSubmit" id="btnSubmit"  type="submit">
+        </form>
+    </div>
+    </div>
+		</div>      </div>
+      <div class="clearfix"></div>
+            </div><!--end <div class="row"> !-->
+        </div><!--end <div class="container"> !-->
+    </div><!--end <div id="main"> !-->
+</div><!--end <div class="container"> !-->
+
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		jQuery('#dc_jqaccordion_widget-2-item .menu').dcAccordion({
+			eventType: 'click',
+			hoverDelay: 0,
+			menuClose: true,
+			autoClose: true,
+			saveState: false,
+			autoExpand: true,
+			classExpand: 'current-menu-item',
+			classDisable: '',
+			showCount: false,
+			disableLink: true,
+			cookie: 'dc_jqaccordion_widget-2',
+			speed: 'slow'
+		});
+	});
+</script>
+ <script>
+    jQuery(function(){
+    	jQuery('#faqs-1105714810').mixItUp();
+    });
+</script>
+

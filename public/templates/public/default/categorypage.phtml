@@ -1,0 +1,29 @@
+<?php echo $this->render('html/header.php');?>
+<body>
+	<!-- HEADER -->
+    <?php //var_dump($this->arr);die; 
+             echo $this-> blkHeader($this->arr['manu-id'],'unimom',$this->template_id); ?>
+     
+	
+		<div class="clearfix"></div>
+        
+		
+		<div class="ketquatim uni2">
+            <div class="container">
+                <?php echo $this->layout()->content;?>
+            </div>	
+		</div>
+		<!-- Modal -->
+		
+		<?php echo $this -> blkDownload(); ?>
+	</main>
+
+	<div class="clearfix"></div>
+
+	<!-- FOOTER -->
+    <?php echo $this->blkFooterNew(); ?>
+</body>	
+
+</html>
+
+

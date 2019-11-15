@@ -1,0 +1,131 @@
+<div class="woocommerce">
+<section class="sec-cart">
+    <div class="container">
+	<div class="row">
+        <div class="col-sm-7">
+			<?php
+				//-------------------- SESSAGES ERROR ------------------
+				if(count($this->messageError)>0){
+					foreach ($this->messageError AS $key => $val){
+						echo '<div class="listError" id="'.$key.'" rel="' . $val . '"></div>';
+					}
+				}
+			?>
+			<?php
+				$full_name = $this->formText('full_name',$this->Item['full_name'],array('class' => 'input-text form-control')) . '<div class="view_error" id="view_full_name"></div>';
+				$email = $this->formText('email',$this->Item['email'],array('class' => 'input-text form-control')) . '<div class="view_error" id="view_email"></div>';
+				$phone = $this->formText('phone',$this->Item['phone'],array('class' => 'input-text form-control')) . '<div class="view_error" id="view_phone"></div>';
+				$address = $this->formTextarea('address',$this->Item['address'],array('class' => 'input-text form-control','rows' => 2, 'cols' => 47)) . '<div class="view_error" id="view_address"></div>';
+				$shipping = $this->formTextarea('shipping',$this->Item['shipping'],array('class' => 'input-text form-control','rows' => 2, 'cols' => 47)) . '<div class="view_error" id="view_shipping"></div>';
+				$comment = $this->formTextarea('comment',$this->Item['comment'],array('class' => 'input-text form-control','rows' => 2, 'cols' => 47)) . '<div class="view_error" id="view_comment"></div>';
+				$captcha 		= $this->captcha;
+				$txtCaptcha 	= $this->formText('captcha','', array ('class' => 'input-text form-control')) . '<div class="view_error" id="view_captcha"></div>';
+				$txtID 			= $this->formHidden('captchaID',$this->captcha_id);
+				$lang_code		= $this->formHidden('lang',$this->arrParam['ssFilter']['lang_code']);
+			?>
+			<form name="your-cart" id="your-cart" action="" method="post">
+          		<div class="cartDetail-order pd10">
+          			<div style="text-transform: uppercase; color: #ff6600; font-weight: bold;">
+          				<?php echo $this->language['diadiemNhapThongTin'];?>
+          			</div>
+                    <div class="label"><?php echo $this->language['hoTen'];?> <span class="star">*</span></div>
+                    <div><?php echo $full_name;?></div>
+                    
+                    <div class="label"><?php echo $this->language['email'];?> </div>
+                    <div><?php echo $email;?></div>
+                    <div class="label"><?php echo $this->language['dienThoai'];?> <span class="star">*</span></div>
+                    <div><?php echo $phone;?></div>
+                    <div class="label"><?php echo $this->language['diadiemDiaChiDatCho'];?> <span class="star">*</span></div>
+                    <div><?php echo $shipping;?></div>
+                    <div class="label"><?php echo $this->language['noiDung'];?> </div>
+                    <div><?php echo $comment;?></div>
+                    <div class="label"><?php echo $this->language['captcha'];?></div>
+                    <div><?php echo $txtCaptcha . $txtID . $lang_code;?></div>
+                    <div>
+								<?php echo $captcha;?>
+							</div>
+                     
+          		
+                    </div><!--end row-8-->
+		
+        </div><!--end row 8-->
+        <div class="col-sm-5">
+            <div class="cartDetail">
+				<table class="shop_table woocommerce-checkout-review-order-table checkout-table" cellspacing="0">
+					<tr class="title">
+						<th class="product-name"><?php echo $this->language['diadiemTenDiaDiem'];?></th>
+						<th class="product-total text-right bold"><?php echo $this->language['diadiemGia'] . '('.$this->money['code'].')';?></th>
+					</tr>
+					<?php
+					$cart = $this->cart;
+					if(count($this->Items)){
+						$totalPrice = 0;
+						foreach ($this->Items as $key => $val){
+							$id 		= $val['id'];
+							$name 		= $val['name'];
+							$price 		= $val['price'];
+							$selloff 	= $val['selloff'];
+							$units_money = $val['units_money'];
+							$quantity	= $cart[$id];
+							$picture = '<img class="img" src="' . $val['thumb'] . '" alt="'.$val['name'].'" style="width:55px;"/>';
+
+							$total = 0;
+							if($selloff <= 0){
+								$total = $quantity * $val['price'];
+								$totalPrice += $total;
+								$total = Zend_Locale_Format::toNumber($total,array('precision' => 0));
+								$price = '<span>'.Zend_Locale_Format::toNumber($price,array('precision' => 0)).'</span>';
+								$selloff = '';
+							}else{
+								$total = $quantity * ($val['price']) - ($val['price'] * ($val['selloff']/100));
+								$totalPrice += $total;
+								$total = Zend_Locale_Format::toNumber($total,array('precision' => 0));
+								$price = '<span style="text-decoration: line-through;">'.Zend_Locale_Format::toNumber($price,array('precision' => 0)).'</span>';
+								$selloff = Zend_Locale_Format::toNumber(($val['price']) - ($val['price'] * ($val['selloff']/100)),array('precision' => 0)) . '';
+							}
+							
+							$urlOptions = array (
+									'module' => 'diadiem',
+									'controller' => 'index',
+									'action' => 'detail',
+									'tcat' => $val ['category_alias'],
+									'title' => $val ['alias'],
+									'cid' => $val ['cat_id'],
+									'id' => $val ['id'] );
+							$linkDetial = $this->url( $urlOptions, 'diadiem-detail' );
+							
+							$itemProduct = 'itemProduct[' . $val['id'] . ']';
+							$itemProduct = $quantity;
+							
+					?>
+					<tr class="cart_item">
+						<td><?php echo $name;?> x <?php echo $itemProduct;?></td>
+						
+						<td class="product-total text-right bold"><span class="woocommerce-Price-amount amount"><?php echo $price  . $selloff;?>₫</span></td>
+					</tr>
+					<?php
+						}
+					} 
+					?>
+					<tr>
+						<th align="right"><?php echo $this->language['tongtien'];?>:</th>
+						<th class="price" align="center"><?php echo Zend_Locale_Format::toNumber($totalPrice,array('precision' => 0)) .' '. $this->money['code'];?></th>
+					</tr>
+				</table>
+                <div class="form-row place-order submit">
+					
+					<input type="submit" class="button alt btn btn-cta" name="update" id="update" value="<?php echo $this->language['gui'];?>" />
+					
+			</div>
+        
+             	</div>
+         	</form>
+        </div>
+    </section>
+</div>
+<script type="text/javascript">
+	$("div.listError").each(function (i) {
+	    //alert($(this).attr('rel'));
+	    $('#view_' + $(this).attr('id')).html($(this).attr('rel'));
+	});
+</script>

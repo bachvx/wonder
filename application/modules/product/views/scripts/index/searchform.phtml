@@ -1,0 +1,130 @@
+<?php
+ //var_dump($arrParam['keywords']);die;
+//if ($this->totalItem > 0) { 
+?>
+<div class="timsanpham">
+        <div class="container">
+            <div class="col-sm-3">
+				<div class="filter">
+					<div class="item">
+						<h3><a href=""><?php echo $this->language['dongsanpham']; ?></a></h3>
+						<ul>
+                        
+                        <?php 
+                           // var_dump($this->Categorys);die;
+                            foreach ($this->Categorys as $key => $val){
+                                echo '<li><a href="search.html?cat_id='.$val['id'].'">'.$val['name'].'</a></li>';
+                            }
+                        ?>
+						</ul>
+					</div>
+					<div class="item">
+						<h3><a href=""><?php echo $this->language['thuonghieu']; ?></a></h3>
+						<ul>
+                            <?php 
+                               // var_dump($this->Categorys);die;
+                                foreach ($this->Thuonghieu as $key => $val){
+                                    echo '<li><a href="search.html?trademark='.$val['id'].'">'.$val['name'].'</a></li>';
+                                }
+                            ?>
+						</ul>
+					</div>
+					<div class="item">
+						<h3><a href=""><?php echo $this->language['mucgia']; ?></a></h3>
+						<ul>
+							<li><a href="search.html?max=500000">< 500.000</a></li>
+							<li><a href="search.html?price=500000&price_to=1000000">500.000 - 1.000.000</a></li>
+							<li><a href="search.html?price=1000000&price_to=2000000">1.000.000 - 2.000.000</a></li>
+							<li><a href="search.html?min=2000000">> 2.000.000</a></li>
+						</ul>
+					</div>
+                </div>
+            </div><!--end col 3-->
+            <div class="col-sm-9">
+					<div class="ketquatim">
+						<div class="top">
+							<p><?php echo $this->language['timthay']; ?> <span><?php echo $this->totalItem; ?></span> <?php echo $this->language['tongsanpham']; ?></p>
+						</div>
+                        <div class="content">
+							<div class="row">
+                            <?php
+			foreach ($this->Items as $key => $val){
+				$name = $val['name'];
+				$cat_name = '<p class="d_cat_name">'.$val['category_name'].'</p>';
+				
+				$code = '';
+				if($val['code'] != ''){
+					$code = '<p class="code">'.$this->language['productMaSanPham'].': ' . $val['code'] . '</p>';
+				}
+				$imgName = explode ( '/editor-upload/images/', $val ['picture'] ); 
+				$picture = '<img  class="img" src="' . APPLICATION_URL . '/default/public/view-image/width/250/height/250/images/' . $imgName [1] . '" alt="' . $val ['name'] . '"/>';
+				
+				$synopsis = nl2br($val['synopsis']);
+		
+				$price_to = $val['price_to'];
+				$units_money = $val['units_money'];
+				//$quanhuyen_name =$val['quanhuyen_name'];
+				$price = '';
+				if($val['price'] != 0){
+					$price = '<p class="price">'.Zend_Locale_Format::toNumber($val['price'],array('precision' => 0)) . ' ' . $units_money.'</p>';
+				}else{
+					$price = '<p class="price">'.$this->language['lienHe'].'</p>';
+				}
+				$urlOptions = array (
+						'module' => 'product',
+						'controller' => 'index',
+						'action' => 'detail',
+						'title' => $val ['alias'],
+						'id' => $val ['id'] );
+				$linkDetial = $this->url( $urlOptions, 'diadiem-detail' );
+			
+            ?>
+								<div class="col-sm-4">
+									<div class="item-sp">
+										<div class="image">
+											<a href="<?php echo $linkDetial; ?>"><?php echo $picture;?></a>
+										</div>
+										<div class="info">
+											<h3><a href="<?php echo $linkDetial; ?>"><?php echo $name;?></a></h3>
+											<p class="sku">MÃ SP: <?php echo $val['code'];?></p>
+											<p class="price"><?php echo $price; ?></p>
+										</div>
+									</div>
+								</div>
+                                  <?php 
+                                    }
+                                ?>
+                
+                            </div><!-- end row-->
+                        </div><!-- end content col 9-->
+                    </div>
+                </div>
+                <?php
+			if(!empty($this->arrParam['cid'])){
+					
+				$urlOptionsCategory = array('module'=>'diadiem','controller'=>'index','action'=>'category',
+						'cid'=>$this->arrParam['cid'],
+						'alias'=>$this->arrParam['alias'],
+				);
+				$currentUrl = $this->url($urlOptionsCategory,'diadiem-category');
+			}else{
+				$currentUrl = $uri = $this->serverUrl(true)."&";
+                $currentUrl= substr($currentUrl, 0, strpos($currentUrl, "&"));
+               // var_dump($currentUrl);die;
+			}
+			echo $this->paginationControl($this->paginator,'Sliding','pagination-searchform.phtml',array('currentUrl'=>$currentUrl,'arrParam' => $this->arrParam)); 
+		?>
+        </div>
+        
+    </div>
+                
+                
+                
+                
+              
+	
+<?php			
+//} 
+?>	
+
+

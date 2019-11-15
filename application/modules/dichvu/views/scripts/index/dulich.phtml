@@ -1,0 +1,102 @@
+<?php
+//lấy thông tin về loại hình du lịch
+    $siteConfig = Zend_Registry::get('siteConfig');
+	$catchuoi = new Zendvn_Filter_CutString(150);
+    $language = new Zend_Session_Namespace('language');
+	$moduleConfig = $this->arrParam['moduleConfig'];
+	
+     if($language->lang == 'vi'){
+        $slogan= $this->Item['slogan'];
+        $name=$this->Item['name'];
+        $synopsis = $this->Item['synopsis'];
+        $content =htmlspecialchars_decode($this->Item['content']) ;
+     }else{
+        $slogan= $this->Item['slogan_en'];
+        $name=$this->Item['name_en'];
+        $synopsis = $val['synopsis_en'];
+        $content =htmlspecialchars_decode($this->Item['content_en']) ;
+     }
+    
+//lấy danh mục category top và bot
+        
+        foreach($this->Category as $key => $val){
+            
+            $urlOptions = array (
+					'module' => 'dichvu',
+					'controller' => 'index',
+					'action' => 'dulich',
+					'alias' => $val['alias'],
+					'id' => $val['id']);
+            $linkDetial = $this->url($urlOptions,'dulich-detail');
+            if($language->lang == 'vi'){
+                $name_category       = $val['name'];
+                $synopsis_category = $catchuoi->filter($val['synopsis']);
+             }else{
+                $name_category       = $val['name_en'];
+                $synopsis_category = $catchuoi->filter($val['synopsis_en']);
+             }
+             
+            if($val['id']==$this->Item['id']){
+                $category_top.='<li class="active"><a href="'.$linkDetial.'">'.$name_category.'</a></li>';
+                
+            }else{
+                $category_top.='<li><a href="'.$linkDetial.'">'.$name_category.'</a></li>';
+                $category_bot.='<div class="b__type--card">
+                                <div class="card">
+                                  <a href="'.$linkDetial.'">
+                                    <img src="'.$val['picture_banner'].'" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                      <h5 class="card-title">'.$name_category.'</h5>
+                                      <p class="card-text">'.$synopsis_category.' </p> 
+                                    </div>
+                                  </a>
+                                </div>
+                              </div><!-- end .b__type--card--> ';
+            }
+            
+            
+        }
+        
+    ?>
+<div class="b__banner b__banner--sukien">
+    <?php if($siteConfig['config_site']['offImage']==1){
+        $banner='<img src="'.$siteConfig['config_site']['imgads'].'" width="100%" />';
+    }else{
+        $banner='<img class="img_pc" src="'. $this->Item['picture_banner'].'">
+                <img class="img_mb" src="'. $this->Item['picture_banner_mobile'].'">';
+    } 
+        echo $banner;
+    ?>  
+       
+  <div class="b__sukien--caption">  
+    <p><?php echo $slogan; ?></p>  
+  </div>
+</div>
+<div class="b__nghiduong">
+  <div class="containers">
+    <div class="b__nghiduong--info">
+        <div class="b__nghiduong--box">
+			<div class="b__nghiduong--left">
+			  <ul>
+				<?php echo $category_top; ?>
+			  </ul>
+			</div><!-- end .b__nghiduong--left-->
+			<div class="b__nghiduong--right">
+			  <h3><?php echo $name; ?></h3>
+			  <p><?php echo $synopsis; ?></p> 
+			</div><!-- end .b__nghiduong--right-->
+		</div><!--close   b__nghiduong--box -->
+        <div class="b__nghiduong--box">
+            <?php echo $content; ?>
+        </div><!--close   b__nghiduong--box -->
+        <div class="b__nghiduong--box">
+            <div class="b__type--travel">
+                <h3><?php echo $this->language['wonderDulichCatergory']; ?></h3>
+                <div class="b__type--travel_info">
+                    <?php echo $category_bot; ?>
+                </div>
+            </div>
+        </div><!--close   b__nghiduong--box -->
+    </div><!--close   b__nghiduong--info -->
+  </div><!--close   containers -->
+</div><!--close   b__nghiduong -->

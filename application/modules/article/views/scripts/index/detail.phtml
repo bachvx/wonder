@@ -1,0 +1,44 @@
+<div class="b__banner b__banner--sukien">  
+  <img src="<?php echo $this->Item['picture']; ?>" width="100%" /> 
+</div>
+<div class="b__tintuc--detail">
+  <div class="containers">
+    <h5 class="b__title--second"><?php echo $this->Item['name']; ?></h5>
+    <p><?php echo $this->Item['synopsis']; ?></p>
+    <div class="content">
+		<?php echo htmlspecialchars_decode ( $this->Item ['content'] ); ?>
+	</div>
+    <div class="b__tintuc--related">
+        <div class="containers">
+            <h3 class="b__tintuc--title"><?php echo $this->language['baiVietKhac']; ?></h3>
+            <div class="b__tintuc--related_gr">
+                <?php
+            		foreach ( $this->itemOld as $key => $val ) {
+            			$name = $val ['name'];
+            			$synopsis=	$val['synopsis'];
+                        $picture=	$val['picture'];														
+            			$urlOptions = array ('module' => 'article', 'controller' => 'index', 'action' => 'detail', 'title' => $val ['alias'], 'id' => $val ['id'] );
+                       	$linkDetial = $this->url ( $urlOptions, 'article-detail' );
+            			
+            			?>
+                        <div class="b__tintuc--related_ls">
+                          <a href="<?php echo $linkDetial;?>">
+                            <img src="<?php echo $picture;?>" />
+                            <div class="b__tintuc--related_description">
+                              <h3 class="text-uppercase"><?php echo $name;?></h3>
+                              <p><?php echo $synopsis;?> </p>
+                            </div>
+                          </a>
+                        </div><!-- end .b__tintuc--related_ls-->
+        		<?php
+        		}
+        		?>
+            </div>
+        </div>
+    </div>
+   </div><!-- close container-->
+ </div> <!-- close b_tintuc--> 
+
+
+
+

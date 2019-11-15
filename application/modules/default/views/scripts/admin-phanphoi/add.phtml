@@ -1,0 +1,104 @@
+<?php
+	//----------------------- INPUT ELEMENTS -------------------//
+	$ssFilter 		= $this->arrParam['ssFilter'];
+	$selectLanguages = $ssFilter['lang_code'] . $this->formHidden('lang_code',$ssFilter['lang_code']);
+	$name 			= $this->formText ( 'name', $this->Item['name'], array ('class' => 'txtlong active') );
+    $name_en 			= $this->formText ( 'name_en', $this->Item['name_en'], array ('class' => 'txtlong active') );
+	$picture		= '<img src="' . $this->Item['picture'] . '" style="max-width:200px;">';
+	$picture 		= $this->cmsUserFiles('picture', $this->Item['picture'], 'Chọn ảnh', 'images', $options = array('class' => 'txtfile') ) . '<br>' .$picture ;
+	$url 			= $this->formText ( 'url', $this->Item['url'], array ('class' => 'txtlong active') );
+    //$synopsis		= $this->formTextarea('synopsis', $this->Item['synopsis'],array('rows'=>8,'class' => 'textarea'));
+	$option 		= array('Không','Có');
+	if(isset($this->Item['status'])){
+		$trangthai = $this->Item['status'];
+	}else{
+		$trangthai = 1;
+	}
+	$status 		= $this->formRadio('status',$trangthai,null,$option, ' ');
+	
+	if(isset($this->Item['order'])){
+		$order = $this->Item['order'];
+	}else{
+		$order = 255;
+	}
+	$order 			= $this->formText ('order', $order, array ('class' => 'txtshort' ) );
+	
+	$synopsis 		= $this->cmsEditor('synopsis',htmlspecialchars_decode($this->Item['synopsis']),array('toolbar'=>'MyToolbar', 'language'=>'vi'));
+    $synopsis_en 		= $this->cmsEditor('synopsis_en',htmlspecialchars_decode($this->Item['synopsis_en']),array('toolbar'=>'MyToolbar', 'language'=>'vi'));
+	$selectCategory	= $this->formSelect('cat_id',$this->Item['cat_id'],array('style'=>'width:250px;'),$this->Mien);
+	$slbTarget = array(
+			'_self' => 'Tại trang (_self)',
+			'_blank'=> 'Cửa sổ mới (_blank)',
+			'_top'=> 'Cửa sổ trên cùng (_top)',
+			'_parent'=> 'Cửa sổ cha (_parent)',
+	);
+	$selectTarget = $this->formSelect('target',$this->Item['target'],array(),$slbTarget);
+	
+	$arrInput = array(
+				array('label' => 'Tiêu đề','input' => $name, 'desc' => '<span class="red">*</span>'),
+			//	array('label' => 'Hình ảnh','input' => $picture,'style' => 'margin-left: 152px;'),
+				//array('label' => 'Đích đến','input' => $selectTarget),
+			//	array('label' => 'Liên kết','input' => $content, 'desc' => '<span class="red">*</span>'),
+				array('label' => 'Vùng, miền','input' => '<div id="category">' . $selectCategory . '</div>'),
+                array('label' => 'Thông tin','input' => $synopsis),
+				array('label' => 'Hiển thị','input' => $status),
+				array('label' => 'Thứ tự','input' => $order),
+			);
+   $arrInput_en = array(
+				array('label' => 'Tiêu đề','input' => $name_en, 'desc' => '<span class="red">*</span>'),
+                array('label' => 'Thông tin','input' => $synopsis_en),
+				
+			);
+	
+	//-------------------- SESSAGES ERROR ------------------
+	if(count($this->messageError)>0){
+		$errors = $this->formErrors($this->messageError,array('id'=>'errors'));
+	}
+?>
+<form name="appForm" method="post" action="" enctype="multipart/form-data">
+	<?php echo $this->render('admin-phanphoi/toolbar/index.php');?>
+ 	<div class="clr"></div>
+	<?php //echo $this->render('admin-link/sublink/index.php');?>
+	<?php echo $errors;?>
+
+		<!-- BEGIN: CONTENT -->
+	<div class="app_content goc10">
+		<div class="width-100 fl">
+			<script>
+				$(document).ready(function() {
+					$(".tabs-nav li:first a").addClass('selected');
+					$(".tabs:first").css('display','block');
+				    $(".tabs-nav li a").click(function() {
+				        $(".tabs-nav li a").removeClass('selected');
+				        $(this).addClass('selected');
+				        $(".tabs").css('display','none');
+				        $($(this).attr("rel")).css('display','block');
+				        
+				    	return false;
+				    });
+				});
+			</script>
+			<ul class="tabs-nav clearfix">
+				<li><a rel="#tabs-1" href="javascript:void(0)">Vietnamese</a></li>
+				<li><a rel="#tabs-2" href="javascript:void(0)">English</a></li>
+				<!--<li><a rel="#tabs-3" href="javascript:void(0)">Thông tin quán</a></li>
+				 <li><a rel="#tabs-4" href="javascript:void(0)">Video</a></li> -->
+			</ul>
+			<fieldset class="adminform tabs" id="tabs-1">
+				<table class="adminformlist">
+					<?php echo $this->partialLoop('row.php', $arrInput);?>
+				</table>
+			</fieldset>
+			
+			<fieldset class="adminform tabs" id="tabs-2">
+				<table class="adminformlist">
+					<?php echo $this->partialLoop('row.php', $arrInput_en);?>
+				</table>
+			</fieldset>
+		
+		</div>
+		
+		<div class="clr"></div>
+	</div>
+	<!-- END: 	CONTENT -->
+</form>

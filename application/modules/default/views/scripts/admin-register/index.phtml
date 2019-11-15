@@ -1,0 +1,200 @@
+<?php
+	//Xay dung tim kiem
+	$ssFilter 		= $this->arrParam['ssFilter'];
+	$page = '';
+	if(isset($this->arrParam['page'])){
+		$page = '/page/' . $this->arrParam['page'];
+	}
+	$action_link 	= $this->baseUrl($this->currentController . '/filter/type/order');
+
+	$lblHoten 		= $this->cmsLinkSort('Họ và tên','r.hoten',$ssFilter,$this->imgUrl . '/admin',$action_link);	
+	$lblDienthoai	= $this->cmsLinkSort('Điện thoại','r.dienthoai',$ssFilter,$this->imgUrl . '/admin',$action_link);	
+	$lblEmail		= $this->cmsLinkSort('Email','r.email',$ssFilter,$this->imgUrl . '/admin',$action_link);		
+	$lblTrungtam	= $this->cmsLinkSort('Cơ sở muốn đăng ký','trungtam_name',$ssFilter,$this->imgUrl . '/admin',$action_link);
+	$lblNgaygui		= $this->cmsLinkSort('Ngày gửi','r.coquan',$ssFilter,$this->imgUrl . '/admin',$action_link);
+	$lblNgayhen		= $this->cmsLinkSort('Ngày hẹn','r.ngayhen',$ssFilter,$this->imgUrl . '/admin',$action_link);	
+	$lblNgayhoc		= $this->cmsLinkSort('Ngày học','r.ngayhoc',$ssFilter,$this->imgUrl . '/admin',$action_link);	
+	$lblTheonguon	= $this->cmsLinkSort('Theo nguồn','nguontin_name',$ssFilter,$this->imgUrl . '/admin',$action_link);	
+	$lblID 			= $this->cmsLinkSort('ID','r.id',$ssFilter,$this->imgUrl . '/admin',$action_link);
+	$lblStatus 		= $this->cmsLinkSort('Status','r.status',$ssFilter,$this->imgUrl . '/admin',$action_link);
+
+	$lblLanguage	= $this->cmsLinkSort('Ngôn ngữ','r.lang_code',$ssFilter,$this->imgUrl . '/admin',$action_link);
+	
+	$keywords = $this->formText('keywords',$ssFilter['keywords'],array('class'=>'txtshort','placeholder' => 'Từ khóa'));
+	
+	//---------------------GROUP SELECTBOX --------------------//	
+	$selectLanguages = $this->slbLanguages;
+	$linkSlbLanguages = $this->baseUrl($this->currentController . '/filter/type/lang');
+	$selectLanguages = $this->formSelect('lang_code',$ssFilter['lang_code'],array('onchange'=>"OnSubmitForm('" .$linkSlbLanguages ."')"),$selectLanguages);
+	
+	$linkSearch = $this->baseUrl($this->currentController . '/filter/type/search/key/1');
+	$btnSerach = $this->formButton('search-now','Tìm',array('onclick'=>"OnSubmitForm('" .$linkSearch . "')"));
+	
+	$linkResetSearch = $this->baseUrl($this->currentController . '/filter/type/search/key/0');
+	$btnResetSerach = $this->formButton('clear-keywords','Xóa',array('onclick'=>"OnSubmitForm('" .$linkResetSearch ."')"));
+	
+	$arrNgay		= array('ngaygui' => 'Ngày gửi', 'ngayhen' => 'Ngày hẹn', 'ngayhoc' => 'Ngày học');
+	$slbNgay	 	= $this->formSelect('ff_ngay',$ssFilter['ff_ngay'],array('style' => 'width:80px; float:left; margin-right:5px;'),$arrNgay);
+	
+	$tungay = $this->formText('tungay',$ssFilter['tungay'],array('class'=>'txtshort','style' => 'width:70px;','placeholder' => 'Từ ngày','id' => 'tungay_validate'));
+	$denngay = $this->formText('denngay',$ssFilter['denngay'],array('class'=>'txtshort','style' => 'width:70px;','placeholder' => 'đến ngày','id' => 'denngay_validate'));
+	
+	$strSearch = $keywords . ' ' . $slbNgay . ' ' . $tungay . ' ' . $denngay . ' ' . $btnSerach . ' ' . $btnResetSerach;
+	
+	array_unshift($this->Nguontin, 'Nguồn tin');
+	$slbNguontin 	= $this->formSelect('nguontin_id',$ssFilter['nguontin_id'],array('style' => 'width:100px;','onchange'=>"OnSubmitForm('" .$this->baseUrl($this->currentController . '/filter/type/nguontin') ."')"),$this->Nguontin);
+	
+	array_unshift($this->Trungtam, 'Cơ sở');
+	$slbTrungtam 	= $this->formSelect('trungtam_id',$ssFilter['trungtam_id'],array('style' => 'width:100px;','onchange'=>"OnSubmitForm('" .$this->baseUrl($this->currentController . '/filter/type/trungtam') ."')"),$this->Trungtam);
+	
+	array_unshift($this->Khoahoc, 'Khóa học');
+	$slbKhoahoc 	= $this->formSelect('khoahoc_id',$ssFilter['khoahoc_id'],array('style' => 'width:100px;','onchange'=>"OnSubmitForm('" .$this->baseUrl($this->currentController . '/filter/type/khoahoc') ."')"),$this->Khoahoc);
+	
+	$arrNgaygui		= array('0' => 'Ngày gửi', 'homnay' => 'Hôm nay', 'homqua' => 'Hôm qua','tuannay' => 'Tuần này','thangnay' => 'Tháng này','thangtruoc' => 'Tháng trước', 'namnay' => 'Năm nay');
+	$slbNgaygui 	= $this->formSelect('ff_ngaygui',$ssFilter['ff_ngaygui'],array('style' => 'width:100px;','onchange'=>"OnSubmitForm('" .$this->baseUrl($this->currentController . '/filter/type/ngaygui') ."')"),$arrNgaygui);
+	
+	$arrNgayhen 	= array('0' => 'Ngày hẹn', 'homnay' => 'Hôm nay','ngaymai' => 'Ngày mai','ngaykia' => 'Ngày kia','hettuannay' => 'Hôm nay đến hết tuần này','tuansau' => 'Tuần sau','hetthangnay' => 'Hôm nay đến hết tháng này','thangsau' => 'Tháng sau', 'homqua' => 'Hôm qua','tuannay' => 'Tuần này','thangnay' => 'Tháng này','thangtruoc' => 'Tháng trước', 'namnay' => 'Năm nay');
+	$slbNgayhen 	= $this->formSelect('ff_ngayhen',$ssFilter['ff_ngayhen'],array('style' => 'width:100px;','onchange'=>"OnSubmitForm('" .$this->baseUrl($this->currentController . '/filter/type/ngayhen') ."')"),$arrNgayhen);
+	
+	$arrNgayhoc 	= array('0' => 'Ngày học', 'homnay' => 'Hôm nay','ngaymai' => 'Ngày mai','ngaykia' => 'Ngày kia','hettuannay' => 'Hôm nay đến hết tuần này','tuansau' => 'Tuần sau','hetthangnay' => 'Hôm nay đến hết tháng này','thangsau' => 'Tháng sau', 'homqua' => 'Hôm qua','tuannay' => 'Tuần này','thangnay' => 'Tháng này','thangtruoc' => 'Tháng trước', 'namnay' => 'Năm nay');
+	$slbNgayhoc 	= $this->formSelect('ff_ngayhoc',$ssFilter['ff_ngayhoc'],array('style' => 'width:100px;','onchange'=>"OnSubmitForm('" .$this->baseUrl($this->currentController . '/filter/type/ngayhoc') ."')"),$arrNgayhoc);
+
+	$arrStatus 		= array('' => 'Trạng thái', '1' => 'Đã liên hệ','0' => 'Chưa liên hệ');
+	$slbStatus 		= $this->formSelect('ff_status',$ssFilter['ff_status'],array('style' => 'width:100px;','onchange'=>"OnSubmitForm('" .$this->baseUrl($this->currentController . '/filter/type/trangthai') ."')"),$arrStatus);
+	
+	$strSearchRight = $slbTrungtam . ' ' . $slbKhoahoc . ' ' . $slbNguontin . ' ' .$slbStatus;
+?>
+<script type="text/javascript">
+	$(document).ready(function() {
+	   	$.datepicker.setDefaults($.datepicker.regional['vi']);
+		$( "#tungay_validate" ).datepicker({
+	        changeMonth: true,
+	        changeYear: true,
+	       	dateFormat: 'dd/mm/yy',
+	       	monthNamesShort: ['Tháng 01', 'Tháng 02', 'Tháng 03', 'Tháng 04', 'Tháng 05', 'Tháng 06', 'Tháng 07', 'Tháng 08', 'Tháng 09', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+	       	onClose: function( selectedDate ) {
+				$( "#denngay_validate" ).datepicker( "option", "minDate", selectedDate );
+			}
+	    });
+	    $( "#denngay_validate" ).datepicker({
+	        changeMonth: true,
+	        changeYear: true,
+	        dateFormat: 'dd/mm/yy',
+	        monthNamesShort: ['Tháng 01', 'Tháng 02', 'Tháng 03', 'Tháng 04', 'Tháng 05', 'Tháng 06', 'Tháng 07', 'Tháng 08', 'Tháng 09', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+	        onClose: function( selectedDate ) {
+				$( "#tungay_validate" ).datepicker( "option", "maxDate", selectedDate );
+			}
+	    });
+	});
+</script>
+<form name="appForm" method="post" action="">
+	<?php echo $this->render('admin-register/toolbar/index.php');?>
+ 	<div class="clr"></div>
+	<?php echo $this->render('admin-register/sublink/index.php');?>	
+
+	<!-- BEGIN: CONTENT -->
+	<div class="app_content goc10">
+		<div class="block_filter">
+			<div class="fl">
+				<?php echo $strSearch;?>
+			</div>
+			<div class="fr">
+				<?php echo $strSearchRight;?>
+			</div>
+			<div class="clr"></div>
+		</div>
+		<table class="adminlist">
+			<tr>
+				<th width="20">#</th>
+				<th width="20">
+					<input type="checkbox" name="checkbox" id="checkbox" onclick="checkedAll()">
+				</th>
+				<th><?php echo $lblHoten;?></th>
+				<th><?php echo $lblDienthoai;?></th>
+				<th><?php echo $lblEmail;?></th>
+				<th><?php echo $lblTrungtam;?></th>
+				<th width="70"><?php echo $lblNgaygui;?></th>
+				<th width="70"><?php echo $lblNgayhen;?></th>
+				<th width="70"><?php echo $lblNgayhoc;?></th>
+				<th><?php echo $lblTheonguon;?></th>
+				<th width="50"><?php echo $lblStatus;?></th>
+				<th width="60">Control</th>
+				<th width="34"><?php echo $lblID;?></th>
+			</tr>
+			<?php
+				foreach ($this->Items as $key => $val){
+					$id 			= $val['id'];
+					$hoten 			= $val['hoten'];
+					$dienthoai		= $val['dienthoai'];
+					$email 			= $val['email'];
+					$trungtam		= $val['trungtam_name'];
+					$ngayhen		= $val['ngayhen'].'<div>'.$val['thoigian_name'].'</div>';
+					$ngayhoc		= $val['ngayhoc'];
+					$ngaygui		= $val['ngaygui'];
+					$nguontin		= $val['nguontin_name'];
+					
+					$status 		= $val['status'];
+					if($status == 1){
+						$linkStatus = $this->baseUrl($this->currentController . '/status/type/0/id/' . $id . $page);
+						$status = $this->cmsIconButton('Kích vào để tắt', $this->imgUrl . '/admin/tick.png', $linkStatus);
+					}else{
+						$linkStatus = $this->baseUrl($this->currentController . '/status/type/1/id/' . $id . $page);
+						$status = $this->cmsIconButton('Kích vào để bật', $this->imgUrl . '/admin/publish_x.png', $linkStatus);
+					}
+						
+					$linkInfo		= $this->baseUrl($this->currentController . '/info/id/' . $id . $page);
+					$btnInfo		= $this->cmsIconButton('Xem thông tin', $this->imgUrl . '/admin/icon_info.png', $linkInfo);
+					
+					$linkEdit		= $this->baseUrl($this->currentController . '/edit/id/' . $id . $page);
+					$btnEdit		= $this->cmsIconButton('Sửa', $this->imgUrl . '/admin/icon_edit.png', $linkEdit);
+					
+					$linkDelete		= $this->baseUrl($this->currentController . '/delete/id/' . $id . $page);
+					$btnDelete		= $this->cmsIconButton('Xóa', $this->imgUrl . '/admin/publish_r.png', $linkDelete);
+					
+					$strIconButton 	= $btnInfo . ' ' . $btnDelete;
+					
+					$alias = '<p class="smallsub">(Url: ' . $val['url'] . ' )</p>';
+					$hoten 	= '<b><a href="' . $linkInfo . '">' . $hoten . '</a></b>';
+				
+					$cid 			= $this->formCheckbox('cid[]',$val['id']);
+					
+					$classRow = 'row1';
+					if($key % 2 == 0)
+					$classRow = 'row0';
+						
+			?>
+			<tr class="<?php echo $classRow;?>">
+				<td align="center"><?php echo $key + 1;?></td>
+				<td align="center"><?php echo $cid;?></td>
+				<td align="left"><?php echo $hoten;?></td>
+				<td align="left"><?php echo $dienthoai;?></td>
+				<td align="left"><?php echo $email;?></td>
+				<td align="left"><?php echo $trungtam;?></td>
+				<td align="center"><?php echo $ngaygui;?></td>
+				<td align="center"><?php echo $ngayhen;?></td>
+				<td align="center"><?php echo $ngayhoc;?></td>
+				<td align="left"><?php echo $nguontin;?></td>
+				<td align="center"><?php echo $status;?></td>
+				<td align="center"><?php echo $strIconButton;?></td>
+				<td align="center"><?php echo $id;?></td>
+			</tr>
+			<?php
+				} 
+			?>
+			<tr class="tbl_footer">
+				<td colspan="15">
+					<div class="container">
+						<div class="pagination">
+							<?php
+								$currentUrl = $this->baseUrl($this->currentController . '/index');
+								echo $this->paginationControl($this->paginator,'Sliding','pagination.phtml',array('currentUrl'=>$currentUrl)); 
+							?>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<div class="clr"></div>
+	</div>
+	<!-- END: 	CONTENT -->
+</form>

@@ -1,0 +1,241 @@
+<?php
+    $language = new Zend_Session_Namespace('language');
+    //var_dump($language);
+    if($language->lang =='en'){
+        ?>
+        
+        <!--english-->
+        <div class="lienhe">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="contact">
+							<h1><a href="">GENEX International Distribution JSC </a></h1>
+                            <div class="add">
+								<p>
+									<span>Ho Chi Minh City</span><br>
+									50A Duong Duc Hien, Tay Thanh Ward, Tan Phu Dist<br>
+									Tel: 028 6267 2317/ 028 6292 8884<br>
+									Warranty: 028 6267 2317 ext 102 /0909 334 086<br>
+									Email: info@genex.com.vn<br>
+								</p>								
+							</div>
+							<div class="add">
+								<p>
+									<span>Hanoi</span><br>
+									32-34 Dang Van Ngu, Dong Da District<br>
+									Tel:  024.392 75873/ 024.6275 0148<br>
+									Warranty: 024.6275 0148 ext 102 /0909 780 486<br>
+									Email: info@genex.com.vn<br>
+								</p>
+							</div>
+							
+						</div>
+						<div class="thanhtoan">
+							<h2><a href="">Payment procedures</a></h2>
+							<p><span>Payment by bank transfer:</span> Please transfer to the following account:</p>
+							<p>
+								Account name - Nguyen Ham Hanh<br>
+								Account Number - 11620738442024<br>
+								Vietnam Technological and Commercial Bank (Techcombank)<br>
+								Ho Chi Minh City Branch<br>
+							</p>
+							<p>We will proceed with delivery after receiving your transfer.</p>
+							<p><span>Payment by cash: </span> Please pay directly to the delivery staff.</p>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="map">
+							<div class="item">
+								<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.0309098603166!2d106.62494501480101!3d10.808944492299455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752be224e43f7d%3A0xe9f52c4a6cd65756!2zQ8O0bmcgdHkgQ1AgUGjDom4gcGjhu5FpIFF14buRYyB04bq_IEdlbmV4!5e0!3m2!1svi!2s!4v1509681694795" width="100%" height="350" frameborder="0" style="border:0" allowfullscreen></iframe>
+								<a href="https://goo.gl/maps/mqwoK9kqevF2">View larger map</a>
+							</div>
+							<div class="item">
+								<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.4872100687694!2d105.83122911493923!3d21.013182886006813!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab81167f42df%3A0xf7c60f388729cda6!2zQ8O0bmcgdHkgVE5ISCBT4bqjbiBwaOG6qW0gVHLhursgZW0gQ2jDrSBWaeG7h3Q!5e0!3m2!1svi!2s!4v1495788015143" width="100%" height="350" frameborder="0" style="border:0" allowfullscreen></iframe>
+								<a href="https://goo.gl/maps/K9SHHVQTyXT2">View larger map</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>			
+		</div>
+        <?php
+    		$name = $this->formText ( 'name', $this->Item ['name'], array ('class' => 'form-control' ) ) . '<div class="view_error" id="view_name"></div>';
+    		$phone = $this->formText ( 'phone', $this->Item ['phone'], array ('class' => 'form-control' ) ) . '<div class="view_error" id="view_phone"></div>';
+    		$email = $this->formText ( 'email', $this->Item ['email'], array ('class' => 'form-control' ) ) . '<div class="view_error" id="view_email"></div>';
+    		$content = $this->formTextarea ( 'content', $this->Item ['content'], array ('rows' => 5, 'cols' => 47,'class' => 'form-control') ) . '<div class="view_error" id="view_content"></div>';
+    		$lang_code = $this->formHidden ( 'lang', $this->arrParam ['ssFilter'] ['lang_code'] );
+		?>
+        <div class="mail-contact">
+			<div class="container">
+				<h2><a href="">Send email to Genex</a></h2>
+				<div class="form-contact">
+                <?php
+        			// -------------------- SESSAGES ERROR ------------------
+        			if(count($this->messageError)>0){
+        				foreach ($this->messageError AS $key => $val){
+        					echo '<div class="listError" id="'.$key.'" rel="' . $val . '"></div>';
+        				}
+        			}
+        		?>
+					<form action="" method="post" name="frmContact">
+						<div class="row">
+							<div class="col-sm-4">
+								<div class="form-group hoten">
+									<p>Name <span>(Obligatory)</span></p>
+						            <?php echo $name;?>        
+						        </div>
+						        <div class="form-group dienthoai">
+						        	<p>Phone</p>
+						            <?php echo $phone;?>       
+						        </div>
+						        <div class="form-group email">
+						        	<p>Email</p>
+						            <?php echo $email;?>          
+						        </div>
+							</div>
+							<div class="col-sm-7">
+								<div class="form-group area">
+									<p>Content</p>
+						            <?php echo $content;?>    
+						        </div>
+							</div>
+							<div class="col-sm-1">
+								<div class="send">         
+									<?php echo $lang_code; ?>
+                                    <?php echo $this->formSubmit('btnSubmit',"Send",array('class' => 'btn btn-send'));?>
+								</div>
+							</div>
+						</div> 			        			        			        		
+					</form>
+				</div>
+			</div>			
+		</div>
+	
+	<script type="text/javascript">
+		$("div.listError").each(function (i) {
+		    //alert($(this).attr('rel'));
+		    $('#view_' + $(this).attr('id')).html($(this).attr('rel'));
+		});
+	</script>
+</div>
+        <!-- end english-->
+        <?php
+    }else{ ?>
+        <div class="lienhe">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="contact">
+							<h1><a href="">Công ty Cổ phần Phân phối <br> Quốc tế GENEX</a></h1>
+                            <div class="add">
+								<p>
+									<span>TP.Hồ Chí Minh</span><br>
+									50A Dương Đức Hiền, P.Tây Thạnh, Q. Tân Phú<br>
+									Tel: 028 6267 2317/ 028 6292 8884<br>
+									Bảo hành: 028 6267 2317 ext 102 /0909 334 086<br>
+									Email: info@genex.com.vn<br>
+								</p>								
+							</div>
+							<div class="add">
+								<p>
+									<span>TP.Hà Nội</span><br>
+									32-34 Đặng Văn Ngữ, Q. Đống Đa<br>
+									Tel:  024.392 75873/ 024.6275 0148<br>
+									Bảo hành: 024.6275 0148 ext 102 /0909 780 486<br>
+									Email: info@genex.com.vn<br>
+								</p>
+							</div>
+							
+						</div>
+						<div class="thanhtoan">
+							<h2><a href="">Thủ tục thanh toán</a></h2>
+							<p><span>Thanh toán bằng chuyển khoản:</span> Xin Quý khách vui lòng chuyển khoản vào tài khoản sau:</p>
+							<p>
+								Tên TK - Nguyễn Hàm Hạnh<br>
+								Số TK - 11620738442024<br>
+								Ngân hàng Kỹ thương Việt Nam (Techcombank)<br>
+								Chi nhánh TP. HCM<br>
+							</p>
+							<p>Chúng tôi sẽ tiến hành giao hàng sau khi nhận được chuyển khoản của Quý khách.</p>
+							<p><span>Thanh toán bằng tiền mặt:</span> Xin Quý khách vui lòng thanh toán trực tiếp cho Nhân viên giao hàng.</p>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="map">
+							<div class="item">
+									<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.0309098603166!2d106.62494501480101!3d10.808944492299455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752be224e43f7d%3A0xe9f52c4a6cd65756!2zQ8O0bmcgdHkgQ1AgUGjDom4gcGjhu5FpIFF14buRYyB04bq_IEdlbmV4!5e0!3m2!1svi!2s!4v1509681694795" width="100%" height="350" frameborder="0" style="border:0" allowfullscreen></iframe>
+								<a href="https://goo.gl/maps/mqwoK9kqevF2">Xem bản đồ cỡ lớn hơn</a>
+							</div>
+							<div class="item">
+								<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.4872100687694!2d105.83122911493923!3d21.013182886006813!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab81167f42df%3A0xf7c60f388729cda6!2zQ8O0bmcgdHkgVE5ISCBT4bqjbiBwaOG6qW0gVHLhursgZW0gQ2jDrSBWaeG7h3Q!5e0!3m2!1svi!2s!4v1495788015143" width="100%" height="350" frameborder="0" style="border:0" allowfullscreen></iframe>
+								<a href="https://goo.gl/maps/K9SHHVQTyXT2">Xem bản đồ cỡ lớn hơn</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>			
+		</div>
+        <?php
+    		$name = $this->formText ( 'name', $this->Item ['name'], array ('class' => 'form-control' ) ) . '<div class="view_error" id="view_name"></div>';
+    		$phone = $this->formText ( 'phone', $this->Item ['phone'], array ('class' => 'form-control' ) ) . '<div class="view_error" id="view_phone"></div>';
+    		$email = $this->formText ( 'email', $this->Item ['email'], array ('class' => 'form-control' ) ) . '<div class="view_error" id="view_email"></div>';
+    		$content = $this->formTextarea ( 'content', $this->Item ['content'], array ('rows' => 5, 'cols' => 47,'class' => 'form-control') ) . '<div class="view_error" id="view_content"></div>';
+    		$lang_code = $this->formHidden ( 'lang', $this->arrParam ['ssFilter'] ['lang_code'] );
+		?>
+        <div class="mail-contact">
+			<div class="container">
+				<h2><a href="">Gửi thư điện tử tới Genex</a></h2>
+				<div class="form-contact">
+                <?php
+        			// -------------------- SESSAGES ERROR ------------------
+        			if(count($this->messageError)>0){
+        				foreach ($this->messageError AS $key => $val){
+        					echo '<div class="listError" id="'.$key.'" rel="' . $val . '"></div>';
+        				}
+        			}
+        		?>
+					<form action="" method="post" name="frmContact">
+						<div class="row">
+							<div class="col-sm-4">
+								<div class="form-group hoten">
+									<p>Tên <span>(bắt buộc)</span></p>
+						            <?php echo $name;?>        
+						        </div>
+						        <div class="form-group dienthoai">
+						        	<p>Điện thoại</p>
+						            <?php echo $phone;?>       
+						        </div>
+						        <div class="form-group email">
+						        	<p>Email của bạn</p>
+						            <?php echo $email;?>          
+						        </div>
+							</div>
+							<div class="col-sm-7">
+								<div class="form-group area">
+									<p>Nội dung</p>
+						            <?php echo $content;?>    
+						        </div>
+							</div>
+							<div class="col-sm-1">
+								<div class="send">         
+									<?php echo $lang_code; ?>
+                                    <?php echo $this->formSubmit('btnSubmit',"Gửi",array('class' => 'btn btn-send'));?>
+								</div>
+							</div>
+						</div> 			        			        			        		
+					</form>
+				</div>
+			</div>			
+		</div>
+	
+	<script type="text/javascript">
+		$("div.listError").each(function (i) {
+		    //alert($(this).attr('rel'));
+		    $('#view_' + $(this).attr('id')).html($(this).attr('rel'));
+		});
+	</script>
+</div>
+        <?php
+    }
+?>

@@ -1,0 +1,22 @@
+<?php
+	$linkStart 		= $this->currentUrl . '?page=' . $this->first . $city_id.$nganhnghe_id;
+	$linkPrevious 	= $this->currentUrl . '?page=' . $this->previous . $city_id.$nganhnghe_id;
+	$linkNext 		= $this->currentUrl . '?page=' . $this->next . $city_id.$nganhnghe_id;
+	$linkEnd 		= $this->currentUrl . '?page=' . $this->last . $city_id.$nganhnghe_id;
+	
+	$current		= $this->current;
+	$pageCount		= $this->pageCount;
+	
+	if($current<$this->last){
+?>
+
+<div class="b__load text-center loadmorebaochi" id="loadmorebaochi<?php echo $this->next; ?>"> 
+     <p id="<?php echo $this->next; ?>" class ="icon_click" style="font-size: 30px;
+    width: 42px;
+    height: 42px;
+    border: 1px solid;
+    display: inline-block;
+    border-radius: 100%;"><i class="fas fa-angle-down"></i></p>
+</div>
+
+<?php } ?>

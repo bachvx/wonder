@@ -1,0 +1,135 @@
+<?php
+    $siteConfig = Zend_Registry::get('siteConfig');
+    $language = new Zend_Session_Namespace('language');
+    if($language->lang=='vi'){
+        $tieude=$this->Tongquan['mota'];
+        $mota=htmlspecialchars_decode($this->Tongquan['mota']);
+        $vitri_content=htmlspecialchars_decode($this->Tongquan['vitri_content']);
+        $noidung_image_tongquan=htmlspecialchars_decode($this->Tongquan['noidung_image_tongquan']);
+    }else{
+        $tieude=$this->Tongquan['mota']; 
+        $mota=htmlspecialchars_decode($this->Tongquan['mota_en']);  
+        $vitri_content=htmlspecialchars_decode($this->Tongquan['vitri_content_en']);
+        $noidung_image_tongquan=htmlspecialchars_decode($this->Tongquan['noidung_image_tongquan_en']);
+    } 
+    foreach ($this->ItemsPhankhu as $key => $val ) {
+        $urlOptions = array ('module' => 'dichvu', 'controller' => 'index', 'action' => 'phankhu', 'alias' => $val ['alias'], 'id' => $val ['id'] );	
+        $linkDetial = $this->url( $urlOptions, 'phankhu-page' );
+        $danhmucphankhu.='<li><a href="'.$linkDetial.'">'.$this->language['wonderphankhu'].' <br/> '.$val['name'].'</a></li>';
+    }
+    if($siteConfig['config_site']['offImage']==1){ 
+        $banner= $siteConfig['config_site']['imgads'];
+        $banner_mobile= $siteConfig['config_site']['imgads'];
+    }else{
+        $banner= $this->Tongquan['picture'];
+        $banner_mobile= $this->Tongquan['picture_mobile']; 
+    }
+?>
+<div class="b__banner"> 
+  <div class="b-items">    
+    <img class="img_pc" src="<?php echo $banner; ?>" width="100%">
+    <img class="img_mb" src="<?php echo $banner_mobile; ?>" width="100%">
+  </div> 
+</div> 
+<div class="b__tongquan">
+    <div class="containers">
+        <div class="b__tongquan--ls">
+          <h3 class="b__tongquan--title"><?php echo $this->Tongquan['name']; ?></h3>
+          <?php echo $mota; ?>
+        </div><!-- end .b__tongquan--ls-->
+        <div class="b__tongquan--ls">
+          <h3  class="b__tongquan--title"><?php echo $this->language['wonderVitriTongquan']; ?></h3>
+          <?php echo $vitri_content; ?>
+        </div><!-- end .b__tongquan--ls--> 
+        <div class="b__tongquan--bg">
+            <div class="containers">
+                 <h3 class="b__tongquan--title"><?php echo $this->language['wonderTitleTongquan']; ?></h3>
+                 <div class="b__images">
+                <div class="b__images--info">
+           <img src="<?php echo $this->Tongquan['image_tongquan']; ?>" width="100%" />
+          <div class="bg_posi bg_barbados">
+            <div class="b_circle"></div>
+            <div class="bg_posi--info">
+              <img src="public/images/bg_barbados.png" />
+              <div class="b__text--pk">
+                 <div class="b__number">01</div>
+                 <div class="b__text"><?php echo $this->language['wonderTongquanBaBarDos']; ?></div>
+              </div>
+            </div><!-- end .bg_posi--info-->
+          </div>
+          <div class="bg_posi bg_hue"> 
+            <div class="b_circle"></div>
+            <div class="bg_posi--info">
+              <img src="public/images/bg_hue.png" />
+              <div class="b__text--pk">
+                 <div class="b__number">02</div>
+                 <div class="b__text"><?php echo $this->language['wonderTongquanHue']; ?></div>
+              </div>
+            </div><!-- end .bg_posi--info-->
+          </div>
+          <div class="bg_posi bg_saigon">
+            <div class="b_circle"></div>
+            <img src="public/images/bg_saigon.png" /> 
+            <div class="bg_posi--info"> 
+              <div class="b__text--pk">
+                 <div class="b__number">03</div>
+                 <div class="b__text"><?php echo $this->language['wonderTongquanSaiGon']; ?></div>
+              </div>
+            </div><!-- end .bg_posi--info-->
+          </div>
+          <div class="bg_posi bg_hanoi"> 
+            <div class="b_circle"></div>
+            <img src="public/images/bg_hanoi.png" />
+            <div class="bg_posi--info"> 
+              <div class="b__text--pk">
+                 <div class="b__number">04</div>
+                 <div class="b__text"><?php echo $this->language['wonderTongquanHanoi']; ?></div>
+              </div>
+            </div><!-- end .bg_posi--info-->
+          </div>
+          <div class="bg_posi bg_monaco">
+            <div class="b_circle"></div>
+            <img src="public/images/bg_monaco.png" />
+            <div class="bg_posi--info"> 
+              <div class="b__text--pk">
+                 <div class="b__number">05</div>
+                 <div class="b__text"><?php echo $this->language['wonderTongquanMonaco']; ?></div>
+              </div>
+            </div><!-- end .bg_posi--info-->
+            
+          </div> 
+        </div>
+                <ul>
+                  <?php echo $danhmucphankhu; ?> 
+                </ul>
+              </div>
+              <p><?php echo $noidung_image_tongquan; ?></p> 
+              <div class="b__tongquan--row">
+                <div class="b__tongquan--left">
+                  <img src="<?php echo $this->Tongquan['image_solieu']; ?>" width="100%" />
+                </div>
+                <div class="b__tongquan--right">
+                  <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      <?php echo $this->language['wonderTongdientich']; ?>
+                      <span class="badge"><?php echo $this->Tongquan['dientich']; ?></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      <?php echo $this->language['wonderMatdoxaydung']; ?> 
+                      <span class="badge"><?php echo $this->Tongquan['matdo']; ?></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      <?php echo $this->language['wonderDientichMatNuoc']; ?>
+                      <span class="badge"><?php echo $this->Tongquan['dtcayxanh']; ?></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      <?php echo $this->language['wonderDientichgiaothong']; ?>
+                      <span class="badge"><?php echo $this->Tongquan['dtgiaothong']; ?></span>
+                    </li>
+                  </ul>
+                </div>
+              </div>  
+            </div><!-- end containers-->
+        </div><!-- end b__tongquan--bg-->
+    </div><!-- end containers-->
+</div><!-- end b__tongquan-->

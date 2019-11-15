@@ -1,0 +1,209 @@
+
+ <?php
+    $catchuoi = new Zendvn_Filter_CutString(100);
+    $siteConfig = Zend_Registry::get('siteConfig');
+    $urlOptions = array ('module' => 'article', 'controller' => 'index', 'action' => 'detail', 'title' => $this->ItemsBanner ['alias'], 'id' => $this->ItemsBanner ['id'] );
+    $linkBanner = $this->url ( $urlOptions, 'article-detail' );
+    foreach ($this->ItemsMoban as $key => $val ) {
+       // var_dump($val['picture']);die;
+    	$imgName =  $val['picture'] ;
+        if($siteConfig['config_site']['offImage']==1){ 
+            $banner='<img class="img_pc" src="'. $siteConfig['config_site']['imgads'].'" width="100%">
+                    <img class="img_mb" src="'. $siteConfig['config_site']['imgads'].'" width="100%">';
+        }else{
+            $banner='<img class="img_pc" src="'. $this->ItemsBanner['picture'].'" width="100%">
+                    <img class="img_mb" src="'. $this->ItemsBanner['picture_mobile'].'" width="100%">';
+            $name_banner = $this->ItemsBanner['name'];
+        }
+        $synopsis = $catchuoi->filter($val['synopsis']);	
+    	$name = $val['name'];
+        $created =date("d-m-Y", strtotime($val['created']));
+    	$urlOptions = array ('module' => 'article', 'controller' => 'index', 'action' => 'detail', 'title' => $val ['alias'], 'id' => $val ['id'] );
+        $linkDetial = $this->url ( $urlOptions, 'article-detail' );
+        if($key/3 <1){
+            if($key%3==0){
+                echo '<div class="b__banner b__banner--sukien">  
+                          <a href="'.$linkBanner.'">'.$banner.'</a>
+                          <div class="b__sukien--caption"> 
+                            <div class="containers">
+                              <a href="'.$linkBanner.'"><p>'.$name_banner.'</p> </a>
+                            </div>
+                          </div>
+                        </div><!-- end b__banner b__banner--sukien -->
+                        <div class="b__content--sukien"> 
+                          <div class="b__title--sukien"> 
+                            <div class="containers">
+                              <h3>'.$this->language['wonderTintucSukien'].'</h3>
+                            </div>
+                          </div>
+                          <div class="b__sukien--caption"> 
+                            <div class="containers">
+                              <p>'.$this->language['wonderMoban'].'</p> 
+                            </div>  
+                          </div> 
+                          <div class="b__sukien-moban">
+                            <div class="containers load-more"> ';
+                echo '<div class="b__sukien--list stretch">
+                    <div class="b__items--sukien b__items--sukien_left">
+                      <a href="'.$linkDetial.'"><img src="'.$imgName.'" width="100%"></a>
+                      <div class="b__items--caption">
+                        <a href="'.$linkDetial.'"> <h3>'.$name.'</h3>
+                              <p>'.$synopsis.'</p> </a>
+                      </div>
+                    </div>
+                    <div class="b__items--sukien b__items--sukien_right">'; 
+            }else{
+                if($key / 2 <1){
+                    echo '<div class="b__items--lss b__items--lss_top" style="margin-bottom: 10px;">
+                          <a href="'.$linkDetial.'"><img src="'.$imgName.'" width="100%"></a>
+                          <div class="b__items--captions">
+                            <a href="'.$linkDetial.'"> <h3>'.$name.'</h3>
+                              <p>'.$synopsis.'</p> </a>
+                          </div>
+                        </div>';
+                }else{
+                    echo '<div class="b__items--lss b__items--lss_bottom">
+                          <a href="'.$linkDetial.'"><img src="'.$imgName.'" width="100%"></a>
+                          <div class="b__items--caption">
+                            <a href="'.$linkDetial.'"> <h3>'.$name.'</h3>
+                              <p>'.$synopsis.'</p> </a>
+                          </div>
+                        </div>
+                        </div><!--close  sukien_right-->
+                        </div><!--close  b__sukien--list stretch-->';
+                }
+            }
+               
+        }else{
+            if($key/2<=2){
+                if($key/2<2){
+                    echo '<div class="b__sukien--list stretch"> 
+                            <div class="b__items--sukien b__items--sukien_right">
+                                <div class="b__items--lss b__items--lss_top" style="margin-bottom: 10px;">
+                                  <img src="'.$imgName.'" width="100%">
+                                  <div class="b__items--captions">
+                                    <a href="'.$linkDetial.'"> <h3>'.$name.'</h3>
+                              <p>'.$synopsis.'</p> </a>
+                                  </div>
+                                </div>'; 
+                }else{
+                    echo '<div class="b__items--lss b__items--lss_bottom">
+                          <img src="'.$imgName.'" width="100%">
+                          <div class="b__items--caption">
+                            <p>'.$name.'</p>
+                          </div>
+                        </div>
+                        </div><!--close b__items--sukien b__items--sukien_right-->';
+                }
+                
+            }else{
+                echo '<div class="b__items--sukien b__items--sukien_left">
+                      <img src="'.$imgName.'" width="100%">
+                      <div class="b__items--caption">
+                        <h3><p>'.$name.'</p></h3>
+                      </div>
+                    </div>
+                    </div><!-- close b__sukien--list stretch-->';
+            }
+        }  
+     }
+?>   
+        </div><!-- end b__sukien-moban -->
+     </div>   <!-- end containers --> 
+     <?php 
+        $currentUrl = 'mobanloadmore';
+    	echo $this->paginationControl($this->paginator,'Sliding','pagination-ajax-load-more.phtml',array('currentUrl'=>$currentUrl,'arrParam' => $this->arrParam));
+     ?>
+     <script type="text/javascript">
+        $(document).ready(function(){
+            $(document).on('click','.icon_click',function(){
+                var ID = $(this).attr('id');
+                //alert(ID);
+                $.ajax({
+                    type:'POST',
+                    url:'<?php echo $currentUrl; ?>',
+                    data:'page='+ID,
+                    success:function(html){
+                        $('#loadmore'+ ID).remove();
+                        $('.load-more').append(html);
+                    }
+                });
+            });
+        });
+     </script>
+     </div>  <!--end b__content--sukien-->  
+     <div class="b__content--sukien b__infomation--sukien">
+          <div class="b__sukien--caption"> 
+            <div class="containers">
+              <p><a href="thong-tin-bao-chi-ac2"><?php echo $this->language['wonderThongtinbaochi']; ?> </a></p> 
+            </div>
+          </div>
+          <div class="containers" id="baochi">
+            <div class="row b__box--row load-more-bao-chi">  
+<?php
+    foreach ($this->ItemsBaochi as $key => $val ) {
+        $imgName =  $val['picture'] ;
+        $synopsis = $catchuoi->filter($val['synopsis']);	
+    	$name = $val['name'];
+        $created =date("d-m-Y", strtotime($val['created']));
+    	$urlOptions = array ('module' => 'article', 'controller' => 'index', 'action' => 'detail', 'title' => $val ['alias'], 'id' => $val ['id'] );
+        $linkDetial = $this->url ( $urlOptions, 'article-detail' );
+    ?>
+       
+        <div class="col-md-3">
+        <div class="card card__items card__items--bmb">
+          <img class="card-img-top" src="<?php echo $imgName; ?>" alt="<?php echo $name; ?>" />
+          <div class="card-body">
+            <h3><strong><?php echo $name; ?></strong></h3>
+            <p class="card-text"><?php echo $synopsis; ?></p>
+            <a href="<?php echo $linkDetial; ?>" class="hidden-pc show-mb"> <?php echo $this->language['xemThem']; ?> </a>
+          </div>
+          <div class="card-link">
+            <a href="<?php echo $linkDetial; ?>"> <?php echo $this->language['xemThem']; ?> </a>
+          </div>
+        </div>
+      </div>
+      
+    <?php
+    }
+    	
+    ?>
+        
+        </div><!--end row b__box--row-->
+        <?php 
+            if(!empty($this->arrParam['cid'])){
+    		$urlOptionsCategory = array('module'=>'quanngon','controller'=>'index','action'=>'category',
+    				'cid'=>$this->arrParam['cid'],
+    				'alias'=>$this->arrParam['alias'],
+    		);
+    		$currentUrl = $this->url($urlOptionsCategory,'quanngon-category');
+    	}else{
+    		$currentUrl = 'thong-tin-bao-chi';
+    	}
+    	echo $this->paginationControl($this->paginator,'Sliding','pagination-ajax.phtml',array('currentUrl'=>$currentUrl,'arrParam' => $this->arrParam));
+        ?>
+        <?php 
+        $currentUrl = 'loadmorebaochi';
+    	echo $this->paginationControl($this->paginator,'Sliding','pagination-ajax-load-more-bao-chi.phtml',array('currentUrl'=>$currentUrl,'arrParam' => $this->arrParam));
+     ?>
+     <script type="text/javascript">
+        $(document).ready(function(){
+            $(document).on('click','.icon_click',function(){
+                var ID = $(this).attr('id');
+                //alert(ID);
+                $.ajax({
+                    type:'POST',
+                    url:'<?php echo $currentUrl; ?>',
+                    data:'page='+ID,
+                    success:function(html){
+                        $('#loadmorebaochi'+ ID).remove();
+                        $('.load-more-bao-chi').append(html);
+                    }
+                });
+            });
+        });
+     </script>
+    </div><!--end containers-->
+</div><!--end b__content--sukien b__infomation--sukien-->
+
+     

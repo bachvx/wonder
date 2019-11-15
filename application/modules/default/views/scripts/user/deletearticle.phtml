@@ -1,0 +1,71 @@
+<?php ?>
+<script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+<script>
+        tinymce.init({selector:'.editer',
+        	height : '300'
+            });
+</script>
+
+<?php ?>
+
+
+<div class="block_thongTinTaiKhoan">
+	<div class="block_title"><?php echo $this->Title;?> </div>
+	<div class="block_content article_manager">
+			<div class="item">
+				<div class="item_content">
+					
+					
+				
+				
+				<?php
+	//----------------------- INPUT ELEMENTS -------------------//
+	$name 			= $this->Item['name']; 
+	 
+	
+	$content = htmlspecialchars_decode($this->Item['content']);
+	 
+	//$content 		= $this->cmsEditor('content',htmlspecialchars_decode($this->Item['content']),array('class'=>'content_noidung','toolbar'=>'MyToolbar', 'language'=>'vi'));
+	
+	 
+	
+	
+ 
+	//-------------------- SESSAGES ERROR ------------------
+	if(count($this->messageError)>0){
+		$errors = $this->formErrors($this->messageError,array('id'=>'errors'));
+	}
+?>
+<form name="appForm" method="post" action="" enctype="multipart/form-data">
+	<?php echo $errors;?>
+	<!-- BEGIN: CONTENT -->
+	<div class="app_content  ">
+		<div class="fl"> 
+			<fieldset class="article-form tabs" id="tabs-1">
+				<table class=" article-table">
+					<?php //echo $this->partialLoop('row.php', $arrInput);?>
+ 					<tr> 
+						<td colspan="2">
+						<b>Bạn muốn<input type="submit" class="submit" value="Xóa"  style="color: #95210F;background: none;border: none;"> ?</b> 
+						</td>
+					</tr>
+					<tr>
+						<td width="700"><h2><?php echo $name;?></h2></td>
+					</tr>
+					<tr> 
+						<td colspan="" style="line-height:20px;">  <?php echo $content;?> </td>
+					</tr>
+					
+					
+				</table>
+			</fieldset>
+		</div>
+	 
+	</div>
+	<!-- END: 	CONTENT -->
+</form>
+</div>
+			</div> 
+			<div class="clr"></div>
+	</div>
+</div>

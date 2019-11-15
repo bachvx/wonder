@@ -1,0 +1,36 @@
+<?php
+    $catchuoi = new Zendvn_Filter_CutString(100);
+    foreach ($this->ItemsBaochi as $key => $val ) {
+        $imgName =  $val['picture'] ;
+        $synopsis = $catchuoi->filter($val['synopsis']);	
+    	$name = $val['name'];
+        $created =date("d-m-Y", strtotime($val['created']));
+    	$urlOptions = array ('module' => 'article', 'controller' => 'index', 'action' => 'detail', 'title' => $val ['alias'], 'id' => $val ['id'] );
+        $linkDetial = $this->url ( $urlOptions, 'article-detail' );
+?>
+       
+        <div class="col-md-3">
+        <div class="card card__items card__items--bmb">
+          <img class="card-img-top" src="<?php echo $imgName; ?>" alt="<?php echo $name; ?>" />
+          <div class="card-body">
+            <h3><strong><?php echo $name; ?></strong></h3>
+            <p class="card-text"><?php echo $synopsis; ?></p>
+            <a href="<?php echo $linkDetial; ?>" class="hidden-pc show-mb"> <?php echo $this->language['xemThem']; ?> </a>
+          </div>
+          <div class="card-link">
+            <a href="<?php echo $linkDetial; ?>"> <?php echo $this->language['xemThem']; ?> </a>
+          </div>
+        </div>
+      </div>
+      
+    <?php
+    }
+   
+        $currentUrl = 'loadmorebaochi';
+    	echo $this->paginationControl($this->paginator,'Sliding','pagination-ajax-load-more-bao-chi.phtml',array('currentUrl'=>$currentUrl,'arrParam' => $this->arrParam));
+?>
+ 
+
+        
+   
+       

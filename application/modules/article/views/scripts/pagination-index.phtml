@@ -1,0 +1,82 @@
+<?php
+
+	$htmlPage = '';
+	if(!empty($this->arrParam['manu'])){
+		$htmlPage .= '&manu=' . $this->arrParam['manu'];
+	}
+	if(!empty($this->arrParam['min'])){
+		$htmlPage .= '&min=' . $this->arrParam['min'];
+	}
+	if(!empty($this->arrParam['max'])){
+		$htmlPage .= '&max=' . $this->arrParam['max'];
+	}
+
+	$linkStart 		= $this->currentUrl . '?page=' . $this->first . $htmlPage;
+	$linkPrevious 	= $this->currentUrl . '?page=' . $this->previous . $htmlPage;
+	$linkNext 		= $this->currentUrl . '?page=' . $this->next . $htmlPage;
+	$linkEnd 		= $this->currentUrl . '?page=' . $this->last . $htmlPage;
+	
+	$current		= $this->current;
+	$pageCount		= $this->pageCount;
+	
+	$strPage = '';
+	foreach ($this->pagesInRange as $key){
+		if( $this->current == $key ){
+		    $strPage.='<li class="active"><a href="#">' . $key . ' <span class="sr-only">(current)</span></a></li>';
+		}else{
+			$linkPage = $this->currentUrl . '?page=' . $key . $htmlPage;
+            $strPage.='<li><a href="' . $linkPage . '">' . $key . '</a></li>';
+		}
+	}
+	
+	$page = 'Page ' . $this->current . ' Of ' . $this->last;
+?>
+<?php
+	if($pageCount > 1){ 
+?>
+<div class="phantrang">
+	<nav aria-label="Page navigation">
+	  <ul class="pagination">
+		<?php
+			if($current == $this->first)
+			{ 
+		?>
+		
+		<?php
+			}else{ 
+		?>
+		
+        
+        <li class="disabled">
+	      <a href="<?php echo $linkPrevious;?>" aria-label="Previous">
+	        <p aria-hidden="true"><i class="fa fa-angle-left" aria-hidden="true"></i> <span class="hidden-xs">TRANG TRƯỚC</span></p>
+	      </a>
+	    </li>
+		<?php
+			} 
+		?>
+		<?php echo $strPage;?>
+		<?php
+			if($current == $pageCount)
+			{ 
+		?>
+		
+		<?php
+			}else{
+		?> 
+        <li>
+	      <a href="<?php echo $linkNext;?>" aria-label="Next">
+	        <p aria-hidden="true"> <span class="hidden-xs">TRANG SAU</span> <i class="fa fa-angle-right" aria-hidden="true"></i></p>
+	      </a>
+	    </li>
+        
+		<?php 
+			}
+	
+	} 
+?>
+	  </ul>
+	</nav>
+</div>
+
+

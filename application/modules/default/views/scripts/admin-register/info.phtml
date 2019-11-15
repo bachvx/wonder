@@ -1,0 +1,57 @@
+<?php
+	//----------------------- INPUT ELEMENTS -------------------//
+	$nguontin_id		= $this->Item['nguontin_name'];
+	$hoten	 			= $this->Item['hoten'];
+	$ngaysinh 			= $this->Item['ngaysinh'];
+	$diachi 			= $this->Item['diachi'];
+	$coquan 			= $this->Item['coquan'];
+	$email	 			= $this->Item['email'];
+	$dienthoai 			= $this->Item['dienthoai'];
+	$thoigian_id		= $this->Item['thoigian_name'];
+	$ngayhen			= $this->Item['ngayhen'];
+	$khoahoc_id			= $this->Item['khoahoc_name'];
+	$trungtam_id		= $this->Item['trungtam_name'];
+	$ngayhoc			= $this->Item['ngayhoc'];
+	$lichhocthichhop	= nl2br($this->Item['lichhocthichhop']);
+	$yeucaukhac			= nl2br($this->Item['yeucaukhac']);
+	$ngaygui			= $this->Item['ngaygui'];
+	
+	$arrInput = array(
+				array('label' => '<b>Nguồn biết đến</b>','input' => $nguontin_id),
+				array('label' => '<b>Họ và tên</b>','input' => $hoten),
+				array('label' => '<b>Ngày sinh</b>','input' => $ngaysinh),
+				array('label' => '<b>Địa chỉ</b>','input' => $diachi),
+				array('label' => '<b>Cơ quan làm việc</b>','input' => $coquan),
+				array('label' => '<b>Email</b>','input' => $email),
+				array('label' => '<b>Điện thoại</b>','input' => $dienthoai),
+				array('label' => '<b>Kiểm tra trình độ</b>','input' => $thoigian_id . ' ' . $ngayhen),
+				array('label' => '<b>Khóa học muốn đăng ký</b>','input' => $khoahoc_id),
+				array('label' => '<b>Cơ sở đăng ký','input' => $trungtam_id),
+				array('label' => '<b>Ngày có thể đi học</b>','input' => $ngayhoc),
+				array('label' => '<b>Lịch học thích hợp</b>','input' => $lichhocthichhop),
+				array('label' => '<b>Yêu cầu khác</b>','input' => $yeucaukhac),
+				array('label' => '<b>Ngày gửi</b>','input' => $ngaygui),
+			);
+	
+	//-------------------- SESSAGES ERROR ------------------
+	if(count($this->messageError)>0){
+		$errors = $this->formErrors($this->messageError,array('id'=>'errors'));
+	}
+?>
+<form name="appForm" method="post" action="" enctype="multipart/form-data">
+	<?php echo $this->render('admin-register/toolbar/index.php');?>
+ 	<div class="clr"></div>
+	<?php echo $this->render('admin-register/sublink/index.php');?>
+	<?php echo $errors;?>
+
+	<!-- BEGIN: CONTENT -->
+	<div class="app_content goc10">
+		<fieldset class="adminform">
+			<legend>Chi tiết</legend>
+			<table class="adminformlist">
+				<?php echo $this->partialLoop('row.php', $arrInput);?>
+			</table>
+		</fieldset>
+	</div>
+	<!-- END: 	CONTENT -->
+</form>

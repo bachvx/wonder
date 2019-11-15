@@ -1,0 +1,34 @@
+	<?php
+	foreach ($this->Items AS $key => $val){
+	   if($key==0){
+	       $baner=$val['banner'];
+           $name=$val['name'];
+	   }
+       $album.='<div class="b__gallery--ls b__gallery--ls_mb100">
+                    <img data-toggle="modal" data-target="#exampleModal" src="'.$val ['picture'].'" />
+                </div>';
+	} 
+	?>
+<div class="b__banner b__banner--gallery"> 
+  <img src="<?php echo $baner; ?>" width="100%" /> 
+</div>  
+<div class="b__content--sukien b__content--gallery"> 
+  <!--div class="b__title--sukien b__title--gallery"> 
+    <div class="containers">
+      <h3>Hình ?nh & Video</h3>
+    </div>
+  </div-->
+  <div class="b__sukien--caption">  
+      <p><?php echo $this->Item['name']; ?></p>  
+  </div>
+</div><!-- end .b__content-sukien--> 
+<div class="b__gallery">
+  <div class="containers">
+    <div class="b__gallery--info">
+           <?php echo $album; ?>     
+    </div>
+  </div>
+  <div class="b__load text-center"> 
+    <a href="#"><i class="fas fa-angle-down"></i></a>
+  </div>
+</div>

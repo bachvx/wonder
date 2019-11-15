@@ -1,0 +1,23 @@
+<?php echo $this->render('html/header.php');?>
+<body>
+	<!-- HEADER -->
+    <?php echo $this-> blkHeader(1,'default'); ?>
+			<div class="clearfix"></div>
+	<div class="phanphoi">
+		<div class="container">
+            <?php echo $this->layout()->content;?>
+		</div>
+   </div>
+    
+		<?php echo $this -> blkDownload(); ?> 
+	</main>
+
+	<div class="clearfix"></div>
+
+	<!-- FOOTER -->
+    <?php echo $this->blkFooterNew(); ?>
+</body>	
+
+</html>
+
+

@@ -1,0 +1,27 @@
+		<h2 style="background: #0071AF;color: rgb(255, 255, 255); text-align: center; padding: 6px 0px; font-size: 14px; border-radius: 5px 0px 0px; margin-bottom: 10px;">Hỗ trợ khách hàng</h2>
+		<form action="" id="frmContact1" method="post" name="frmContact" style="padding-left: 20px;"> 
+				<?php
+				$name = $this->formText ( 'name', $this->Item ['name'], array ('class' => 'txtshort goc5','style'=>' margin-left: 10px;' ) ) . '<div class="view_error" id="view_name"></div>';
+				$email = $this->formText ( 'email', $this->Item ['email'], array ('class' => 'txtshort goc5','style'=>' margin-left: 10px;' ) ) . '<div class="view_error" id="view_email"></div>';
+				$content = $this->formTextarea ( 'content', $this->Item ['content'], array ('style'=>' margin-left: 10px; border: 1px solid #CCCCCC;','rows' => 5, 'cols' => 22,'class' => 'goc7') ) . '<div class="view_error" id="view_content"></div>';
+				?> 
+			<table class="tblContact1">
+				<tr>
+					<td class="label"><b><?php echo $this->language['hoTen'];?><span class="red">(*)</span></b>   </td>
+					<td><?php echo $name;?></td>
+				</tr>
+				<tr>
+					<td class="label"><b><?php echo $this->language['email'];?><span class="red">(*)</span></b></td>
+					<td><?php echo $email;?></td>
+				</tr>
+				<tr>
+					<td class="label"><b><?php echo $this->language['noiDung'];?><span class="red">(*)   </span></b></td>
+					<td><?php echo $content;?></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><a href="javascript:void(0);" onclick="register_news();" style="background:#0071AF;padding: 5px 28px;font-weight:bold; border-radius:5px;color:#fff;font-weight:bold; float: left;margin: 5px; ">Gửi</a></td>
+				</tr>
+			</table>
+		</form>
+	

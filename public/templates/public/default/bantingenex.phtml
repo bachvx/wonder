@@ -1,0 +1,24 @@
+<?php echo $this->render('html/header.php');?>
+<body>
+	<!-- HEADER -->
+	<?php echo $this-> blkHeader(1,'tintuc'); ?>
+
+	<div class="clearfix"></div>
+
+	<!-- CONTENT -->
+	<main class="page">
+        
+        <?php echo $this->layout()->content;?> 
+        
+       <?php echo $this -> blkDownload(); ?>       
+	</main>
+
+	<div class="clearfix"></div>
+
+	<!-- FOOTER -->
+    <?php echo $this->blkFooterNew(); ?>
+</body>	
+
+</html>
+
+

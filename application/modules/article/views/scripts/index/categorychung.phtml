@@ -1,0 +1,79 @@
+ <?php
+    $siteConfig = Zend_Registry::get('siteConfig');
+    $language = new Zend_Session_Namespace('language');
+    $imgName =  $val['picture'] ;
+    if($siteConfig['config_site']['offImage']==1){ 
+        $imgName= $siteConfig['config_site']['imgads'];
+    }else{
+        $imgName =  $this->ItemsMoban[0]['picture'] ;
+    }
+    $synopsis= $this->ItemsMoban[0]['synopsis'];	
+	$name = $this->ItemsMoban[0]['name'];
+   // $created =date("d-m-Y", strtotime($val['created']));
+	$urlOptions = array ('module' => 'article', 'controller' => 'index', 'action' => 'detail', 'title' => $this->ItemsMoban[0]['alias'], 'id' => $this->ItemsMoban[0]['id'] );
+    $linkDetial = $this->url ( $urlOptions, 'article-detail' );
+ ?>
+<div class="b__banner b__banner--sukien">  
+ <a href="<?php echo $linkDetial; ?>"> <img style="width: 100%;" src="<?php echo $imgName; ?> " /></a>
+  <div class="b__sukien--caption"> 
+    <div class="containers">
+      <a href="<?php echo $linkDetial; ?>"><p><?php echo $name; ?></p> </a>
+    </div>
+  </div>
+</div>
+<div class="b__content--sukien b__thongtinbaochi">
+  <div class="containers load-more">
+    <h3>
+    <?php 
+     $language->lang=='vi' ? $tenDanhmuc=$this->category['name'] : $tenDanhmuc=$this->category['name_en'];  
+        echo $tenDanhmuc;
+    ?> 
+    </h3>
+    <?php
+    foreach ($this->ItemsBaochi as $key => $val ) {
+        $imgName =  $val['picture'] ;
+        $synopsis= $val['synopsis'] ;	
+    	$name = $val['name'];
+        $created =date("d-m-Y", strtotime($val['created']));
+    	$urlOptions = array ('module' => 'article', 'controller' => 'index', 'action' => 'detail', 'title' => $val ['alias'], 'id' => $val ['id'] );
+        $linkDetial = $this->url ( $urlOptions, 'article-detail' );
+    ?>
+        <div class="b__thongtinbaochi--ls">
+     <img src="<?php echo $imgName; ?>" width="100%" />
+      <div class="b__thongtinbaochi--caption">
+       <h3><?php echo $name; ?></h3>
+        <p><?php echo $synopsis; ?></p>
+        <a href="<?php echo $linkDetial; ?>"><?php echo $this->language['xemThem']; ?></a>
+      </div>
+    </div>
+    <?php
+    }
+    	
+    ?>
+  </div><!--close containers-->
+    <?php 
+        $currentUrl = 'loadmore';
+    	echo $this->paginationControl($this->paginator,'Sliding','pagination-ajax-load-more.phtml',array('currentUrl'=>$currentUrl,'arrParam' => $this->arrParam));
+        ?>
+</div>  <!--close b__content--sukien b__thongtinbaochi-->
+ 
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(document).on('click','.icon_click',function(){
+            var ID = $(this).attr('id');
+            //alert(ID);
+            $.ajax({
+                type:'POST',
+                url:'<?php echo $currentUrl; ?>',
+                data:'page='+ID,
+                success:function(html){
+                    $('#loadmore'+ ID).remove();
+                    $('.load-more').append(html);
+                }
+            });
+        });
+    });
+ </script>
+        
+   
+       

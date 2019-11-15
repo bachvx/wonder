@@ -1,0 +1,24 @@
+<?php
+    $language = new Zend_Session_Namespace('language');
+    if($language->lang=='vi'){
+        $tieude=$this->Tongquan['mota'];
+        $content=htmlspecialchars_decode($this->Tongquan['content']);
+        
+    }else{
+        $tieude=$this->Tongquan['mota_en']; 
+        $content=htmlspecialchars_decode($this->Tongquan['content_en']);
+    } 
+    
+?>
+<div class="b__banner b__banner--cdt">
+  <img class="img_pc" src="<?php echo $this->Tongquan['picture']; ?>" width="100%" /> 
+  <img class="img_mb" src="<?php echo $this->Tongquan['picture_mobile']; ?>" width="100%" />
+</div>
+<div class="b__info--cdt">
+  <div class="containers">
+    <div class="b__title--top">
+      <h3><?php echo $tieude; ?></h3>
+    </div>
+    <?php echo $content; ?>
+  </div>
+</div>  
