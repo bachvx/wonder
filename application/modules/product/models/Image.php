@@ -713,6 +713,7 @@ class Product_Model_Image extends Zend_Db_Table{
 		if($options['task'] == 'admin-add'){
 			$row 				= $this->fetchNew();
 			$row->name 				= stripslashes($arrParam['name']);
+            $row->name_en 				= stripslashes($arrParam['name_en']);
 			$row->picture_multi		= stripslashes($arrParam['picture_multi']);
 			$row->content			= stripslashes($arrParam['content']);
             $row->content_en			= stripslashes($arrParam['content_en']);
@@ -728,6 +729,7 @@ class Product_Model_Image extends Zend_Db_Table{
 			$where 				= ' id=' . $arrParam['id'];
 			$row 				= $this->fetchRow($where);
 			$row->name 				= stripslashes($arrParam['name']);
+            $row->name_en 				= stripslashes($arrParam['name_en']);
 			$row->picture_multi		= $arrParam['picture_multi'];
 			$row->content			= stripslashes($arrParam['content']);
             $row->content_en			= stripslashes($arrParam['content_en']);

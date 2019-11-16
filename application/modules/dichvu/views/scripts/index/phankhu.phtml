@@ -79,12 +79,12 @@
 		$picture_multi = unserialize($val['album']);
         if($val['id']==1 || $val['id']==2 || $val['id']==5){
             $sp2='';
-            if($val['id']<>5){
-                $title='<h3>'.$this->language['wonderSanpham'].$val['name'].'<br/> '.$this->language['wonderUuvietLinhhoat'].'</h3>';
-            }else{
-               
-                $title='<h3>'.$val['name'].'</h3>';
-            }
+            if($language->lang=='vi'){
+			     $title='<h3>'.$val['tieude'].'</h3>';
+			}else{
+			     $title='<h3>'.$val['tieude_en'].'</h3>';
+			}
+			
             foreach($picture_multi AS $key1 => $val1){
                
                 if($key1==0){
@@ -107,7 +107,11 @@
                         </div><!-- end .b__pk--prd-->';
             
         }elseif($val['id']==3){ 
-            $title='<h3>'.$this->language['wonderSanpham'].$val['name'].'<br/> '.$this->language['wonderXinhdepCatinh'].'</h3>';
+            if($language->lang=='vi'){
+			     $title='<h3>'.$val['tieude'].'</h3>';
+			}else{
+			     $title='<h3>'.$val['tieude_en'].'</h3>';
+			}
             foreach($picture_multi AS $key1 => $val1){
                 if($key1==0){
                     $sp1='<div class="flex-column flex-column__left">
@@ -137,7 +141,11 @@
                     </div>';
         }else{
             
-            $title='<h3><a href="'.$linkDetial.'">'.$val['name'].'</a></h3>';
+            if($language->lang=='vi'){
+                 $title='<h3><a href="'.$linkDetial.'">'.$val['tieude'].'</a></h3>';
+			}else{
+			     $title='<h3><a href="'.$linkDetial.'">'.$val['tieude_en'].'</a></h3>';
+			}
              foreach($picture_multi AS $key1 => $val1){
                 if($key1==0){
                   $sp1='<div class="b__pk--left card"> 

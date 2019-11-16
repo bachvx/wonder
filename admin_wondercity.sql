@@ -2593,6 +2593,7 @@ CREATE TABLE `phankhu_image` (
   `phankhu_id` int(2) DEFAULT NULL,
   `product_id` int(2) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
+  `name_en` varchar(255) DEFAULT NULL,
   `content` text,
   `content_en` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

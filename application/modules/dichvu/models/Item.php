@@ -74,7 +74,7 @@ class Dichvu_Model_Item extends Zend_Db_Table{
 			$select = $db->select();
             if($language->lang=='vi'){
                 $select ->from('diadiem AS p')
-                        ->join('phankhu_image AS pc', 'p.id = pc.product_id',array('pc.picture_multi AS album','pc.content AS content_pr','pc.content AS content_pr_en'));
+                        ->join('phankhu_image AS pc', 'p.id = pc.product_id',array('pc.name AS tieude','pc.name_en AS tieude_en','pc.picture_multi AS album','pc.content AS content_pr','pc.content AS content_pr_en'));
             }else{
                 $select ->from('diadiem_en AS p')
                 ->join('phankhu_image AS pc', 'p.id = pc.product_id',array('pc.picture_multi AS album','pc.content AS content_pr','pc.content_en AS content_pr_en'));
